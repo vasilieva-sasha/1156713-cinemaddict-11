@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
-* Студент: [Александра Васильева](https://up.htmlacademy.ru/ecmascript/11/user/1156713).
-* Наставник: `Неизвестно`.
+* Студент: [Александра Васильева](https://htmlacademy.ru/profile/id1156713).
+* Наставник: [Артем Рудов](https://htmlacademy.ru/profile/artrudov).
 
 ---
 
