@@ -1,6 +1,10 @@
 "use strict";
 
 const CARD_AMOUNT = 5;
+const EXTRA_CARD_AMOUNT = 2;
+const BEFOREEND = `beforeend`;
+const header = document.querySelector(`.header`);
+const main = document.querySelector(`.main`);
 
 const createHeaderProfileTemplate = () => {
   return (
@@ -42,7 +46,10 @@ const createMainContentTemplate = () => {
         <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
         <div class="films-list__container">
         </div>
+        ${createButtonShowTemplate()}
       </section>
+      ${createExtraFilmsContainer(topRatedHeading)}
+      ${createExtraFilmsContainer(mostCommentedHeading)}
     </section>`
   );
 };
@@ -70,5 +77,49 @@ const createCardTemplate = () => {
 };
 
 const createButtonShowTemplate = () => {
-  return `<button class="films-list__show-more">Show more</button>`
+  return `<button class="films-list__show-more">Show more</button>`;
 };
+
+const createExtraFilmsContainer = (heading) => {
+  return (
+    `<section class="films-list--extra">
+      ${heading()}
+      <div class="films-list__container">
+      </div>
+    </section>`);
+};
+
+const topRatedHeading = () => `<h2 class="films-list__title">Top rated</h2>`;
+const mostCommentedHeading = () => `<h2 class="films-list__title">Most commented</h2>`;
+
+
+const render = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
+};
+
+const renderCards = (amount, container) => {
+  for (let i = 0; i < amount; i++) {
+    render(container, createCardTemplate(), BEFOREEND);
+  }
+};
+
+const renderPage = () => {
+  render(header, createHeaderProfileTemplate(), BEFOREEND);
+  render(main, createSiteNavigationTemplate(), BEFOREEND);
+  render(main, createSortingTemplate(), BEFOREEND);
+  render(main, createMainContentTemplate(), BEFOREEND);
+
+  const filmListContainer = document.querySelector(`.films-list`);
+  const filmListElement = filmListContainer.querySelector(`.films-list__container`);
+  const filmListsExtraContainer = document.querySelectorAll(`.films-list--extra`);
+
+  renderCards(CARD_AMOUNT, filmListElement);
+
+  filmListsExtraContainer.forEach(function (container) {
+    const filmListExtraElement = container.querySelector(`.films-list__container`);
+    renderCards(EXTRA_CARD_AMOUNT, filmListExtraElement);
+  });
+
+};
+
+renderPage();
