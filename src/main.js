@@ -11,6 +11,9 @@ const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
 
+const topRatedHeading = `Top rated`;
+const mostCommentedHeading = `Most commented`;
+
 const createHeaderProfileTemplate = () => {
   return (
     `<section class="header__profile profile">
@@ -88,14 +91,11 @@ const createButtonShowTemplate = () => {
 const createExtraFilmsContainer = (heading) => {
   return (
     `<section class="films-list--extra">
-      ${heading()}
+    <h2 class="films-list__title">${heading}</h2>
       <div class="films-list__container">
       </div>
     </section>`);
 };
-
-const topRatedHeading = () => `<h2 class="films-list__title">Top rated</h2>`;
-const mostCommentedHeading = () => `<h2 class="films-list__title">Most commented</h2>`;
 
 const createPopupTemplate = () => {
   return (
@@ -282,7 +282,7 @@ const renderCards = (amount, container) => {
   }
 };
 
-const renderPage = () => {
+const init = () => {
   render(header, createHeaderProfileTemplate(), Position.BEFOREEND);
   render(main, createSiteNavigationTemplate(), Position.BEFOREEND);
   render(main, createSortingTemplate(), Position.BEFOREEND);
@@ -304,4 +304,4 @@ const renderPage = () => {
   popup.classList.add(`visually-hidden`);
 };
 
-renderPage();
+init();
