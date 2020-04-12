@@ -1,4 +1,4 @@
-import {NAMES, COUNTRIES, GENRES} from "./../tools/consts.js";
+import {NAMES, COUNTRIES, GENRES, MONTH_NAMES} from "./../tools/consts.js";
 import {getRandomElement, getRandomArray, getRandomDate} from "./../tools/utils.js";
 import {shuffle} from "./../tools/utils.js";
 import {renderFilmCommentsArray} from "./comment.js";
@@ -76,7 +76,9 @@ const generateFilmCard = () => {
         info: getRandomArray(shuffle(NAMES))
       }, {
         name: `Release Date`,
-        info: getRandomDate(new Date(1920, 0, 1), new Date())
+        info: `${getRandomDate(new Date(1920, 0, 1), new Date()).getDate()}
+        ${MONTH_NAMES[getRandomDate(new Date(1920, 0, 1), new Date()).getMonth()]}
+        ${getRandomDate(new Date(1920, 0, 1), new Date()).getFullYear()}`
       }, {
         name: `Runtime`,
         info: getRandomHours() > 0 ? `${getRandomHours()}h` : ` `

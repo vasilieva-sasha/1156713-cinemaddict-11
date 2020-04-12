@@ -22,11 +22,26 @@ const commentEmojis = [
   `smile`,
 ];
 
+const getCommentDate = () => {
+  const commentDate = getRandomDate(new Date(2015, 0, 1), new Date());
+  const today = new Date();
+  if (commentDate.getDate() === today.getDate()) {
+    return `Today`;
+  } else if ((today.getFullYear() === commentDate.getFullYear())
+    && (today.getMonth() - commentDate.getMonth())
+    && ((today.getDate() - commentDate.getDate()) <= 7)) {
+    return `${(today.getDate() - commentDate.getDate())} days ago`;
+  } else {
+    return `${commentDate.getFullYear()}/${commentDate.getMonth()}/${commentDate.getDate()}`;
+  }
+};
+
+
 const generateFilmComment = () => {
   return {
     text: getRandomElement(commentTitles),
     name: getRandomElement(commentNames),
-    date: getRandomDate(new Date(2015, 0, 1), new Date()),
+    date: getCommentDate(),
     emoji: getRandomElement(commentEmojis)
   };
 };
