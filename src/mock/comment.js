@@ -46,6 +46,15 @@ const generateFilmComment = () => {
   };
 };
 
+export const getRightWordComments = (comments) => {
+  switch (true) {
+    case (comments.length % 10 === 1):
+      return `Comment`;
+    default:
+      return `Comments`;
+  }
+};
+
 export const renderFilmCommentsArray = () => {
   const filmCommentsArray = [];
   for (let i = 0; i < (Math.floor(Math.random() * 5)); i++) {

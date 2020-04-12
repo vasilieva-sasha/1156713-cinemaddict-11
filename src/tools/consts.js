@@ -1,5 +1,6 @@
-export const CARD_AMOUNT = 5;
-export const EXTRA_CARD_AMOUNT = 2;
+export const SHOW_CARD_AMOUNT = 5;
+export const SHOW_EXTRA_CARD_AMOUNT = 2;
+export const CARD_AMOUNT = 20;
 
 export const Position = {
   BEFOREEND: `beforeend`,

@@ -24,3 +24,12 @@ export const shuffle = (array) => {
 export const getRandomDate = (start, end) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 };
+
+export const hideText = (text) => {
+  const textString = text.toString();
+  if (textString.length > 140) {
+    return textString.slice(0, 139) + `...`;
+  } else {
+    return textString;
+  }
+};

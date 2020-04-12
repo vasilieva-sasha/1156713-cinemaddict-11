@@ -3,14 +3,14 @@ import {createSiteNavigationTemplate} from "./components/navigation.js";
 import {createSortingTemplate} from "./components/sorting.js";
 import {createMainContentTemplate} from "./components/films-container.js";
 import {render} from "./tools/utils.js";
-import {CARD_AMOUNT, EXTRA_CARD_AMOUNT, Position} from "./tools/consts";
-import {renderCards} from "./tools/render-cards.js";
-import {generateFilmCardsArray} from "./mock/film-card.js";
+import {SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT, Position} from "./tools/consts";
+import {filmCardsList, renderCards} from "./tools/render-cards.js";
+import {onButtonShowClick} from "./components/button-show.js";
 import {onCardClick} from "./components/popup/render-popup.js";
+import {topRatedList, mostComentedList} from "./components/extra-film-lists.js";
 
 const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
-const filmCardsList = generateFilmCardsArray(20);
 
 const init = () => {
   render(header, createHeaderProfileTemplate(), Position.BEFOREEND);
@@ -20,22 +20,30 @@ const init = () => {
 
   const filmListContainer = document.querySelector(`.films-list`);
   const filmListElement = filmListContainer.querySelector(`.films-list__container`);
-  const filmListsExtraContainer = document.querySelectorAll(`.films-list--extra`);
+  const filmListsExtraContainers = document.querySelectorAll(`.films-list--extra`);
 
-  renderCards(CARD_AMOUNT, filmListElement);
+  renderCards(filmCardsList, 0, SHOW_CARD_AMOUNT, filmListElement);
 
-  filmListsExtraContainer.forEach(function (container) {
-    const filmListExtraElement = container.querySelector(`.films-list__container`);
-    renderCards(EXTRA_CARD_AMOUNT, filmListExtraElement);
-  });
+  const topRatedListContainer = filmListsExtraContainers[0].querySelector(`.films-list__container`);
+  const mostCommentedListContainer = filmListsExtraContainers[1].querySelector(`.films-list__container`);
 
-  const filmCard = document.querySelectorAll(`.film-card`);
+  renderCards(topRatedList, 0, SHOW_EXTRA_CARD_AMOUNT, topRatedListContainer);
+  renderCards(mostComentedList, 0, SHOW_EXTRA_CARD_AMOUNT, mostCommentedListContainer);
 
-  for (let i = 0; i < filmCardsList.length; i++) {
-    filmCard[i].addEventListener(`click`, function () {
+
+  const filmCards = document.querySelectorAll(`.film-card`);
+
+  filmCards.forEach((card, i) => {
+    card.addEventListener(`click`, () => {
       onCardClick(filmCardsList[i]);
     });
-  }
+  });
+
+  const showButton = document.querySelector(`.films-list__show-more`);
+
+  showButton.addEventListener(`click`, () => {
+    onButtonShowClick(filmListElement, showButton);
+  });
 };
 
 init();

@@ -1,7 +1,9 @@
-const createCommentsMurkup = (commentItem) => {
+import {getRightWordComments} from "./../../../mock/comment.js";
+
+const createCommentsMurkup = (commentItem, comments) => {
   return (
     `<section class="film-details__comments-wrap">
-    <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
+    <h3 class="film-details__comments-title">${getRightWordComments(comments)} <span class="film-details__comments-count">${comments.length}</span></h3>
 
     <ul class="film-details__comments-list">
       ${commentItem}
@@ -62,6 +64,6 @@ export const createCommentsList = (comments) => {
   const listMarkup = comments.map((comment) => createCommentTemplate(comment.text, comment.name, comment.date, comment.emoji))
   .join(`\n`);
   return (
-    createCommentsMurkup(listMarkup)
+    createCommentsMurkup(listMarkup, comments)
   );
 };

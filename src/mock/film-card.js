@@ -81,8 +81,7 @@ const generateFilmCard = () => {
         ${getRandomDate(new Date(1920, 0, 1), new Date()).getFullYear()}`
       }, {
         name: `Runtime`,
-        info: getRandomHours() > 0 ? `${getRandomHours()}h` : ` `
-        + `${getRandomMinutes()}m`
+        info: getRandomHours() > 0 ? `${getRandomHours()}h ${getRandomMinutes()}m` : `${getRandomMinutes()}m`
       }, {
         name: `Country`,
         info: getRandomElement(COUNTRIES)
