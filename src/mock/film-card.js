@@ -1,6 +1,6 @@
 import {NAMES, COUNTRIES, GENRES, MONTH_NAMES} from "./../tools/consts.js";
 import {getRandomElement, getRandomArray, getRandomDate} from "./../tools/utils.js";
-import {shuffle} from "./../tools/utils.js";
+import {shuffle, getBoolean} from "./../tools/utils.js";
 import {renderFilmCommentsArray} from "./comment.js";
 
 const filmTitles = [
@@ -89,7 +89,10 @@ const generateFilmCard = () => {
     ],
     filmGenres: getRandomArray(shuffle(GENRES)),
     filmDescription: getRandomArray(filmDescriptions),
-    filmComments: renderFilmCommentsArray()
+    filmComments: renderFilmCommentsArray(),
+    isInWatchlist: getBoolean(),
+    isInHistory: getBoolean(),
+    isInFavorites: getBoolean(),
   };
 };
 

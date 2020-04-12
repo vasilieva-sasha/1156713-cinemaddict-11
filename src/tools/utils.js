@@ -33,3 +33,5 @@ export const hideText = (text) => {
     return textString;
   }
 };
+
+export const getBoolean = () => Math.random() > 0.5;
