@@ -1,9 +1,14 @@
-import {createCardTemplate} from "./../components/film-card.js";
-import {render} from "./utils.js";
-import {Position} from "./consts";
+import {createCardTemplate} from "./../components/film-card";
+import {generateFilmCardsArray} from "./../mock/film-card";
+import {render} from "./utils";
+import {CARD_AMOUNT, Position} from "../consts/consts";
 
-export const renderCards = (amount, container) => {
-  for (let i = 0; i < amount; i++) {
-    render(container, createCardTemplate(), Position.BEFOREEND);
+const filmCardsList = generateFilmCardsArray(CARD_AMOUNT);
+
+const renderCards = (array, start, amount, container) => {
+  for (let i = start; i < amount; i++) {
+    render(container, createCardTemplate(array[i]), Position.BEFOREEND);
   }
 };
+
+export {filmCardsList, renderCards};
