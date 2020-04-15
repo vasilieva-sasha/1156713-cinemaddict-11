@@ -1,4 +1,4 @@
-export const createPopupControlMurkup = () => {
+const createPopupControlMurkup = () => {
   return (
     `<section class="film-details__controls">
       <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
@@ -12,3 +12,5 @@ export const createPopupControlMurkup = () => {
     </section>`
   );
 };
+
+export {createPopupControlMurkup};

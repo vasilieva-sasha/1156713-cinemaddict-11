@@ -1,10 +1,10 @@
-import {createButtonShowTemplate} from "./button-show.js";
-import {createExtraFilmsContainer} from "./extra-film-lists.js";
+import {createButtonShowTemplate} from "./button-show";
+import {createExtraFilmsContainer} from "./extra-film-lists";
 
 const topRatedHeading = `Top rated`;
 const mostCommentedHeading = `Most commented`;
 
-export const createMainContentTemplate = () => {
+const createMainContentTemplate = () => {
   return (
     `<section class="films">
       <section class="films-list">
@@ -18,3 +18,5 @@ export const createMainContentTemplate = () => {
     </section>`
   );
 };
+
+export {createMainContentTemplate};

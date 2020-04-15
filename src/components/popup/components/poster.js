@@ -1,4 +1,4 @@
-export const createFilmPosterMarkup = (poster, age) => {
+const createFilmPosterMarkup = (poster, age) => {
   return (
     `<div class="film-details__poster">
       <img class="film-details__poster-img" src="./images/posters/${poster}" alt="">
@@ -6,3 +6,5 @@ export const createFilmPosterMarkup = (poster, age) => {
     </div>`
   );
 };
+
+export {createFilmPosterMarkup};

@@ -1,12 +1,12 @@
-import {createFilmTitleMarkup} from "./components/film-title.js";
-import {createFilmRatingMarkup} from "./components/rating.js";
-import {createFilmPosterMarkup} from "./components/poster.js";
-import {createTableTemplate} from "./components/table.js";
-import {createPopupControlMurkup} from "./components/control.js";
-import {createCommentsList} from "./components/comments.js";
+import {createFilmTitleMarkup} from "./components/film-title";
+import {createFilmRatingMarkup} from "./components/rating";
+import {createFilmPosterMarkup} from "./components/poster";
+import {createTableTemplate} from "./components/table";
+import {createPopupControlMurkup} from "./components/control";
+import {createCommentsList} from "./components/comments/create-comment-list";
 
-export const createPopupTemplate = (card) => {
-  const {filmTitle, filmPoster, filmAge, filmRate, filmDetails, filmGenres, filmDescription, filmComments} = card;
+const createPopupTemplate = (card) => {
+  const {title, poster, filmAge, ageRate, details, genres, description, comments} = card;
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -15,17 +15,17 @@ export const createPopupTemplate = (card) => {
             <button class="film-details__close-btn" type="button">close</button>
           </div>
           <div class="film-details__info-wrap">
-            ${createFilmPosterMarkup(filmPoster, filmAge)}
+            ${createFilmPosterMarkup(poster, filmAge)}
 
             <div class="film-details__info">
               <div class="film-details__info-head">
-                ${createFilmTitleMarkup(filmTitle)}
+                ${createFilmTitleMarkup(title)}
 
-                ${createFilmRatingMarkup(filmRate)}
+                ${createFilmRatingMarkup(ageRate)}
               </div>
-                ${createTableTemplate(filmDetails, filmGenres)}
+                ${createTableTemplate(details, genres)}
               <p class="film-details__film-description">
-                ${filmDescription}
+                ${description}
               </p>
             </div>
           </div>
@@ -34,9 +34,11 @@ export const createPopupTemplate = (card) => {
         </div>
 
         <div class="form-details__bottom-container">
-          ${createCommentsList(filmComments)}
+          ${createCommentsList(comments)}
         </div>
       </form>
     </section>`
   );
 };
+
+export {createPopupTemplate};

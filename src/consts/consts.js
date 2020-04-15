@@ -50,3 +50,5 @@ export const MONTH_NAMES = [
   `November`,
   `December`,
 ];
+
+export const WEEK = 7;

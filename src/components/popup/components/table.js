@@ -11,7 +11,17 @@ const createGenres = (genres) => {
   return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(`\n`);
 };
 
-const getCorrectWord = (genres) => genres.length === 1 ? `Genre` : `Genres`;
+const getCorrectWord = (genres) => {
+  switch (genres.length) {
+    case 0:
+      return ``;
+    case 1:
+      return `Genre`;
+    default:
+      return `Genres`;
+  }
+};
+
 const createGenresRow = (genres) => {
   return (
     `<tr class="film-details__row">
@@ -23,8 +33,8 @@ const createGenresRow = (genres) => {
   );
 };
 
-export const createTableTemplate = (details, genres) => {
-  const tableRowMarkup = details.map((detail) => createTableRowMarkup(detail)).join(`\n`);
+const createTableTemplate = (details, genres) => {
+  const tableRowMarkup = details.map(createTableRowMarkup).join(`\n`);
   return (
     `<table class="film-details__table">
     ${tableRowMarkup}
@@ -32,3 +42,5 @@ export const createTableTemplate = (details, genres) => {
     </table>`
   );
 };
+
+export {createTableTemplate};

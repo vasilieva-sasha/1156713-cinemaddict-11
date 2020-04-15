@@ -1,13 +1,13 @@
-import {createHeaderProfileTemplate} from "./components/header-profile.js";
-import {createSiteNavigationTemplate} from "./components/navigation.js";
-import {createSortingTemplate} from "./components/sorting.js";
-import {createMainContentTemplate} from "./components/films-container.js";
-import {render} from "./tools/utils.js";
-import {SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT, Position} from "./tools/consts";
-import {filmCardsList, renderCards} from "./tools/render-cards.js";
-import {onButtonShowClick} from "./components/button-show.js";
-import {onCardClick} from "./components/popup/render-popup.js";
-import {topRatedList, mostComentedList} from "./components/extra-film-lists.js";
+import {createHeaderProfileTemplate} from "./components/header-profile";
+import {createSiteNavigationTemplate} from "./components/navigation";
+import {createSortingTemplate} from "./components/sorting";
+import {createMainContentTemplate} from "./components/films-container";
+import {render} from "./tools/utils";
+import {SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT, Position} from "./consts/consts";
+import {filmCardsList, renderCards} from "./tools/render-cards";
+import {showFilms} from "./components/button-show";
+import {topRatedList, mostComentedList} from "./components/extra-film-lists";
+import {showPopup} from "./components/popup/show-popup";
 
 const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
@@ -33,17 +33,9 @@ const init = () => {
 
   const filmCards = document.querySelectorAll(`.film-card`);
 
-  filmCards.forEach((card, i) => {
-    card.addEventListener(`click`, () => {
-      onCardClick(filmCardsList[i]);
-    });
-  });
+  filmCards.forEach(showPopup);
 
-  const showButton = document.querySelector(`.films-list__show-more`);
-
-  showButton.addEventListener(`click`, () => {
-    onButtonShowClick(filmListElement, showButton);
-  });
+  showFilms(filmListElement);
 };
 
 init();

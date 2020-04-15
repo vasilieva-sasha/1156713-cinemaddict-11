@@ -1,21 +1,23 @@
 import {filmCardsList} from "./../tools/render-cards.js";
 
-const getWatchlistCount = () => {
-  return filmCardsList.filter((card) => card.isInWatchlist)
-  .length;
+let filtersResult = {
+  inWatchlist: 0,
+  inHistory: 0,
+  inFavorites: 0
 };
 
-const getHistoryCount = () => {
-  return filmCardsList.filter((card) => card.isInHistory)
-  .length;
-};
+filmCardsList.reduce(({}, card) => {
+  if (card.inWatchlist) {
+    ++filtersResult.inWatchlist;
+  } else if (card.inHistory) {
+    ++filtersResult.inHistory;
+  } else if (card.inFavorites) {
+    ++filtersResult.inFavorites;
+  }
+  return filtersResult;
+});
 
-const getFavoriteCount = () => {
-  return filmCardsList.filter((card) => card.isInFavorites)
-  .length;
-};
-
-export const filters = [
+const filters = [
   {
     name: `All movies`,
     count: ``,
@@ -23,17 +25,19 @@ export const filters = [
   },
   {
     name: `Watchlist`,
-    count: getWatchlistCount(),
+    count: filtersResult.inWatchlist,
     isActive: false
   },
   {
     name: `History`,
-    count: getHistoryCount(),
+    count: filtersResult.inHistory,
     isActive: false
   },
   {
     name: `Favorites`,
-    count: getFavoriteCount(),
+    count: filtersResult.inFavorites,
     isActive: false
   }
 ];
+
+export {filters};

@@ -1,3 +1,5 @@
+import {WEEK} from "./../consts/consts";
+
 export const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -35,3 +37,17 @@ export const hideText = (text) => {
 };
 
 export const getBoolean = () => Math.random() > 0.5;
+
+export const getCommentDate = (commentDate) => {
+  const today = new Date();
+
+  if (commentDate.getDate() === today.getDate()) {
+    return `Today`;
+  } else if ((today.getFullYear() === commentDate.getFullYear())
+    && (today.getMonth() - commentDate.getMonth())
+    && ((today.getDate() - commentDate.getDate()) <= WEEK)) {
+    return `${(today.getDate() - commentDate.getDate())} days ago`;
+  } else {
+    return `${commentDate.getFullYear()}/${commentDate.getMonth()}/${commentDate.getDate()}`;
+  }
+};

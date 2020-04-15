@@ -1,6 +1,6 @@
-import {filmCardsList} from "./../tools/render-cards.js";
+import {filmCardsList} from "../tools/render-cards";
 
-export const createExtraFilmsContainer = (heading) => {
+const createExtraFilmsContainer = (heading) => {
   return (
     `<section class="films-list--extra">
     <h2 class="films-list__title">${heading}</h2>
@@ -9,10 +9,12 @@ export const createExtraFilmsContainer = (heading) => {
     </section>`);
 };
 
-export const topRatedList = filmCardsList.slice().sort((a, b) => {
-  return b.filmRate - a.filmRate;
+const topRatedList = [...filmCardsList].slice().sort((first, second) => {
+  return second.ageRate - first.ageRate;
 });
 
-export const mostComentedList = filmCardsList.slice().sort((a, b) => {
-  return b.filmComments.length - a.filmComments.length;
+const mostComentedList = [...filmCardsList].slice().sort((first, second) => {
+  return second.comments.length - first.comments.length;
 });
+
+export {createExtraFilmsContainer, topRatedList, mostComentedList};

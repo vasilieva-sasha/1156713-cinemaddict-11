@@ -1,4 +1,4 @@
-export const createFilmTitleMarkup = ({title, original}) => {
+const createFilmTitleMarkup = ({title, original}) => {
   return (
     `<div class="film-details__title-wrap">
       <h3 class="film-details__title">${title}</h3>
@@ -6,3 +6,5 @@ export const createFilmTitleMarkup = ({title, original}) => {
     </div>`
   );
 };
+
+export {createFilmTitleMarkup};
