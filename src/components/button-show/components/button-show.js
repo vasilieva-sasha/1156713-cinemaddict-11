@@ -1,5 +1,5 @@
-import {SHOW_CARD_AMOUNT} from "../consts/consts";
-import {filmCardsList, renderCards} from "../tools/render-cards";
+import {SHOW_CARD_AMOUNT} from "../../../consts/consts";
+import {filmCardsList, renderCards} from "../../../tools/render-cards";
 
 const createButtonShowTemplate = () => {
   return `<button class="films-list__show-more">Show more</button>`;

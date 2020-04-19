@@ -1,4 +1,4 @@
-import {filmCardsList} from "../tools/render-cards";
+import {filmCardsList} from "../../../tools/render-cards";
 
 const createExtraFilmsContainer = (heading) => {
   return (
