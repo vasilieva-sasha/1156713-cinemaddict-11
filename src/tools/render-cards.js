@@ -1,10 +1,9 @@
-import {createCardTemplate} from "./../components/film-card/components/film-card";
+import FilmCard from "../components/film-card/film-card";
+import Popup from "../components/popup/popup";
 import {generateFilmCardsArray} from "./../mock/film-card";
 import {render} from "./utils";
 import {CARD_AMOUNT, Position} from "../consts/consts";
-import FilmCard from "../components/film-card/film-card";
-import { showPopup } from "../components/popup/show-popup";
-import Popup from "../components/popup/popup";
+import {showPopup} from "../components/popup/show-popup";
 
 const filmCardsList = generateFilmCardsArray(CARD_AMOUNT);
 

@@ -4,6 +4,7 @@ import FilmCard from "../film-card/film-card";
 import {Position, SHOW_CARD_AMOUNT} from "../../consts/consts";
 import FilmContainer from "./film-container";
 import ButtonShow from "../button-show/button-show";
+import {showFilms} from "./../button-show/components/button-show";
 import {renderCards, filmCardsList} from "../../tools/render-cards";
 
 const renderFilmContainer = () => {
@@ -19,6 +20,8 @@ const renderFilmContainer = () => {
   const filmListContainer = filmListComponent.getElement().querySelector(`.films-list__container`);
 
   renderCards(filmCardsList, 0, SHOW_CARD_AMOUNT, filmListContainer);
+
+  showFilms(filmListContainer, buttonShowComponent.getElement());
 
 };
 

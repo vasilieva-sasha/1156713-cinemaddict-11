@@ -18,8 +18,8 @@ const onButtonShowClick = (container, button) => {
   }
 };
 
-const showFilms = (container) => {
-  const buttonShow = document.querySelector(`.films-list__show-more`);
+const showFilms = (container, element) => {
+  const buttonShow = element;
 
   buttonShow.addEventListener(`click`, () => {
     onButtonShowClick(container, buttonShow);
