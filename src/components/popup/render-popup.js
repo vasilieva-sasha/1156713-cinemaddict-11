@@ -5,9 +5,9 @@ import {closePopup} from "./close-popup";
 
 const footer = document.querySelector(`.footer`);
 
-const onCardClick = (card) => {
+const onCardClick = (card, element) => {
   render(footer, createPopupTemplate(card), Position.AFTEREND);
-  closePopup();
+  closePopup(element);
 };
 
 export {onCardClick};

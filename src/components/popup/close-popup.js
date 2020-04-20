@@ -1,5 +1,5 @@
-const closePopup = () => {
-  const popup = document.querySelector(`.film-details`);
+const closePopup = (element) => {
+  const popup = element.getElement().querySelector(`.film-details`);
   const closeButton = popup.querySelector(`.film-details__close-btn`);
   closeButton.addEventListener(`click`, () => {
     onCloseButtonClick(popup);
