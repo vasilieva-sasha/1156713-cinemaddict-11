@@ -9,4 +9,3 @@ const createFilmListTemplate = () => {
 };
 
 export {createFilmListTemplate};
-// ${createButtonShowTemplate()}
