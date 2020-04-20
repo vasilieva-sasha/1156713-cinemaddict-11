@@ -1,9 +1,9 @@
 import {onCardClick} from "./render-popup";
 import {filmCardsList} from "./../../tools/render-cards";
 
-const showPopup = (i, element) => {
+const showPopup = (element, popupElement) => {
   element.addEventListener(`click`, () => {
-    onCardClick(filmCardsList[i], element);
+    onCardClick(popupElement);
   });
 };
 
