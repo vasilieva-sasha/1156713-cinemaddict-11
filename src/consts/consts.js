@@ -4,7 +4,8 @@ export const CARD_AMOUNT = 20;
 
 export const Position = {
   BEFOREEND: `beforeend`,
-  AFTEREND: `afterend`
+  AFTEREND: `afterend`,
+  AFTERBEGIN: `afterbegin`
 };
 
 export const NAMES = [

@@ -1,7 +1,17 @@
-import {WEEK} from "./../consts/consts";
+import {Position, WEEK} from "./../consts/consts";
 
-export const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
+export const render = (container, element, place) => {
+  switch (place) {
+    case Position.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case Position.BEFOREEND:
+      container.append(element);
+      break;
+    case Position.AFTEREND:
+      container.after(element);
+      break;
+  }
 };
 
 export const getRandomElement = (array) => {
@@ -50,4 +60,11 @@ export const getCommentDate = (commentDate) => {
   } else {
     return `${commentDate.getFullYear()}/${commentDate.getMonth()}/${commentDate.getDate()}`;
   }
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
 };

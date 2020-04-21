@@ -1,14 +1,13 @@
-import {createPopupTemplate} from "./components/popup";
 import {createElement} from "../../tools/utils";
+import {createFilmListTemplate} from "./components/film-list";
 
-export default class Popup {
-  constructor(card) {
-    this._card = card;
+export default class FilmList {
+  constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createPopupTemplate(this._card);
+    return createFilmListTemplate(this._element);
   }
 
   getElement() {

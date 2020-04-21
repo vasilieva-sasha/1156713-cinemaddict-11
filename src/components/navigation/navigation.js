@@ -1,14 +1,13 @@
-import {createPopupTemplate} from "./components/popup";
+import {createSiteNavigationTemplate} from "./components/navigation";
 import {createElement} from "../../tools/utils";
 
-export default class Popup {
-  constructor(card) {
-    this._card = card;
+export default class Navigation {
+  constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createPopupTemplate(this._card);
+    return createSiteNavigationTemplate();
   }
 
   getElement() {

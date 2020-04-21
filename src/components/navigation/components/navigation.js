@@ -1,4 +1,4 @@
-import {filters} from "./../mock/filters";
+import {filters} from "./../../../mock/filters";
 
 const createSiteNavigationTemplate = () => {
   return (

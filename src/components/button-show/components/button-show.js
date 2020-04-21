@@ -1,5 +1,5 @@
-import {SHOW_CARD_AMOUNT} from "../consts/consts";
-import {filmCardsList, renderCards} from "../tools/render-cards";
+import {SHOW_CARD_AMOUNT} from "../../../consts/consts";
+import {filmCardsList, renderCards} from "../../../tools/render-cards";
 
 const createButtonShowTemplate = () => {
   return `<button class="films-list__show-more">Show more</button>`;
@@ -18,8 +18,8 @@ const onButtonShowClick = (container, button) => {
   }
 };
 
-const showFilms = (container) => {
-  const buttonShow = document.querySelector(`.films-list__show-more`);
+const showFilms = (container, element) => {
+  const buttonShow = element;
 
   buttonShow.addEventListener(`click`, () => {
     onButtonShowClick(container, buttonShow);

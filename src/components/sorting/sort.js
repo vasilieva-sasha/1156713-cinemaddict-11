@@ -1,14 +1,13 @@
-import {createPopupTemplate} from "./components/popup";
 import {createElement} from "../../tools/utils";
+import {createSortingTemplate} from "./components/sort";
 
-export default class Popup {
-  constructor(card) {
-    this._card = card;
+export default class Sort {
+  constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createPopupTemplate(this._card);
+    return createSortingTemplate();
   }
 
   getElement() {
