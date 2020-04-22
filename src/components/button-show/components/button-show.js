@@ -1,4 +1,4 @@
-import {SHOW_CARD_AMOUNT} from "../../../consts/consts";
+import {SHOW_CARD_AMOUNT, CARD_AMOUNT} from "../../../consts/consts";
 import {filmCardsList, renderCards} from "../../../tools/render-cards";
 
 const createButtonShowTemplate = () => {
@@ -9,7 +9,10 @@ let cardsCount = SHOW_CARD_AMOUNT;
 
 const onButtonShowClick = (container, button) => {
   let prevCardsCount = cardsCount;
-  cardsCount = prevCardsCount + SHOW_CARD_AMOUNT;
+
+  cardsCount = (filmCardsList.length - cardsCount) > SHOW_CARD_AMOUNT ?
+    prevCardsCount + SHOW_CARD_AMOUNT :
+    CARD_AMOUNT;
 
   renderCards(filmCardsList, prevCardsCount, cardsCount, container);
 
