@@ -3,10 +3,11 @@ import FilmListExtra from "./film-list-extra";
 import FilmContainer from "./film-container";
 import ButtonShow from "../button-show/button-show";
 import {render} from "../../tools/utils";
-import {Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT} from "../../consts/consts";
+import {Position, CARD_AMOUNT, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT} from "../../consts/consts";
 import {showFilms} from "./../button-show/components/button-show";
 import {renderCards, filmCardsList} from "../../tools/render-cards";
 import {topRatedList, mostComentedList} from "./components/extra-film-lists";
+import NoFilmMessage from "../messages/no-films";
 
 const renderFilmContainer = () => {
   const topRatedHeading = `Top rated`;
@@ -14,12 +15,19 @@ const renderFilmContainer = () => {
 
   const main = document.querySelector(`.main`);
   const filmContainerComponent = new FilmContainer();
+
+  render(main, filmContainerComponent.getElement(), Position.BEFOREEND);
+
+  if (CARD_AMOUNT === 0) {
+    render(filmContainerComponent.getElement(), new NoFilmMessage().getElement(), Position.AFTERBEGIN);
+    return;
+  }
+
   const filmListComponent = new FilmList();
   const buttonShowComponent = new ButtonShow();
   const topRatedComponent = new FilmListExtra(topRatedHeading);
   const mostComentedComponent = new FilmListExtra(mostCommentedHeading);
 
-  render(main, filmContainerComponent.getElement(), Position.BEFOREEND);
   render(filmContainerComponent.getElement(), filmListComponent.getElement(), Position.BEFOREEND);
   render(filmListComponent.getElement(), buttonShowComponent.getElement(), Position.BEFOREEND);
   render(filmContainerComponent.getElement(), topRatedComponent.getElement(), Position.BEFOREEND);

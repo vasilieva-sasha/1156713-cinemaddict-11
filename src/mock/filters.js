@@ -1,4 +1,5 @@
 import {filmCardsList} from "./../tools/render-cards.js";
+import {CARD_AMOUNT} from "../consts/consts.js";
 
 let filtersResult = {
   inWatchlist: 0,
@@ -6,16 +7,18 @@ let filtersResult = {
   inFavorites: 0
 };
 
-filmCardsList.reduce(({}, card) => {
-  if (card.inWatchlist) {
-    ++filtersResult.inWatchlist;
-  } else if (card.inHistory) {
-    ++filtersResult.inHistory;
-  } else if (card.inFavorites) {
-    ++filtersResult.inFavorites;
-  }
-  return filtersResult;
-});
+if (CARD_AMOUNT > 0) {
+  filmCardsList.reduce(({}, card) => {
+    if (card.inWatchlist) {
+      ++filtersResult.inWatchlist;
+    } else if (card.inHistory) {
+      ++filtersResult.inHistory;
+    } else if (card.inFavorites) {
+      ++filtersResult.inFavorites;
+    }
+    return filtersResult;
+  });
+}
 
 const filters = [
   {
@@ -25,17 +28,17 @@ const filters = [
   },
   {
     name: `Watchlist`,
-    count: filtersResult.inWatchlist,
+    count: CARD_AMOUNT === 0 ? `0` : filtersResult.inWatchlist,
     isActive: false
   },
   {
     name: `History`,
-    count: filtersResult.inHistory,
+    count: CARD_AMOUNT === 0 ? `0` : filtersResult.inHistory,
     isActive: false
   },
   {
     name: `Favorites`,
-    count: filtersResult.inFavorites,
+    count: CARD_AMOUNT === 0 ? `0` : filtersResult.inFavorites,
     isActive: false
   }
 ];
