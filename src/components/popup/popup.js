@@ -1,25 +1,14 @@
 import {createPopupTemplate} from "./components/popup";
-import {createElement} from "../../tools/utils";
+import AbstractComponent from "../abstract-component";
 
-export default class Popup {
+export default class Popup extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
     this._element = null;
   }
 
   getTemplate() {
     return createPopupTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

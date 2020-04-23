@@ -1,24 +1,8 @@
 import {createSiteNavigationTemplate} from "./components/navigation";
-import {createElement} from "../../tools/utils";
+import AbstractComponent from "../abstract-component";
 
-export default class Navigation {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Navigation extends AbstractComponent {
   getTemplate() {
     return createSiteNavigationTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
