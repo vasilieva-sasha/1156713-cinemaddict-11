@@ -1,18 +1,4 @@
-import {Position, WEEK} from "./../consts/consts";
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case Position.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case Position.BEFOREEND:
-      container.append(element);
-      break;
-    case Position.AFTEREND:
-      container.after(element);
-      break;
-  }
-};
+import {WEEK} from "../../consts/consts";
 
 export const getRandomElement = (array) => {
   return array[Math.floor(Math.random() * array.length)];

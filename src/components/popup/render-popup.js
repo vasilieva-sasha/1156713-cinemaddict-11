@@ -1,12 +1,20 @@
-import {render} from "./../../tools/utils";
+import {render} from "./../../tools/utils/render";
 import {Position} from "./../../consts/consts";
-import {closePopup} from "./close-popup";
+import {onPopupClose} from "./close-popup";
+import {onEscDown} from "../../tools/utils/utils";
 
 const footer = document.querySelector(`.footer`);
 
 const onCardClick = (popupElement) => {
-  render(footer, popupElement.getElement(), Position.AFTEREND);
-  closePopup(popupElement);
+  render(footer, popupElement, Position.AFTEREND);
+  popupElement.setPopupClose(() => {
+    onPopupClose(popupElement);
+  });
+  document.addEventListener(`keydown`, (evt) => {
+    onEscDown(evt, () => {
+      onPopupClose(popupElement);
+    });
+  });
 };
 
 export {onCardClick};

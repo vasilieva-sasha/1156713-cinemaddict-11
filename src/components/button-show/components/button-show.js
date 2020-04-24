@@ -1,5 +1,6 @@
 import {SHOW_CARD_AMOUNT, CARD_AMOUNT} from "../../../consts/consts";
 import {filmCardsList, renderCards} from "../../../tools/render-cards";
+import {remove} from "../../../tools/utils/render";
 
 const createButtonShowTemplate = () => {
   return `<button class="films-list__show-more">Show more</button>`;
@@ -17,16 +18,8 @@ const onButtonShowClick = (container, button) => {
   renderCards(filmCardsList, prevCardsCount, cardsCount, container);
 
   if (cardsCount >= filmCardsList.length) {
-    button.remove();
+    remove(button);
   }
 };
 
-const showFilms = (container, element) => {
-  const buttonShow = element;
-
-  buttonShow.addEventListener(`click`, () => {
-    onButtonShowClick(container, buttonShow);
-  });
-};
-
-export {createButtonShowTemplate, showFilms};
+export {createButtonShowTemplate, onButtonShowClick};

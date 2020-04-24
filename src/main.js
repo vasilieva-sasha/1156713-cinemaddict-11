@@ -1,7 +1,7 @@
 import HeaderProfile from "./components/header/header-pofile";
 import Sort from "./components/sorting/sort";
 import Navigation from "./components/navigation/navigation";
-import {render} from "./tools/utils";
+import {render} from "./tools/utils/render";
 import {Position} from "./consts/consts";
 import {renderFilmContainer} from "./components/film-list/render-film-container";
 import FooterStatisticsMarkup from "./components/footer/footer-statistics";
@@ -16,13 +16,13 @@ const init = () => {
   const navigationComponent = new Navigation();
   const statisticsComponent = new FooterStatisticsMarkup();
 
-  render(header, headerProfileComponent.getElement(), Position.BEFOREEND);
-  render(main, navigationComponent.getElement(), Position.BEFOREEND);
-  render(main, sortingComponent.getElement(), Position.BEFOREEND);
+  render(header, headerProfileComponent, Position.BEFOREEND);
+  render(main, navigationComponent, Position.BEFOREEND);
+  render(main, sortingComponent, Position.BEFOREEND);
 
   renderFilmContainer();
 
-  render(footer, statisticsComponent.getElement(), Position.BEFOREEND);
+  render(footer, statisticsComponent, Position.BEFOREEND);
 
 };
 

@@ -1,5 +1,5 @@
 import {getRightWordComments} from "./../../../mock/comments/comment";
-import {hideText} from "./../../../tools/utils";
+import {hideText} from "./../../../tools/utils/utils";
 
 const createCardTemplate = (card) => {
   const {title, poster, filmAge, ageRate, genres, description, comments} = card;

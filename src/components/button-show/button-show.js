@@ -6,4 +6,8 @@ export default class ButtonShow extends AbstractComponent {
   getTemplate() {
     return createButtonShowTemplate();
   }
+
+  setButtonClick(handler) {
+    this.getElement().addEventListener(`click`, handler);
+  }
 }
