@@ -22,6 +22,30 @@ export default class PageController {
     this._noFilmComponent = new NoFilmMessage();
   }
 
+  renderFilmList(container) {
+    render(container, this._filmListComponent, Position.BEFOREEND);
+
+    const filmListContainer = this._filmListComponent.getElement().querySelector(`.films-list__container`);
+
+    renderCards(filmCardsList, 0, SHOW_CARD_AMOUNT, filmListContainer);
+
+    this._buttonShowComponent.setButtonClick(() => {
+      onButtonShowClick(filmListContainer, this._buttonShowComponent);
+    });
+  }
+
+  renderExtraFilmLists(container) {
+    render(container, this._topRatedComponent, Position.BEFOREEND);
+    render(container, this._mostComentedComponent, Position.BEFOREEND);
+
+    const topRatedContainer = this._topRatedComponent.getElement().querySelector(`.films-list__container`);
+    const mostComentedContainer = this._mostComentedComponent.getElement().querySelector(`.films-list__container`);
+
+
+    renderCards(topRatedList, 0, SHOW_EXTRA_CARD_AMOUNT, topRatedContainer);
+    renderCards(mostComentedList, 0, SHOW_EXTRA_CARD_AMOUNT, mostComentedContainer);
+  }
+
   render() {
     const container = this._container.getElement();
 
@@ -30,21 +54,8 @@ export default class PageController {
       return;
     }
 
-    render(container, this._filmListComponent, Position.BEFOREEND);
     render(this._filmListComponent.getElement(), this._buttonShowComponent, Position.BEFOREEND);
-    render(container, this._topRatedComponent, Position.BEFOREEND);
-    render(container, this._mostComentedComponent, Position.BEFOREEND);
-
-    const filmListContainer = this._filmListComponent.getElement().querySelector(`.films-list__container`);
-    const topRatedContainer = this._topRatedComponent.getElement().querySelector(`.films-list__container`);
-    const mostComentedContainer = this._mostComentedComponent.getElement().querySelector(`.films-list__container`);
-
-    renderCards(filmCardsList, 0, SHOW_CARD_AMOUNT, filmListContainer);
-    renderCards(topRatedList, 0, SHOW_EXTRA_CARD_AMOUNT, topRatedContainer);
-    renderCards(mostComentedList, 0, SHOW_EXTRA_CARD_AMOUNT, mostComentedContainer);
-
-    this._buttonShowComponent.setButtonClick(() => {
-      onButtonShowClick(filmListContainer, this._buttonShowComponent);
-    });
+    this.renderFilmList(container);
+    this.renderExtraFilmLists(container);
   }
 }
