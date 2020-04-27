@@ -1,8 +1,9 @@
 import {createCardTemplate} from "./components/film-card";
-import {createElement} from "../../tools/utils";
+import AbstractComponent from "../abstract-component";
 
-export default class FilmCard {
+export default class FilmCard extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
     this._element = null;
   }
@@ -11,15 +12,12 @@ export default class FilmCard {
     return createCardTemplate(this._card);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__title`)
+      .addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-card__poster`)
+      .addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-card__comments`)
+      .addEventListener(`click`, handler);
   }
 }

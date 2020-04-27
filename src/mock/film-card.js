@@ -1,7 +1,6 @@
 import {NAMES, COUNTRIES, GENRES, MONTH_NAMES} from "./../consts/consts";
 import {FIRST_RELEASE_DATE, TITLES, POSTERS, DESCRIPTIONS, AGE_RATES, HOURS, MINUTES} from "./consts/consts";
-import {getRandomElement, getRandomArray, getRandomDate} from "./../tools/utils";
-import {shuffle, getBoolean} from "./../tools/utils";
+import {getRandomElement, getRandomArray, getRandomDate, shuffle, getBoolean} from "./../tools/utils/utils";
 import {renderFilmCommentsArray} from "./comments/comment";
 
 const getRandomHours = () => Math.floor(Math.random() * HOURS);

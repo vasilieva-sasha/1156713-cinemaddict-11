@@ -20,6 +20,8 @@ if (CARD_AMOUNT > 0) {
   });
 }
 
+const isCount = (result) => CARD_AMOUNT === 0 ? `0` : result;
+
 const filters = [
   {
     name: `All movies`,
@@ -28,17 +30,17 @@ const filters = [
   },
   {
     name: `Watchlist`,
-    count: CARD_AMOUNT === 0 ? `0` : filtersResult.inWatchlist,
+    count: isCount(filtersResult.inWatchlist),
     isActive: false
   },
   {
     name: `History`,
-    count: CARD_AMOUNT === 0 ? `0` : filtersResult.inHistory,
+    count: isCount(filtersResult.inHistory),
     isActive: false
   },
   {
     name: `Favorites`,
-    count: CARD_AMOUNT === 0 ? `0` : filtersResult.inFavorites,
+    count: isCount(filtersResult.inFavorites),
     isActive: false
   }
 ];

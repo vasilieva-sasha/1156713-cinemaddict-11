@@ -1,4 +1,4 @@
-import {getRandomElement, getRandomDate, getCommentDate} from "../../tools/utils";
+import {getRandomElement, getRandomDate, getCommentDate} from "../../tools/utils/utils";
 import {COMMENTS, EMOJIS, COMMENTS_COUNT, FIRST_COMMENT_DATE} from "../consts/consts";
 import {NAMES} from "./../../consts/consts";
 

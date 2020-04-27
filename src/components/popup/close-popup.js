@@ -1,22 +1,8 @@
-import {onEscDown} from "../../tools/utils";
+import {remove} from "../../tools/utils/render";
 
-const closePopup = (popupElement) => {
-  const popup = popupElement.getElement();
-  const closeButton = popup.querySelector(`.film-details__close-btn`);
-  document.addEventListener(`keydown`, (evt) => {
-    onEscDown(evt, () => {
-      onPopupClose(popup);
-    });
-  });
-
-  closeButton.addEventListener(`click`, () => {
-    onPopupClose(popup);
-  });
-};
 
 const onPopupClose = (popup) => {
-  popup.remove();
-  document.removeEventListener(`keydown`, onEscDown);
+  remove(popup);
 };
 
-export {closePopup};
+export {onPopupClose};
