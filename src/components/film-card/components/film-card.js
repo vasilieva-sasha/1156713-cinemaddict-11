@@ -2,14 +2,14 @@ import {getRightWordComments} from "./../../../mock/comments/comment";
 import {hideText} from "./../../../tools/utils/utils";
 
 const createCardTemplate = (card) => {
-  const {title, poster, filmAge, ageRate, genres, description, comments} = card;
+  const {title, poster, rate, year, genres, description, comments} = card;
 
   return (
     `<article class="film-card">
       <h3 class="film-card__title">${title.title}</h3>
-      <p class="film-card__rating">${ageRate}</p>
+      <p class="film-card__rating">${rate}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${filmAge}</span>
+        <span class="film-card__year">${year}</span>
         <span class="film-card__duration">1h 55m</span>
         <span class="film-card__genre">${genres.slice(0, 1)}</span>
       </p>

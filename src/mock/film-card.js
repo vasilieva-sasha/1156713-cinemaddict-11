@@ -10,7 +10,8 @@ const generateFilmCard = () => ({
   title: getRandomElement(TITLES),
   poster: getRandomElement(POSTERS),
   filmAge: getRandomElement(AGE_RATES),
-  ageRate: (Math.random() * 10).toFixed(1),
+  rate: (Math.random() * 10).toFixed(1),
+  year: getRandomDate(new Date([...FIRST_RELEASE_DATE]), new Date()).getFullYear(),
   details: [
     {
       name: `Director`,

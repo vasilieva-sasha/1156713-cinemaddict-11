@@ -17,10 +17,8 @@ const renderCard = (container, card) => {
   });
 };
 
-const renderCards = (array, start, amount, container) => {
-  for (let i = start; i < amount; i++) {
-    renderCard(container, array[i]);
-  }
+const renderCards = (films, container) => {
+  films.forEach((film) => renderCard(container, film));
 };
 
 export {filmCardsList, renderCards};

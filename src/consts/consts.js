@@ -5,7 +5,8 @@ export const CARD_AMOUNT = 24;
 export const Position = {
   BEFOREEND: `beforeend`,
   AFTEREND: `afterend`,
-  AFTERBEGIN: `afterbegin`
+  AFTERBEGIN: `afterbegin`,
+  BEFOREBEGIN: `beforebegin`,
 };
 
 export const NAMES = [
@@ -53,3 +54,9 @@ export const MONTH_NAMES = [
 ];
 
 export const WEEK = 7;
+
+export const SortType = {
+  DATE: `date`,
+  RATE: `rate`,
+  DEFAULT: `default`,
+};

@@ -11,6 +11,9 @@ export const render = (container, element, place) => {
     case Position.AFTEREND:
       container.after(element.getElement());
       break;
+    case Position.BEFOREBEGIN:
+      container.before(element.getElement());
+      break;
   }
 };
 
