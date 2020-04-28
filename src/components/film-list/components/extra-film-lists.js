@@ -10,7 +10,7 @@ const createExtraFilmsContainer = (heading) => {
 };
 
 const topRatedList = [...filmCardsList].slice().sort((first, second) => {
-  return second.ageRate - first.ageRate;
+  return second.rate - first.rate;
 });
 
 const mostComentedList = [...filmCardsList].slice().sort((first, second) => {
