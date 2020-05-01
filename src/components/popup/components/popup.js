@@ -31,7 +31,7 @@ const createPopupTemplate = (card) => {
             </div>
           </div>
 
-          ${createPopupControlMurkup()}
+          ${createPopupControlMurkup(card)}
         </div>
 
         <div class="form-details__bottom-container">

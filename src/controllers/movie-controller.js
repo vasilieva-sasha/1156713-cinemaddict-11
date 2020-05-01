@@ -1,5 +1,5 @@
 import {Position} from "../consts/consts";
-import {render, remove} from "../tools/utils/render";
+import {render, remove, replace} from "../tools/utils/render";
 import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
 
@@ -15,9 +15,18 @@ export default class MovieController {
   }
 
   render(card) {
+    const oldFilmCardComponent = this._filmCardComponent;
+    const oldPopupComponent = this._popupComponent;
+
     this._filmCardComponent = new FilmCard(card);
     this._popupComponent = new Popup(card);
-    render(this._container, this._filmCardComponent, Position.BEFOREEND);
+
+    if (oldFilmCardComponent && oldPopupComponent) {
+      replace(this._filmCardComponent, oldFilmCardComponent);
+      replace(this._popupComponent, oldPopupComponent);
+    } else {
+      render(this._container, this._filmCardComponent, Position.BEFOREEND);
+    }
 
     this._filmCardComponent.setClickHandler(() => {
       this._onCardClick(this._popupComponent);
@@ -29,6 +38,9 @@ export default class MovieController {
       }));
     });
 
+    this._popupComponent.setControlsChangeHandler(() => {
+      this._filmCardComponent.rerender();
+    });
   }
 
   _onCardClick() {
