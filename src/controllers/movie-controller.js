@@ -4,8 +4,9 @@ import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
 
 export default class MovieController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
 
     this._filmCardComponent = null;
     this._popupComponen = null;
@@ -20,6 +21,12 @@ export default class MovieController {
 
     this._filmCardComponent.setClickHandler(() => {
       this._onCardClick(this._popupComponent);
+    });
+
+    this._filmCardComponent.setControlsChangeHandler(() => {
+      this._onDataChange(this, card, Object.assign({}, card, {
+        controlType: !card.controlType,
+      }));
     });
 
   }

@@ -4,9 +4,9 @@ import MovieController from "../controllers/movie-controller";
 
 const filmCardsList = generateFilmCardsArray(CARD_AMOUNT);
 
-const renderCards = (films, container) => {
+const renderCards = (films, container, onDataChange) => {
   return films.map((film) => {
-    const movieController = new MovieController(container);
+    const movieController = new MovieController(container, onDataChange);
     movieController.render(film);
 
     return movieController;

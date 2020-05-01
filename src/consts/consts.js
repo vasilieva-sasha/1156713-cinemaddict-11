@@ -60,3 +60,9 @@ export const SortType = {
   RATE: `rate`,
   DEFAULT: `default`,
 };
+
+export const ControlType = {
+  WATCHLIST: `inWatchlist`,
+  HISTORY: `inHistory`,
+  FAVORITES: `inFavorites`,
+};
