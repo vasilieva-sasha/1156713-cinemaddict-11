@@ -3,10 +3,17 @@ import {render, remove, replace} from "../tools/utils/render";
 import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
 
+const Mode = {
+  DEFAULT: `default`,
+  OPEN: `open`,
+};
+
 export default class MovieController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
+    this._mode = Mode.DEFAULT;
 
     this._filmCardComponent = null;
     this._popupComponen = null;
@@ -41,9 +48,20 @@ export default class MovieController {
     this._popupComponent.setControlsChangeHandler(() => {
       this._filmCardComponent.rerender();
     });
+
+    this._popupComponent.setEmojiChangeHandler();
   }
 
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._onPopupClose();
+    }
+  }
+
+
   _onCardClick() {
+    this._onViewChange();
+    this._mode = Mode.OPEN;
     const footer = document.querySelector(`.footer`);
     render(footer, this._popupComponent, Position.AFTEREND);
 
@@ -56,6 +74,7 @@ export default class MovieController {
 
   _onPopupClose() {
     remove(this._popupComponent);
+    this._mode = Mode.DEFAULT;
   }
 
   _onEscKeyDown(evt) {
