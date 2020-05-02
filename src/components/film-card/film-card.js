@@ -1,15 +1,25 @@
 import {createCardTemplate} from "./components/film-card";
-import AbstractComponent from "../abstract-component";
+import AbstractSmartComponent from "../abstract-smart-component";
 
-export default class FilmCard extends AbstractComponent {
+export default class FilmCard extends AbstractSmartComponent {
   constructor(card) {
     super();
     this._card = card;
     this._element = null;
+
+    this._setControlsChangeHandler = null;
   }
 
   getTemplate() {
     return createCardTemplate(this._card);
+  }
+
+  recoveryListeners() {
+    this.setControlsChangeHandler(this._setControlsChangeHandler);
+  }
+
+  rerender() {
+    super.rerender();
   }
 
   setClickHandler(handler) {
@@ -19,5 +29,25 @@ export default class FilmCard extends AbstractComponent {
       .addEventListener(`click`, handler);
     this.getElement().querySelector(`.film-card__comments`)
       .addEventListener(`click`, handler);
+  }
+
+  setControlsChangeHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls`)
+      .addEventListener(`click`, (evt) => {
+        this._onControlChange(evt);
+        handler();
+      });
+    this._setControlsChangeHandler = handler;
+  }
+
+  _onControlChange(evt) {
+    evt.preventDefault();
+
+    if (evt.target.tagName !== `BUTTON`) {
+      return;
+    }
+    const controlType = evt.target.dataset.controlType;
+    this._card[controlType] = !this._card[controlType];
+    this.rerender();
   }
 }

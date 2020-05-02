@@ -1,8 +1,11 @@
 import {getRightWordComments} from "./../../../mock/comments/comment";
 import {hideText} from "./../../../tools/utils/utils";
+import {ControlType} from "../../../consts/consts";
+
+const isActive = (controlProperty) => controlProperty ? `film-card__controls-item--active` : ``;
 
 const createCardTemplate = (card) => {
-  const {title, poster, rate, year, genres, description, comments} = card;
+  const {title, poster, rate, year, genres, description, comments, inWatchlist, inHistory, inFavorites} = card;
 
   return (
     `<article class="film-card">
@@ -17,12 +20,12 @@ const createCardTemplate = (card) => {
       <p class="film-card__description">${hideText(description)}</p>
       <a class="film-card__comments">${comments.length} ${getRightWordComments(comments).toLowerCase()}</a>
       <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+        <button data-control-type="${ControlType.WATCHLIST}" class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isActive(inWatchlist)}">Add to watchlist</button>
+        <button data-control-type="${ControlType.HISTORY}" class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isActive(inHistory)}">Mark as watched</button>
+        <button data-control-type="${ControlType.FAVORITES}" class="film-card__controls-item button film-card__controls-item--favorite ${isActive(inFavorites)}">Mark as favorite</button>
       </form>
     </article>`
   );
 };
 
-export {createCardTemplate};
+export {createCardTemplate, isActive};
