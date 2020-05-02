@@ -18,6 +18,7 @@ export default class MovieController {
     this._filmCardComponent = null;
     this._popupComponen = null;
 
+
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
@@ -57,7 +58,6 @@ export default class MovieController {
       this._onPopupClose();
     }
   }
-
 
   _onCardClick() {
     this._onViewChange();

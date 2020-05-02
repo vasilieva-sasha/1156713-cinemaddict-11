@@ -34,18 +34,20 @@ export default class FilmCard extends AbstractSmartComponent {
   setControlsChangeHandler(handler) {
     this.getElement().querySelector(`.film-card__controls`)
       .addEventListener(`click`, (evt) => {
-        evt.preventDefault();
-
-        if (evt.target.tagName !== `BUTTON`) {
-          return;
-        }
-
-        const controlType = evt.target.dataset.controlType;
-        this._card[controlType] = !this._card[controlType];
-        this.rerender();
-
+        this._onControlChange(evt);
         handler();
       });
     this._setControlsChangeHandler = handler;
+  }
+
+  _onControlChange(evt) {
+    evt.preventDefault();
+
+    if (evt.target.tagName !== `BUTTON`) {
+      return;
+    }
+    const controlType = evt.target.dataset.controlType;
+    this._card[controlType] = !this._card[controlType];
+    this.rerender();
   }
 }
