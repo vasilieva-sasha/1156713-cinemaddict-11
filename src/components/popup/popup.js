@@ -10,9 +10,9 @@ export default class Popup extends AbstractSmartComponent {
 
     this._isEmoji = false;
 
-    this._setPopupClose = null;
-    this._setControlsChangeHandler = null;
-    this._setEmojiChangeHandler = null;
+    this._popupClose = null;
+    this._controlsChangeHandler = null;
+    // this._setEmojiChangeHandler = null;
   }
 
   getTemplate() {
@@ -20,8 +20,8 @@ export default class Popup extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setPopupClose(this._setPopupClose);
-    this.setControlsChangeHandler(this._setControlsChangeHandler);
+    this.setPopupClose(this._popupClose);
+    this.setControlsChangeHandler(this._controlsChangeHandler);
     this.setEmojiChangeHandler();
   }
 
@@ -32,16 +32,17 @@ export default class Popup extends AbstractSmartComponent {
   setPopupClose(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
-    this._setPopupClose = handler;
+    this._popupClose = handler;
   }
 
   setControlsChangeHandler(handler) {
     this.getElement().querySelector(`.film-details__controls`)
       .addEventListener(`click`, (evt) => {
-        this._onControlChange(evt);
-        handler();
+        this._onControlChange.bind(this);
+        const controlType = evt.target.dataset.controlType;
+        handler(controlType);
       });
-    this._setControlsChangeHandler = handler;
+    this._controlsChangeHandler = handler;
   }
 
   setEmojiChangeHandler() {
@@ -59,10 +60,6 @@ export default class Popup extends AbstractSmartComponent {
     if (evt.target.tagName !== `LABEL`) {
       return;
     }
-
-    const controlType = evt.target.dataset.controlType;
-    this._card[controlType] = !this._card[controlType];
-
     this.rerender();
   }
 
@@ -76,12 +73,12 @@ export default class Popup extends AbstractSmartComponent {
     emojiImage.setAttribute(`height`, EMOJI_SIZE);
     emojiImage.setAttribute(`width`, EMOJI_SIZE);
 
-    if (!this._isEmoji) {
-      emojiContainer.append(emojiImage);
+    if (this._isEmoji === false) {
+      emojiContainer.appendChild(emojiImage);
       this._isEmoji = true;
     } else {
-      emojiContainer.querySelector(`img`).remove();
-      emojiContainer.append(emojiImage);
+      emojiContainer.removeChild(emojiContainer.querySelector(`img`));
+      emojiContainer.appendChild(emojiImage);
     }
   }
 }

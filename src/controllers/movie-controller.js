@@ -16,8 +16,7 @@ export default class MovieController {
     this._mode = Mode.DEFAULT;
 
     this._filmCardComponent = null;
-    this._popupComponen = null;
-
+    this._popupComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
@@ -37,20 +36,20 @@ export default class MovieController {
     }
 
     this._filmCardComponent.setClickHandler(() => {
-      this._onCardClick(this._popupComponent);
+      this._onCardClick(card);
     });
 
-    this._filmCardComponent.setControlsChangeHandler(() => {
+    this._setPopupListeners(card);
+
+
+    this._filmCardComponent.setControlsChangeHandler((controlType) => {
       this._onDataChange(this, card, Object.assign({}, card, {
-        controlType: !card.controlType,
+        [controlType]: !card[controlType],
       }));
+      this._mode = Mode.DEFAULT;
     });
 
-    this._popupComponent.setControlsChangeHandler(() => {
-      this._filmCardComponent.rerender();
-    });
 
-    this._popupComponent.setEmojiChangeHandler();
   }
 
   setDefaultView() {
@@ -59,21 +58,34 @@ export default class MovieController {
     }
   }
 
-  _onCardClick() {
+  _setPopupListeners(card) {
+    this._onPopupClose = this._onPopupClose.bind(this);
+    this._popupComponent.setPopupClose(this._onPopupClose);
+
+    this._popupComponent.setControlsChangeHandler((controlType) => {
+      this._onDataChange(this, card, Object.assign({}, card, {
+        [controlType]: !card[controlType],
+      }));
+
+      this._mode = Mode.OPEN;
+    });
+
+    this._popupComponent.setEmojiChangeHandler();
+  }
+
+  _onCardClick(card) {
     this._onViewChange();
     this._mode = Mode.OPEN;
     const footer = document.querySelector(`.footer`);
     render(footer, this._popupComponent, Position.AFTEREND);
 
-    this._popupComponent.setPopupClose(() => {
-      this._onPopupClose();
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
-    });
+    this._setPopupListeners(card);
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _onPopupClose() {
     remove(this._popupComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._mode = Mode.DEFAULT;
   }
 
