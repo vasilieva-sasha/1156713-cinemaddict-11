@@ -48,14 +48,18 @@ export default class MovieController {
       }));
       this._mode = Mode.DEFAULT;
     });
-
-
   }
 
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
       this._onPopupClose();
     }
+  }
+
+  destroy() {
+    remove(this._filmCardComponent);
+    remove(this._popupComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _setPopupListeners(card) {
@@ -66,8 +70,6 @@ export default class MovieController {
       this._onDataChange(this, card, Object.assign({}, card, {
         [controlType]: !card[controlType],
       }));
-
-      this._mode = Mode.OPEN;
     });
 
     this._popupComponent.setEmojiChangeHandler();
@@ -76,6 +78,7 @@ export default class MovieController {
   _onCardClick(card) {
     this._onViewChange();
     this._mode = Mode.OPEN;
+
     const footer = document.querySelector(`.footer`);
     render(footer, this._popupComponent, Position.AFTEREND);
 

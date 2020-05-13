@@ -12,7 +12,7 @@ export default class Popup extends AbstractSmartComponent {
 
     this._popupClose = null;
     this._controlsChangeHandler = null;
-    // this._setEmojiChangeHandler = null;
+    this._onEmojiChange = this._onEmojiChange.bind(this);
   }
 
   getTemplate() {
@@ -25,13 +25,10 @@ export default class Popup extends AbstractSmartComponent {
     this.setEmojiChangeHandler();
   }
 
-  rerender() {
-    super.rerender();
-  }
-
   setPopupClose(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
+    this._isEmoji = false;
     this._popupClose = handler;
   }
 
@@ -60,7 +57,6 @@ export default class Popup extends AbstractSmartComponent {
     if (evt.target.tagName !== `LABEL`) {
       return;
     }
-    this.rerender();
   }
 
   _onEmojiChange(label) {

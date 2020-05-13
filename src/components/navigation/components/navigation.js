@@ -1,10 +1,10 @@
-import {filters} from "./../../../mock/filters";
+// import {filters} from "./../../../mock/filters";
 
-const createSiteNavigationTemplate = () => {
+const createSiteNavigationTemplate = (filters) => {
   return (
     `<nav class="main-navigation">
       <div class="main-navigation__items">
-        ${createNavigationMarkup()}
+        ${createNavigationMarkup(filters)}
       </div>
       <a href="#stats" class="main-navigation__additional">Stats</a>
     </nav>`
@@ -16,12 +16,32 @@ const showAmount = (filter) => filter.name === `All movies` ? `` : `<span class=
 
 const createNavigationItemMarkup = (filter) => {
   return (
-    `<a href="#all" class="main-navigation__item ${getActiveClass(filter)}">${filter.name}${showAmount(filter)}</a>`
+    `<a href="#${filter.link}" data-filter-type="${filter.link}" class="main-navigation__item ${getActiveClass(filter)}">${filter.name}${showAmount(filter)}</a>`
   );
 };
 
-const createNavigationMarkup = () => {
+const createNavigationMarkup = (filters) => {
   return filters.map(createNavigationItemMarkup).join(`\n`);
 };
 
-export {createSiteNavigationTemplate};
+let filteredFilms = [];
+
+const getFilteredFilms = {
+  'all': (cards) => {
+    return cards;
+  },
+  'watchlist': (cards) => {
+    filteredFilms = cards.slice().filter((card) => card.inWatchlist);
+    return filteredFilms;
+  },
+  'history': (cards) => {
+    filteredFilms = cards.slice().filter((card) => card.inHistory);
+    return filteredFilms;
+  },
+  'favorites': (cards) => {
+    filteredFilms = cards.slice().filter((card) => card.inFavorites);
+    return filteredFilms;
+  }
+};
+
+export {createSiteNavigationTemplate, getFilteredFilms};

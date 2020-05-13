@@ -48,7 +48,6 @@ export default class FilmCard extends AbstractSmartComponent {
       return;
     }
 
-    // this._card[controlType] = !this._card[controlType];
     this.rerender();
   }
 }
