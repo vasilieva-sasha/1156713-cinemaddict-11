@@ -1,8 +1,7 @@
-import {FilterType, Position, SHOW_CARD_AMOUNT} from "../consts/consts";
+import {FilterType, Position} from "../consts/consts";
 import {replace, render} from "../tools/utils/render";
 import Navigation from "../components/navigation/navigation";
 import {getFilteredFilms} from "../components/navigation/components/navigation";
-import {renderCards} from "../tools/render-cards";
 import FilmList from "../components/film-list/film-list";
 
 export default class FilterController {
@@ -51,25 +50,8 @@ export default class FilterController {
     this._activeFilterType = filterType;
 
     this._filmsModel.setFilter(filterType);
-
     console.log(this._activeFilterType);
   }
-
-  // _onFilterChange(filterName) {
-  //   this._showingFilmsCount = SHOW_CARD_AMOUNT;
-  //   this._activeFilterType = filterName;
-  //   this._filmListComponent = new FilmList();
-
-  //   const filteredFilms = getFilteredFilms[this._activeFilterType](this._filmsModel.getFilms(), 0, this._showingFilmsCount);
-  //   const filmListContainer = this._filmListComponent.getElement().querySelector(`.films-list__container`);
-
-  //   filmListContainer.innerHTML = ``;
-
-  //   const newFilms = renderCards(filteredFilms, filmListContainer, this._onDataChange, this._onViewChange);
-  //   this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
-
-  //   // this.renderButtonShow();
-  // }
 
   _onDataChange() {
     this.render();
