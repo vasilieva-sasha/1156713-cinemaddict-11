@@ -59,7 +59,6 @@ export default class PageController {
     this._renderCards(films.slice(0, this._showingFilmsCount), this._filmListContainer);
 
     this.renderButtonShow();
-
   }
 
   renderExtraFilmLists(container, films) {
@@ -138,8 +137,6 @@ export default class PageController {
     if (this._showingFilmsCount >= this._filmsModel.getFilms().length) {
       remove(this._buttonShowComponent);
     }
-    console.log(this._showingFilmsCount);
-    console.log(this._showedFilmControllers);
   }
 
   _onSortTypeChange(sortType) {
@@ -155,10 +152,34 @@ export default class PageController {
   }
 
   _onFilterChange() {
+    if (this._filmsModel.getFilms().length === 0) {
+      this._removeCards();
+      remove(this._buttonShowComponent);
+      render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
+      return;
+    }
+    remove(this._noFilmComponent);
     this._updateCards(SHOW_CARD_AMOUNT);
-    this._sortComponent.getElement().querySelector(`.sort__button--active`).classList.remove(`sort__button--active`);
 
+    this._sortComponent.getElement().querySelector(`.sort__button--active`).classList.remove(`sort__button--active`);
     this._sortComponent.getElement().querySelector(`[data-sort-type="default"]`).classList.add(`sort__button--active`);
+    this._onControlChange();
+  }
+
+  _onControlChange() {
+    this._filmListComponent.getElement().querySelector(`.films-list__container`)
+    .addEventListener(`click`, (evt) => {
+      if (evt.target.tagName !== `BUTTON`) {
+        return;
+      }
+      this._updateCards(SHOW_CARD_AMOUNT);
+      if (this._filmsModel.getFilms().length === 0) {
+        this._removeCards();
+        remove(this._buttonShowComponent);
+        render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
+        return;
+      }
+    });
   }
 
   _onDataChange(movieController, oldData, newData) {

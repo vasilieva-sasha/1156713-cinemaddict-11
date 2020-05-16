@@ -41,13 +41,7 @@ export default class MovieController {
 
     this._setPopupListeners(card);
 
-
-    this._filmCardComponent.setControlsChangeHandler((controlType) => {
-      this._onDataChange(this, card, Object.assign({}, card, {
-        [controlType]: !card[controlType],
-      }));
-      this._mode = Mode.DEFAULT;
-    });
+    this._setControlsListeners(card);
   }
 
   setDefaultView() {
@@ -60,6 +54,15 @@ export default class MovieController {
     remove(this._filmCardComponent);
     remove(this._popupComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
+  _setControlsListeners(card) {
+    this._filmCardComponent.setControlsChangeHandler((controlType) => {
+      this._onDataChange(this, card, Object.assign({}, card, {
+        [controlType]: !card[controlType],
+      }));
+      this._mode = Mode.DEFAULT;
+    });
   }
 
   _setPopupListeners(card) {
