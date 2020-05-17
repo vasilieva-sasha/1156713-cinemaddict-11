@@ -1,18 +1,26 @@
 import {createPopupTemplate} from "./components/popup";
 import AbstractSmartComponent from "../abstract-smart-component";
-import {EMOJI_SIZE} from "../../consts/consts";
+import {EMOJI_SIZE, NAMES} from "../../consts/consts";
+import Comment from "./comments";
+import {getCommentDate, getRandomElement} from "../../tools/utils/utils";
 
 export default class Popup extends AbstractSmartComponent {
   constructor(card) {
     super();
     this._card = card;
-    this._element = null;
+    this._newComment = null;
+    this.newComments = null;
 
     this._isEmoji = false;
+    this._emoji = null;
+    this._emojiContainer = null;
+    this._emojiRadio = null;
 
     this._popupClose = null;
-    this._controlsChangeHandler = null;
+    this._onControlsChange = null;
+    this._onControlChange = this._onControlChange.bind(this);
     this._onEmojiChange = this._onEmojiChange.bind(this);
+    this._onCommentChange = this._onCommentChange.bind(this);
   }
 
   getTemplate() {
@@ -21,7 +29,7 @@ export default class Popup extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.setPopupClose(this._popupClose);
-    this.setControlsChangeHandler(this._controlsChangeHandler);
+    this.setControlsChangeHandler(this._onControlsChange);
     this.setEmojiChangeHandler();
   }
 
@@ -29,17 +37,18 @@ export default class Popup extends AbstractSmartComponent {
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
     this._isEmoji = false;
+
     this._popupClose = handler;
   }
 
   setControlsChangeHandler(handler) {
     this.getElement().querySelector(`.film-details__controls`)
       .addEventListener(`click`, (evt) => {
-        this._onControlChange.bind(this);
         const controlType = evt.target.dataset.controlType;
         handler(controlType);
       });
-    this._controlsChangeHandler = handler;
+
+    this._onControlsChange = handler;
   }
 
   setEmojiChangeHandler() {
@@ -51,6 +60,22 @@ export default class Popup extends AbstractSmartComponent {
       });
   }
 
+  addComment(handler) {
+    const commentList = this.getElement().querySelector(`.film-details__comments-list`);
+    const newCommentObject = {
+      text: this._onCommentChange(),
+      name: getRandomElement(NAMES),
+      date: getCommentDate(new Date()),
+      emoji: this._emoji,
+    };
+    this.newComments = this._card.comments.concat(newCommentObject);
+
+    this._newComment = new Comment(newCommentObject).getElement();
+    commentList.append(this._newComment);
+    this._clearInput();
+    handler();
+  }
+
   _onControlChange(evt) {
     evt.preventDefault();
 
@@ -60,21 +85,38 @@ export default class Popup extends AbstractSmartComponent {
   }
 
   _onEmojiChange(label) {
-    const emojiContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    this._emojiContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
 
     const labelId = label.getAttribute(`for`);
 
-    this.getElement().querySelector(`input[id="${labelId}"]`).setAttribute(`checked`, `checked`);
+    this._emojiRadio = this.getElement().querySelector(`input[id="${labelId}"]`);
+    this._emojiRadio.setAttribute(`checked`, `checked`);
+
+    this._emoji = this.getElement().querySelector(`input[id="${labelId}"]`).getAttribute(`value`);
+
     const emojiImage = label.querySelector(`img`).cloneNode(true);
     emojiImage.setAttribute(`height`, EMOJI_SIZE);
     emojiImage.setAttribute(`width`, EMOJI_SIZE);
 
     if (this._isEmoji === false) {
-      emojiContainer.appendChild(emojiImage);
+      this._emojiContainer.appendChild(emojiImage);
       this._isEmoji = true;
     } else {
-      emojiContainer.removeChild(emojiContainer.querySelector(`img`));
-      emojiContainer.appendChild(emojiImage);
+      this._emojiContainer.removeChild(this._emojiContainer.querySelector(`img`));
+      this._emojiContainer.appendChild(emojiImage);
     }
+  }
+
+  _onCommentChange() {
+    const commentText = this.getElement().querySelector(`.film-details__comment-input`).value;
+    return commentText;
+  }
+
+  // наверное убрать
+  _clearInput() {
+    this._emojiContainer.removeChild(this._emojiContainer.querySelector(`img`));
+    this._emojiRadio.removeAttribute(`checked`);
+    this.getElement().querySelector(`.film-details__comment-input`).value = ``;
+    this._isEmoji = false;
   }
 }

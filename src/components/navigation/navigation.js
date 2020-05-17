@@ -13,8 +13,15 @@ export default class Navigation extends AbstractComponent {
 
   setFilterChangeHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
-      const filterName = evt.target.dataset.filterType;
 
+      if (evt.target.tagName !== `A`) {
+        return;
+      }
+
+      const filterName = evt.target.dataset.filterType;
+      this.getElement().querySelector(`.main-navigation__item--active`)
+        .classList.remove(`main-navigation__item--active`);
+      evt.target.classList.add(`main-navigation__item--active`);
       handler(filterName);
     });
   }

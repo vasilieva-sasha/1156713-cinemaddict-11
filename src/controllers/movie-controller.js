@@ -19,14 +19,16 @@ export default class MovieController {
     this._popupComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+    this._onCtrlEnterEvent = this._onCtrlEnterEvent.bind(this);
   }
 
   render(card) {
+    this._card = card;
     const oldFilmCardComponent = this._filmCardComponent;
     const oldPopupComponent = this._popupComponent;
 
-    this._filmCardComponent = new FilmCard(card);
-    this._popupComponent = new Popup(card);
+    this._filmCardComponent = new FilmCard(this._card);
+    this._popupComponent = new Popup(this._card);
 
     if (oldFilmCardComponent && oldPopupComponent) {
       replace(this._filmCardComponent, oldFilmCardComponent);
@@ -36,12 +38,12 @@ export default class MovieController {
     }
 
     this._filmCardComponent.setClickHandler(() => {
-      this._onCardClick(card);
+      this._onCardClick(this._card);
     });
 
-    this._setPopupListeners(card);
+    this._setPopupListeners(this._card);
 
-    this._setControlsListeners(card);
+    this._setControlsListeners(this._card);
   }
 
   setDefaultView() {
@@ -67,6 +69,7 @@ export default class MovieController {
 
   _setPopupListeners(card) {
     this._onPopupClose = this._onPopupClose.bind(this);
+    // this._addComment = this._addComment.bind(this);
     this._popupComponent.setPopupClose(this._onPopupClose);
 
     this._popupComponent.setControlsChangeHandler((controlType) => {
@@ -87,6 +90,7 @@ export default class MovieController {
 
     this._setPopupListeners(card);
     document.addEventListener(`keydown`, this._onEscKeyDown);
+    document.addEventListener(`keyup`, this._onCtrlEnterEvent);
   }
 
   _onPopupClose() {
@@ -95,6 +99,9 @@ export default class MovieController {
     this._mode = Mode.DEFAULT;
   }
 
+  // функция добавл комм
+
+
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
@@ -102,5 +109,18 @@ export default class MovieController {
       this._onPopupClose();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
+  }
+
+  _onCtrlEnterEvent(evt) {
+    const enterKey = evt.key === `Enter`;
+
+    if (evt.ctrlKey && enterKey) {
+      this._popupComponent.addComment(() => {
+        this._onDataChange(this, this._card, Object.assign({}, this._card, {
+          comments: this._popupComponent.newComments,
+        }));
+      });
+    }
+
   }
 }

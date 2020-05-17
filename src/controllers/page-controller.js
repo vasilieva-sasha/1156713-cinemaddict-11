@@ -104,6 +104,9 @@ export default class PageController {
   _removeCards() {
     this._showedFilmControllers.forEach((filmController) => filmController.destroy());
     this._showedFilmControllers = [];
+
+    // this._showedExtraFilmControllers.forEach((filmController) => filmController.destroy());
+    // this._showedExtraFilmControllers = [];
   }
 
   _renderCards(films, container) {
@@ -111,18 +114,20 @@ export default class PageController {
 
     this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
     this._showingFilmsCount = this._showedFilmControllers.length;
+    console.log(this._filmsModel.getFilms());
   }
 
   _renderExtraCards(films, container) {
     const newFilms = renderCards(films, container, this._onDataChange, this._onViewChange);
 
     this._showedExtraFilmControllers = this._showedExtraFilmControllers.concat(newFilms);
+    console.log(this._showedExtraFilmControllers);
   }
 
   _updateCards(count) {
     this._removeCards();
     this._renderCards(this._filmsModel.getFilms().slice(0, count), this._filmListContainer);
-    this.renderExtraFilmLists(this._container.getElement(), this._filmsModel.getAllFilms());
+    // this.renderExtraFilmLists(this._container.getElement(), this._filmsModel.getAllFilms());
     this.renderButtonShow();
   }
 
@@ -161,18 +166,20 @@ export default class PageController {
     remove(this._noFilmComponent);
     this._updateCards(SHOW_CARD_AMOUNT);
 
-    this._sortComponent.getElement().querySelector(`.sort__button--active`).classList.remove(`sort__button--active`);
-    this._sortComponent.getElement().querySelector(`[data-sort-type="default"]`).classList.add(`sort__button--active`);
-    this._onControlChange();
+    this._sortComponent.rerender();
+
+    this._onCardControlChange();
+    // this._onPopupControlChange();
   }
 
-  _onControlChange() {
+  _onCardControlChange() {
     this._filmListComponent.getElement().querySelector(`.films-list__container`)
     .addEventListener(`click`, (evt) => {
       if (evt.target.tagName !== `BUTTON`) {
         return;
       }
       this._updateCards(SHOW_CARD_AMOUNT);
+
       if (this._filmsModel.getFilms().length === 0) {
         this._removeCards();
         remove(this._buttonShowComponent);
@@ -181,6 +188,22 @@ export default class PageController {
       }
     });
   }
+
+  // _onPopupControlChange() {
+  //   document.querySelector(`.film-details__controls`)
+  //   .addEventListener(`click`, (evt) => {
+  //     if (evt.target.tagName !== `LABEL`) {
+  //       return;
+  //     }
+  //     this._updateCards(SHOW_CARD_AMOUNT);
+  //     if (this._filmsModel.getFilms().length === 0) {
+  //       this._removeCards();
+  //       remove(this._buttonShowComponent);
+  //       render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
+  //       return;
+  //     }
+  //   });
+  // }
 
   _onDataChange(movieController, oldData, newData) {
     const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
