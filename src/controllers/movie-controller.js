@@ -38,7 +38,7 @@ export default class MovieController {
     }
 
     this._filmCardComponent.setClickHandler(() => {
-      this._onCardClick(this._card);
+      this._onCardClick();
     });
 
     this._setPopupListeners(this._card);
@@ -69,7 +69,7 @@ export default class MovieController {
 
   _setPopupListeners(card) {
     this._onPopupClose = this._onPopupClose.bind(this);
-    // this._addComment = this._addComment.bind(this);
+
     this._popupComponent.setPopupClose(this._onPopupClose);
 
     this._popupComponent.setControlsChangeHandler((controlType) => {
@@ -79,16 +79,23 @@ export default class MovieController {
     });
 
     this._popupComponent.setEmojiChangeHandler();
+
+    this._popupComponent.setOnCommentDelete(() => {
+      this._onDataChange(this, card, Object.assign({}, card, {
+        comments: this._popupComponent.newComments,
+      }));
+      console.log(card.comments);
+      console.log(this._popupComponent.newComments);
+    });
   }
 
-  _onCardClick(card) {
+  _onCardClick() {
     this._onViewChange();
     this._mode = Mode.OPEN;
 
     const footer = document.querySelector(`.footer`);
     render(footer, this._popupComponent, Position.AFTEREND);
 
-    this._setPopupListeners(card);
     document.addEventListener(`keydown`, this._onEscKeyDown);
     document.addEventListener(`keyup`, this._onCtrlEnterEvent);
   }
@@ -99,8 +106,7 @@ export default class MovieController {
     this._mode = Mode.DEFAULT;
   }
 
-  // функция добавл комм
-
+  // функция удал комм
 
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;

@@ -9,7 +9,7 @@ export default class Popup extends AbstractSmartComponent {
     super();
     this._card = card;
     this._newComment = null;
-    this.newComments = null;
+    this.newComments = this._card.comments;
 
     this._isEmoji = false;
     this._emoji = null;
@@ -18,7 +18,9 @@ export default class Popup extends AbstractSmartComponent {
 
     this._popupClose = null;
     this._onControlsChange = null;
-    this._onControlChange = this._onControlChange.bind(this);
+    this._commentDelete = null;
+    // this._onControlChange = this._onControlChange.bind(this);
+    this._onCommentDelete = this._onCommentDelete.bind(this);
     this._onEmojiChange = this._onEmojiChange.bind(this);
     this._onCommentChange = this._onCommentChange.bind(this);
   }
@@ -31,6 +33,7 @@ export default class Popup extends AbstractSmartComponent {
     this.setPopupClose(this._popupClose);
     this.setControlsChangeHandler(this._onControlsChange);
     this.setEmojiChangeHandler();
+    this.setOnCommentDelete(this._commentDelete);
   }
 
   setPopupClose(handler) {
@@ -60,6 +63,17 @@ export default class Popup extends AbstractSmartComponent {
       });
   }
 
+  setOnCommentDelete(handler) {
+    this.getElement().querySelectorAll(`.film-details__comment-delete`)
+      .forEach((button) => {
+        button.addEventListener(`click`, (evt) => {
+          this._onCommentDelete(evt);
+          handler();
+        });
+        this._commentDelete = handler;
+      });
+  }
+
   addComment(handler) {
     const commentList = this.getElement().querySelector(`.film-details__comments-list`);
     const newCommentObject = {
@@ -68,21 +82,23 @@ export default class Popup extends AbstractSmartComponent {
       date: getCommentDate(new Date()),
       emoji: this._emoji,
     };
-    this.newComments = this._card.comments.concat(newCommentObject);
+    this.newComments = this.newComments.concat(newCommentObject);
 
-    this._newComment = new Comment(newCommentObject).getElement();
-    commentList.append(this._newComment);
-    this._clearInput();
+    this._newComment = new Comment(newCommentObject);
+    this._newCommentElement = this._newComment.getElement();
+    commentList.append(this._newCommentElement);
+
+    // this._clearInput();
     handler();
   }
 
-  _onControlChange(evt) {
-    evt.preventDefault();
+  // _onControlChange(evt) {
+  //   evt.preventDefault();
 
-    if (evt.target.tagName !== `LABEL`) {
-      return;
-    }
-  }
+  //   if (evt.target.tagName !== `LABEL`) {
+  //     return;
+  //   }
+  // }
 
   _onEmojiChange(label) {
     this._emojiContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
@@ -118,5 +134,18 @@ export default class Popup extends AbstractSmartComponent {
     this._emojiRadio.removeAttribute(`checked`);
     this.getElement().querySelector(`.film-details__comment-input`).value = ``;
     this._isEmoji = false;
+  }
+
+  _onCommentDelete(evt) {
+    evt.preventDefault();
+
+    const comment = evt.target.closest(`.film-details__comment`);
+    const CommentId = evt.target.dataset.id;
+
+    const deletedComment = this.newComments.includes(CommentId);
+
+    this.newComments.splice([deletedComment], 1);
+
+    comment.remove();
   }
 }

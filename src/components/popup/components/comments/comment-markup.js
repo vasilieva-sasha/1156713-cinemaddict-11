@@ -1,6 +1,6 @@
-const createCommentTemplate = ({text, name, date, emoji}) => {
+const createCommentTemplate = ({id, text, name, date, emoji}) => {
   return (
-    `<li class="film-details__comment">
+    `<li data-id="${id}" class="film-details__comment">
       <span class="film-details__comment-emoji">
         <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
       </span>
