@@ -1,19 +1,30 @@
-import AbstractComponent from "../abstract-component";
+import AbstractSmartComponent from "../abstract-smart-component";
 import {createSortingTemplate} from "./components/sort";
 import {SortType} from "../../consts/consts";
 
-export default class Sort extends AbstractComponent {
+export default class Sort extends AbstractSmartComponent {
   constructor() {
     super();
-    this._currenSortType = SortType.DEFAULT;
+    this._currentSortType = SortType.DEFAULT;
+
+    this._onSortTypeChange = null;
   }
 
   getTemplate() {
     return createSortingTemplate();
   }
 
+  recoveryListeners() {
+    this.setSortTypeChangeHandler(this._onSortTypeChange);
+  }
+
+  rerender() {
+    super.rerender();
+    this._currentSortType = SortType.DEFAULT;
+  }
+
   getSortType() {
-    return this._currenSortType;
+    return this._currentSortType;
   }
 
   setSortTypeChangeHandler(handler) {
@@ -26,7 +37,7 @@ export default class Sort extends AbstractComponent {
 
       const sortType = evt.target.dataset.sortType;
 
-      if (this._currenSortType === sortType) {
+      if (this._currentSortType === sortType) {
         return;
       }
 
@@ -34,9 +45,10 @@ export default class Sort extends AbstractComponent {
 
       evt.target.classList.add(`sort__button--active`);
 
-      this._currenSortType = sortType;
+      this._currentSortType = sortType;
 
-      handler(this._currenSortType);
+      handler(this._currentSortType);
+      this._onSortTypeChange = handler;
     });
   }
 }

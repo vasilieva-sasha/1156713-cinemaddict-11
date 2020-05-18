@@ -3,6 +3,7 @@ import {COMMENTS, EMOJIS, COMMENTS_COUNT, FIRST_COMMENT_DATE} from "../consts/co
 import {NAMES} from "./../../consts/consts";
 
 const generateFilmComment = () => ({
+  id: Math.floor(Math.random() * 898),
   text: getRandomElement(COMMENTS),
   name: getRandomElement(NAMES),
   date: getCommentDate(getRandomDate(new Date([...FIRST_COMMENT_DATE]), new Date())),

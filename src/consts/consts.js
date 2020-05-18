@@ -67,3 +67,10 @@ export const ControlType = {
   HISTORY: `inHistory`,
   FAVORITES: `inFavorites`,
 };
+
+export const FilterType = {
+  ALL: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`,
+};

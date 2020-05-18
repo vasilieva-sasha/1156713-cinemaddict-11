@@ -7,6 +7,7 @@ const getRandomHours = () => Math.floor(Math.random() * HOURS);
 const getRandomMinutes = () => Math.floor(Math.random() * MINUTES);
 
 const generateFilmCard = () => ({
+  id: String(new Date() + Math.random()),
   title: getRandomElement(TITLES),
   poster: getRandomElement(POSTERS),
   filmAge: getRandomElement(AGE_RATES),
