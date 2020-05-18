@@ -3,6 +3,7 @@ import AbstractSmartComponent from "../abstract-smart-component";
 import {EMOJI_SIZE, NAMES} from "../../consts/consts";
 import Comment from "./comments";
 import {getCommentDate, getRandomElement} from "../../tools/utils/utils";
+import {encode} from "he";
 
 export default class Popup extends AbstractSmartComponent {
   constructor(card) {
@@ -88,7 +89,7 @@ export default class Popup extends AbstractSmartComponent {
     this._newCommentElement = this._newComment.getElement();
     commentList.append(this._newCommentElement);
 
-    // this._clearInput();
+    this._clearInput();
     handler();
   }
 
@@ -124,7 +125,7 @@ export default class Popup extends AbstractSmartComponent {
   }
 
   _onCommentChange() {
-    const commentText = this.getElement().querySelector(`.film-details__comment-input`).value;
+    const commentText = encode(this.getElement().querySelector(`.film-details__comment-input`).value);
     return commentText;
   }
 
