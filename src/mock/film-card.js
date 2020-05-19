@@ -1,6 +1,6 @@
-import {NAMES, COUNTRIES, GENRES, MONTH_NAMES} from "./../consts/consts";
+import {NAMES, COUNTRIES, GENRES, MONTH_NAMES, FormatDate} from "./../consts/consts";
 import {FIRST_RELEASE_DATE, TITLES, POSTERS, DESCRIPTIONS, AGE_RATES, HOURS, MINUTES} from "./consts/consts";
-import {getRandomElement, getRandomArray, getRandomDate, shuffle, getBoolean} from "./../tools/utils/utils";
+import {getRandomElement, getRandomArray, getRandomDate, shuffle, getBoolean, formatDate} from "./../tools/utils/utils";
 import {renderFilmCommentsArray} from "./comments/comment";
 
 const getRandomHours = () => Math.floor(Math.random() * HOURS);
@@ -12,7 +12,7 @@ const generateFilmCard = () => ({
   poster: getRandomElement(POSTERS),
   filmAge: getRandomElement(AGE_RATES),
   rate: (Math.random() * 10).toFixed(1),
-  year: getRandomDate(new Date([...FIRST_RELEASE_DATE]), new Date()).getFullYear(),
+  year: formatDate(getRandomDate(new Date([...FIRST_RELEASE_DATE]), new Date()), FormatDate.RELEASE_YEAR),
   details: [
     {
       name: `Director`,
@@ -25,12 +25,10 @@ const generateFilmCard = () => ({
       info: getRandomArray(shuffle(NAMES))
     }, {
       name: `Release Date`,
-      info: `${getRandomDate(new Date([...FIRST_RELEASE_DATE]), new Date()).getDate()}
-      ${MONTH_NAMES[getRandomDate(new Date([...FIRST_RELEASE_DATE]), new Date()).getMonth()]}
-      ${getRandomDate(new Date([...FIRST_RELEASE_DATE]), new Date()).getFullYear()}`
+      info: formatDate(getRandomDate(new Date([...FIRST_RELEASE_DATE]), new Date()), FormatDate.RELEASE_DATE)
     }, {
       name: `Runtime`,
-      info: getRandomHours() > 0 ? `${getRandomHours()}h ${getRandomMinutes()}m` : `${getRandomMinutes()}m`
+      info: getRandomHours() > 0 ? formatDate(getRandomHours(), FormatDate.FILM_DURATION) : formatDate(getRandomHours(), FormatDate.FILM_DURATION)
     }, {
       name: `Country`,
       info: getRandomElement(COUNTRIES)

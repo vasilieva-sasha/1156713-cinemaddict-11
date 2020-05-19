@@ -10,6 +10,14 @@ export const Position = {
   BEFOREBEGIN: `beforebegin`,
 };
 
+export const FormatDate = {
+  COMMENT_DATE: `YYYY/MM/DD HH:MM`,
+  FILM_DURATION: `h[h] mm[m]`,
+  FILM_DURATION_SHORT: `mm[m]`,
+  RELEASE_YEAR: `YYYY`,
+  RELEASE_DATE: `DD MMMM YYYY`
+};
+
 export const NAMES = [
   `Tim Macoveev`,
   `John Doe`,

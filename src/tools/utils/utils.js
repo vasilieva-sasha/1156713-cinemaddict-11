@@ -1,4 +1,5 @@
-import {WEEK} from "../../consts/consts";
+import {WEEK, FormatDate} from "../../consts/consts";
+import moment from "moment";
 
 export const getRandomElement = (array) => {
   return array[Math.floor(Math.random() * array.length)];
@@ -38,13 +39,13 @@ export const getCommentDate = (commentDate) => {
   const today = new Date();
 
   if (commentDate.getDate() === today.getDate()) {
-    return `Today`;
+    return moment(commentDate).fromNow();
   } else if ((today.getFullYear() === commentDate.getFullYear())
     && (today.getMonth() - commentDate.getMonth())
     && ((today.getDate() - commentDate.getDate()) <= WEEK)) {
     return `${(today.getDate() - commentDate.getDate())} days ago`;
   } else {
-    return `${commentDate.getFullYear()}/${commentDate.getMonth()}/${commentDate.getDate()}`;
+    return formatDate(commentDate, FormatDate.COMMENT_DATE);
   }
 };
 
@@ -53,4 +54,8 @@ export const createElement = (template) => {
   newElement.innerHTML = template;
 
   return newElement.firstChild;
+};
+
+export const formatDate = (date, format) => {
+  return moment(date).format(format);
 };
