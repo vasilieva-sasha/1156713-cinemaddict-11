@@ -1,10 +1,10 @@
-import {NAMES, COUNTRIES, GENRES, MONTH_NAMES, FormatDate} from "./../consts/consts";
-import {FIRST_RELEASE_DATE, TITLES, POSTERS, DESCRIPTIONS, AGE_RATES, HOURS, MINUTES} from "./consts/consts";
+import {NAMES, COUNTRIES, GENRES, FormatDate} from "./../consts/consts";
+import {FIRST_RELEASE_DATE, TITLES, POSTERS, DESCRIPTIONS, AGE_RATES, HOURS} from "./consts/consts";
 import {getRandomElement, getRandomArray, getRandomDate, shuffle, getBoolean, formatDate} from "./../tools/utils/utils";
 import {renderFilmCommentsArray} from "./comments/comment";
 
 const getRandomHours = () => Math.floor(Math.random() * HOURS);
-const getRandomMinutes = () => Math.floor(Math.random() * MINUTES);
+// const getRandomMinutes = () => Math.floor(Math.random() * MINUTES);
 
 const generateFilmCard = () => ({
   id: String(new Date() + Math.random()),
