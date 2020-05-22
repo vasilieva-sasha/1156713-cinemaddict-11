@@ -1,8 +1,8 @@
-import {generateFilmCardsArray} from "./../mock/film-card";
-import {CARD_AMOUNT} from "../consts/consts";
+// import {generateFilmCardsArray} from "./../mock/film-card";
+// import {CARD_AMOUNT} from "../consts/consts";
 import MovieController from "../controllers/movie-controller";
 
-const filmCardsList = generateFilmCardsArray(CARD_AMOUNT);
+// const filmCardsList = generateFilmCardsArray(CARD_AMOUNT);
 
 const renderCards = (films, container, onDataChange, onViewChange) => {
   return films.map((film) => {
@@ -13,4 +13,4 @@ const renderCards = (films, container, onDataChange, onViewChange) => {
   });
 };
 
-export {filmCardsList, renderCards};
+export {renderCards};

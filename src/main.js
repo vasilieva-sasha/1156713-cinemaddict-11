@@ -5,9 +5,10 @@ import {Position} from "./consts/consts";
 import FooterStatisticsMarkup from "./components/footer/footer-statistics";
 import PageController from "./controllers/page-controller";
 import FilmContainer from "./components/film-list/film-container";
-import {filmCardsList} from "./tools/render-cards";
+// import {filmCardsList} from "./tools/render-cards";
 import Movies from "./models/movies";
 import FilterController from "./controllers/filter";
+import API from "./api/api";
 
 const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
@@ -15,12 +16,18 @@ const footer = document.querySelector(`footer`);
 
 
 const init = () => {
+  const AUTHORIZATION = `Basic ghfghdkjgm56vjckxg`;
+  const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
+  const api = new API(END_POINT, AUTHORIZATION);
+
+  console.log(api.getFilms());
+
   const headerProfileComponent = new HeaderProfile();
 
   const statisticsComponent = new FooterStatisticsMarkup();
   const filmContainerComponent = new FilmContainer();
   const filmsModel = new Movies();
-  filmsModel.setFilms(filmCardsList);
+  // filmsModel.setFilms(filmCardsList);
 
   const filterController = new FilterController(main, filmsModel);
   filterController.render();
@@ -31,7 +38,12 @@ const init = () => {
   render(main, filmContainerComponent, Position.BEFOREEND);
 
   const pageController = new PageController(filmContainerComponent, filmsModel);
-  pageController.render(filmCardsList);
+  api.getFilms()
+  .then((data) => {
+    filmsModel.setFilms(data);
+    pageController.render();
+  });
+  // pageController.render(filmCardsList);
 
   render(footer, statisticsComponent, Position.BEFOREEND);
 };

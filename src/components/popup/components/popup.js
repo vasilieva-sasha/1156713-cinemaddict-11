@@ -6,7 +6,7 @@ import {createPopupControlMurkup} from "./control";
 import {createCommentsList} from "./comments/create-comment-list";
 
 const createPopupTemplate = (card) => {
-  const {title, poster, filmAge, rate, details, genres, description, comments} = card;
+  const {title, original, poster, filmAge, rate, details, genres, description, comments} = card;
 
   return (
     `<section class="film-details">
@@ -20,7 +20,7 @@ const createPopupTemplate = (card) => {
 
             <div class="film-details__info">
               <div class="film-details__info-head">
-                ${createFilmTitleMarkup(title)}
+                ${createFilmTitleMarkup(title, original)}
 
                 ${createFilmRatingMarkup(rate)}
               </div>

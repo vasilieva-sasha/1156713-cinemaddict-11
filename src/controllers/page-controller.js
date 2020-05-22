@@ -114,14 +114,12 @@ export default class PageController {
 
     this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
     this._showingFilmsCount = this._showedFilmControllers.length;
-    console.log(this._filmsModel.getFilms());
   }
 
   _renderExtraCards(films, container) {
     const newFilms = renderCards(films, container, this._onDataChange, this._onViewChange);
 
     this._showedExtraFilmControllers = this._showedExtraFilmControllers.concat(newFilms);
-    console.log(this._showedExtraFilmControllers);
   }
 
   _updateCards(count) {
