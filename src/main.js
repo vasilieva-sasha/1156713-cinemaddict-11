@@ -20,8 +20,6 @@ const init = () => {
   const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
   const api = new API(END_POINT, AUTHORIZATION);
 
-  console.log(api.getFilms());
-
   const headerProfileComponent = new HeaderProfile();
 
   const statisticsComponent = new FooterStatisticsMarkup();

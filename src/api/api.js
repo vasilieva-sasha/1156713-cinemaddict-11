@@ -1,4 +1,5 @@
 import Movie from "../models/movie";
+import Comment from "../models/comment";
 
 const Method = {
   GET: `GET`,
@@ -26,6 +27,12 @@ const API = class {
     return this._load({url: `movies`})
     .then((response) => response.json())
       .then(Movie.parseMovies);
+  }
+
+  getComments(id) {
+    return this._load({url: `comments/${id}`})
+    .then((response) => response.json())
+      .then(Comment.parseComments);
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {

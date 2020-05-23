@@ -2,6 +2,8 @@ import {Position} from "../consts/consts";
 import {render, remove, replace} from "../tools/utils/render";
 import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
+import API from "../api/api";
+import Comments from "../components/popup/comments";
 
 const Mode = {
   DEFAULT: `default`,
@@ -17,6 +19,7 @@ export default class MovieController {
 
     this._filmCardComponent = null;
     this._popupComponent = null;
+    this._commentsListComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._onCtrlEnterEvent = this._onCtrlEnterEvent.bind(this);
@@ -24,6 +27,7 @@ export default class MovieController {
 
   render(card) {
     this._card = card;
+
     const oldFilmCardComponent = this._filmCardComponent;
     const oldPopupComponent = this._popupComponent;
 
@@ -70,23 +74,31 @@ export default class MovieController {
   _setPopupListeners(card) {
     this._onPopupClose = this._onPopupClose.bind(this);
 
-    this._popupComponent.setPopupClose(this._onPopupClose);
-
-    this._popupComponent.setControlsChangeHandler((controlType) => {
+    this._popupComponent.setPopupClose(this._onPopupClose, (controlType) => {
       this._onDataChange(this, card, Object.assign({}, card, {
         [controlType]: !card[controlType],
       }));
     });
 
-    this._popupComponent.setEmojiChangeHandler();
+    this._popupComponent.setControlsChangeHandler();
+  }
 
-    this._popupComponent.setOnCommentDelete(() => {
-      this._onDataChange(this, card, Object.assign({}, card, {
-        comments: this._popupComponent.newComments,
-      }));
-      console.log(card.comments);
-      console.log(this._popupComponent.newComments);
-    });
+  _getComments() {
+    const AUTHORIZATION = `Basic ghfghdkjgm56vjckxg`;
+    const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
+    const api = new API(END_POINT, AUTHORIZATION);
+    api.getComments(this._card.id)
+      .then((data) => {
+        this._commentsListComponent = new Comments(data);
+        this._popupComponent.getElement().querySelector(`.form-details__bottom-container`).append(this._commentsListComponent.getElement());
+        this._commentsListComponent.setEmojiChangeHandler();
+
+        this._commentsListComponent.setOnCommentDelete(() => {
+          this._onDataChange(this, this._card, Object.assign({}, this._card, {
+            comments: this._commentsListComponent.newComments,
+          }));
+        });
+      });
   }
 
   _onCardClick() {
@@ -95,6 +107,7 @@ export default class MovieController {
 
     const footer = document.querySelector(`.footer`);
     render(footer, this._popupComponent, Position.AFTEREND);
+    this._getComments();
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
     document.addEventListener(`keyup`, this._onCtrlEnterEvent);
@@ -121,11 +134,7 @@ export default class MovieController {
     const enterKey = evt.key === `Enter`;
 
     if (evt.ctrlKey && enterKey) {
-      this._popupComponent.addComment(() => {
-        this._onDataChange(this, this._card, Object.assign({}, this._card, {
-          comments: this._popupComponent.newComments,
-        }));
-      });
+      this._commentsListComponent.addComment();
     }
 
   }
