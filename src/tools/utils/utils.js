@@ -1,4 +1,4 @@
-import {WEEK, FormatDate} from "../../consts/consts";
+import {FormatDate} from "../../consts/consts";
 import moment from "moment";
 
 export const getRandomElement = (array) => {

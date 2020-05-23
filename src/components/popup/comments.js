@@ -77,14 +77,6 @@ export default class Comments extends AbstractSmartComponent {
     handler();
   }
 
-  // _onControlChange(evt) {
-  //   evt.preventDefault();
-
-  //   if (evt.target.tagName !== `LABEL`) {
-  //     return;
-  //   }
-  // }
-
   _onEmojiChange(label) {
     this._emojiContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
 

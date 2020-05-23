@@ -12,9 +12,10 @@ const topRatedHeading = `Top rated`;
 const mostCommentedHeading = `Most commented`;
 
 export default class PageController {
-  constructor(container, filmsModel) {
+  constructor(container, filmsModel, api) {
     this._container = container;
     this._filmsModel = filmsModel;
+    this._api = api;
 
     this._sortComponent = new Sort();
     this._filmListComponent = new FilmList();
@@ -187,28 +188,17 @@ export default class PageController {
     });
   }
 
-  // _onPopupControlChange() {
-  //   document.querySelector(`.film-details__controls`)
-  //   .addEventListener(`click`, (evt) => {
-  //     if (evt.target.tagName !== `LABEL`) {
-  //       return;
-  //     }
-  //     this._updateCards(SHOW_CARD_AMOUNT);
-  //     if (this._filmsModel.getFilms().length === 0) {
-  //       this._removeCards();
-  //       remove(this._buttonShowComponent);
-  //       render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
-  //       return;
-  //     }
-  //   });
-  // }
 
   _onDataChange(movieController, oldData, newData) {
-    const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
+    this._api.updateFilm(oldData.id, newData)
+        .then((filmModel) => {
+          const isSuccess = this._filmsModel.updateFilm(oldData.id, filmModel);
 
-    if (isSuccess) {
-      movieController.render(newData);
-    }
+          if (isSuccess) {
+            movieController.render(filmModel);
+            // this._updateCards(this._showingFilmsCount);
+          }
+        });
   }
 
   _onViewChange() {
