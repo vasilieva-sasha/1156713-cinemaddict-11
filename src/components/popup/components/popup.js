@@ -3,10 +3,9 @@ import {createFilmRatingMarkup} from "./rating";
 import {createFilmPosterMarkup} from "./poster";
 import {createTableTemplate} from "./table";
 import {createPopupControlMurkup} from "./control";
-import {createCommentsList} from "./comments/create-comment-list";
 
 const createPopupTemplate = (card) => {
-  const {title, poster, filmAge, rate, details, genres, description, comments} = card;
+  const {title, original, poster, filmAge, rate, details, genres, description} = card;
 
   return (
     `<section class="film-details">
@@ -20,7 +19,7 @@ const createPopupTemplate = (card) => {
 
             <div class="film-details__info">
               <div class="film-details__info-head">
-                ${createFilmTitleMarkup(title)}
+                ${createFilmTitleMarkup(title, original)}
 
                 ${createFilmRatingMarkup(rate)}
               </div>
@@ -35,7 +34,7 @@ const createPopupTemplate = (card) => {
         </div>
 
         <div class="form-details__bottom-container">
-          ${createCommentsList(comments)}
+
         </div>
       </form>
     </section>`

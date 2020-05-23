@@ -1,22 +1,22 @@
 import {getRightWordComments} from "./../../../mock/comments/comment";
-import {hideText} from "./../../../tools/utils/utils";
-import {ControlType} from "../../../consts/consts";
+import {hideText, formatDate} from "./../../../tools/utils/utils";
+import {ControlType, FormatDate} from "../../../consts/consts";
 
 const isActive = (controlProperty) => controlProperty ? `film-card__controls-item--active` : ``;
 
 const createCardTemplate = (card) => {
-  const {title, poster, rate, year, genres, description, comments, inWatchlist, inHistory, inFavorites} = card;
+  const {title, poster, rate, year, genres, description, comments, details, inWatchlist, inHistory, inFavorites} = card;
 
   return (
     `<article class="film-card">
-      <h3 class="film-card__title">${title.title}</h3>
+      <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${rate}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${year}</span>
-        <span class="film-card__duration">1h 55m</span>
+        <span class="film-card__year">${formatDate(year, FormatDate.RELEASE_YEAR)}</span>
+        <span class="film-card__duration">${details[4][`info`]}</span>
         <span class="film-card__genre">${genres.slice(0, 1)}</span>
       </p>
-      <img src="./images/posters/${poster}" alt="" class="film-card__poster">
+      <img src="./${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${hideText(description)}</p>
       <a class="film-card__comments">${comments.length} ${getRightWordComments(comments).toLowerCase()}</a>
       <form class="film-card__controls">

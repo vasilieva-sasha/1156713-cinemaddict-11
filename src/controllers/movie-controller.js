@@ -2,6 +2,9 @@ import {Position} from "../consts/consts";
 import {render, remove, replace} from "../tools/utils/render";
 import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
+// import API from "../api/api";
+// import Comments from "../components/popup/comments";
+import Movie from "../models/movie";
 
 const Mode = {
   DEFAULT: `default`,
@@ -17,6 +20,7 @@ export default class MovieController {
 
     this._filmCardComponent = null;
     this._popupComponent = null;
+    this._commentsListComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._onCtrlEnterEvent = this._onCtrlEnterEvent.bind(this);
@@ -24,6 +28,7 @@ export default class MovieController {
 
   render(card) {
     this._card = card;
+
     const oldFilmCardComponent = this._filmCardComponent;
     const oldPopupComponent = this._popupComponent;
 
@@ -41,9 +46,19 @@ export default class MovieController {
       this._onCardClick();
     });
 
-    this._setPopupListeners(this._card);
+    this._popupComponent.getComments();
 
-    this._setControlsListeners(this._card);
+    this._onPopupClose = this._onPopupClose.bind(this);
+    this._popupComponent.setPopupClose(this._onPopupClose);
+
+    this._popupComponent.setControlsChangeHandler((controlType) => {
+      const newFilm = Movie.clone(this._card);
+      newFilm[controlType] = !newFilm[controlType];
+      this._onDataChange(this, this._card, newFilm);
+      this._mode = Mode.OPEN;
+    });
+
+    this._setControlsListeners();
   }
 
   setDefaultView() {
@@ -58,34 +73,12 @@ export default class MovieController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
-  _setControlsListeners(card) {
+  _setControlsListeners() {
     this._filmCardComponent.setControlsChangeHandler((controlType) => {
-      this._onDataChange(this, card, Object.assign({}, card, {
-        [controlType]: !card[controlType],
-      }));
+      const newFilm = Movie.clone(this._card);
+      newFilm[controlType] = !newFilm[controlType];
+      this._onDataChange(this, this._card, newFilm);
       this._mode = Mode.DEFAULT;
-    });
-  }
-
-  _setPopupListeners(card) {
-    this._onPopupClose = this._onPopupClose.bind(this);
-
-    this._popupComponent.setPopupClose(this._onPopupClose);
-
-    this._popupComponent.setControlsChangeHandler((controlType) => {
-      this._onDataChange(this, card, Object.assign({}, card, {
-        [controlType]: !card[controlType],
-      }));
-    });
-
-    this._popupComponent.setEmojiChangeHandler();
-
-    this._popupComponent.setOnCommentDelete(() => {
-      this._onDataChange(this, card, Object.assign({}, card, {
-        comments: this._popupComponent.newComments,
-      }));
-      console.log(card.comments);
-      console.log(this._popupComponent.newComments);
     });
   }
 
@@ -96,6 +89,11 @@ export default class MovieController {
     const footer = document.querySelector(`.footer`);
     render(footer, this._popupComponent, Position.AFTEREND);
 
+    if (!this._popupComponent.getElement().querySelector(`.film-details__comments-wrap`)) {
+      this._popupComponent.getComments();
+    }
+    this._popupComponent.recoveryListeners();
+
     document.addEventListener(`keydown`, this._onEscKeyDown);
     document.addEventListener(`keyup`, this._onCtrlEnterEvent);
   }
@@ -103,6 +101,7 @@ export default class MovieController {
   _onPopupClose() {
     remove(this._popupComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+
     this._mode = Mode.DEFAULT;
   }
 
@@ -121,11 +120,7 @@ export default class MovieController {
     const enterKey = evt.key === `Enter`;
 
     if (evt.ctrlKey && enterKey) {
-      this._popupComponent.addComment(() => {
-        this._onDataChange(this, this._card, Object.assign({}, this._card, {
-          comments: this._popupComponent.newComments,
-        }));
-      });
+      this._commentsListComponent.addComment();
     }
 
   }
