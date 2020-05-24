@@ -7,6 +7,7 @@ import FilmContainer from "./components/film-list/film-container";
 import Movies from "./models/movies";
 import FilterController from "./controllers/filter";
 import API from "./api/api";
+import Statistic from "./components/statistic/statistic";
 
 const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
@@ -20,9 +21,10 @@ const init = () => {
 
   const headerProfileComponent = new HeaderProfile();
 
-  const statisticsComponent = new FooterStatisticsMarkup();
+  const footerStatisticsComponent = new FooterStatisticsMarkup();
   const filmContainerComponent = new FilmContainer();
   const filmsModel = new Movies();
+  const statisticsComponent = new Statistic();
 
   const filterController = new FilterController(main, filmsModel);
   filterController.render();
@@ -38,7 +40,21 @@ const init = () => {
     pageController.render();
   });
 
-  render(footer, statisticsComponent, Position.BEFOREEND);
+  render(main, statisticsComponent, Position.BEFOREEND);
+  statisticsComponent.hide();
+
+  filterController.setStatisticHandler(() => {
+    pageController.hide();
+    statisticsComponent.show();
+  });
+
+  filterController.setFilterChangeHandler((filterType) => {
+    statisticsComponent.hide();
+    pageController.show();
+    filmsModel.setFilter(filterType);
+  });
+
+  render(footer, footerStatisticsComponent, Position.BEFOREEND);
 };
 
 init();

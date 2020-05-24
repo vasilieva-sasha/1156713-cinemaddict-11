@@ -102,6 +102,22 @@ export default class PageController {
     this.renderExtraFilmLists(container, films);
   }
 
+  hide() {
+    this._sortComponent.hide();
+    this._filmListComponent.hide();
+    this._topRatedComponent.hide();
+    this._mostComentedComponent.hide();
+    this._buttonShowComponent.hide();
+  }
+
+  show() {
+    this._sortComponent.show();
+    this._filmListComponent.show();
+    this._topRatedComponent.show();
+    this._mostComentedComponent.show();
+    this._buttonShowComponent.show();
+  }
+
   _removeCards() {
     this._showedFilmControllers.forEach((filmController) => filmController.destroy());
     this._showedFilmControllers = [];

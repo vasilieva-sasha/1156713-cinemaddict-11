@@ -17,4 +17,16 @@ export default class AbstractSmartComponent extends AbstractComponent {
 
     this.recoveryListeners();
   }
+
+  hide() {
+    if (this._element) {
+      this._element.classList.add(`visually-hidden`);
+    }
+  }
+
+  show() {
+    if (this._element) {
+      this._element.classList.remove(`visually-hidden`);
+    }
+  }
 }
