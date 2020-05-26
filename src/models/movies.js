@@ -1,20 +1,86 @@
 import {getFilteredFilms} from "../components/navigation/components/navigation";
+import {getDateFromString, getProfileRange} from "../tools/utils/utils";
+import moment from "moment";
 
 export default class Movies {
   constructor() {
     this._films = [];
-    this._activeFilterType = `all`;
+    this.activeFilterType = `all`;
 
     this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];
+    this.setFilterChangeHandler.bind(this);
+    this.getWatchedFilms.bind(this);
+    this.getWatchedFilmsCountByGenre.bind(this);
   }
 
   getFilms() {
-    return getFilteredFilms[this._activeFilterType](this._films);
+    return getFilteredFilms[this.activeFilterType](this._films);
   }
 
   getAllFilms() {
     return this._films;
+  }
+
+  getWatchedFilms() {
+    return this._films.filter((film) => {
+      return film.inHistory;
+    });
+  }
+
+  getProfileRange() {
+    return getProfileRange(this.getWatchedFilms().length);
+  }
+
+  getFilmGenres(filterType) {
+    return this.getFilteredFilmsforStats(filterType).reduce((filmGenres, film) => {
+      film.genres.forEach((genre) => {
+        if (!filmGenres.includes(genre)) {
+          filmGenres.push(genre);
+        }
+      });
+      return filmGenres;
+    }, []);
+  }
+
+  getWatchedFilmsCountByGenre(films, filterType) {
+    return this.getFilmGenres(filterType).map((genre) => {
+      return {
+        name: genre,
+        count: films.filter((film) => film.genres.includes(genre)).length
+      };
+    }).sort((less, more) => more.count - less.count);
+  }
+
+  getFilmsByDateForStatistics(period) {
+    const watchedFilms = this.getWatchedFilms();
+
+    switch (period) {
+      case `all time`:
+        return watchedFilms;
+      default:
+        return watchedFilms.filter((film) => getDateFromString(film.watchDate) >= moment().subtract(1, period));
+    }
+  }
+
+  getWatchedMoviesLength(filterType) {
+    const watchedFilms = this.getFilteredFilmsforStats(filterType);
+
+    return watchedFilms.reduce((length, film) => {
+      return length + film.details[4][`info`];
+    }, 0);
+  }
+
+  getFilteredFilmsforStats(filterType) {
+    return filterType === `all-time` ? this.getWatchedFilms() : this.getFilmsByDateForStatistics(filterType);
+  }
+
+  getStisticsResults(filterType) {
+    return {
+      filmCount: this.getFilteredFilmsforStats(filterType).length,
+      hoursCount: this.getWatchedMoviesLength(filterType),
+      genre: this.getWatchedFilmsCountByGenre(this.getFilteredFilmsforStats(filterType), filterType).map((genre) => genre.name).slice(0, 1)
+    };
   }
 
   setFilms(films) {
@@ -23,7 +89,7 @@ export default class Movies {
   }
 
   setFilter(filterType) {
-    this._activeFilterType = filterType;
+    this.activeFilterType = filterType;
     this._callHandlers(this._filterChangeHandlers);
   }
 

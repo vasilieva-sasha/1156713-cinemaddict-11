@@ -1,11 +1,9 @@
 import {render} from "./../../tools/utils/render";
-import {Position} from "./../../consts/consts";
+import {Position, Class} from "./../../consts/consts";
 import {onPopupClose} from "./close-popup";
 
-const footer = document.querySelector(`.footer`);
-
 const onCardClick = (popupElement) => {
-  render(footer, popupElement, Position.AFTEREND);
+  render(Class.FOOTER, popupElement, Position.AFTEREND);
   const onEscKeyDown = (evt) => {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 

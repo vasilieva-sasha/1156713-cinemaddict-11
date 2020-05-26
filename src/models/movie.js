@@ -61,7 +61,7 @@ export default class Movie {
       "user_details": {
         "watchlist": this.inWatchlist,
         "already_watched": this.inHistory,
-        "watching_date": this.watchDate,
+        "watching_date": this.watchDate ? new Date(this.watchDate).toISOString() : null,
         "favorite": this.inFavorites
       }
     };

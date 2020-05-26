@@ -10,6 +10,12 @@ export const Position = {
   BEFOREBEGIN: `beforebegin`,
 };
 
+export const Class = {
+  HEADER: document.querySelector(`.header`),
+  MAIN: document.querySelector(`.main`),
+  FOOTER: document.querySelector(`footer`),
+};
+
 export const FormatDate = {
   COMMENT_DATE: `YYYY/MM/DD HH:MM`,
   FILM_DURATION: `h[h] mm[m]`,
@@ -82,3 +88,32 @@ export const FilterType = {
   HISTORY: `History`,
   FAVORITES: `Favorites`,
 };
+
+export const STATISTIC_FILTER = [
+  {
+    name: `All time`,
+    input: `all-time`,
+    period: `all-time`
+  },
+  {
+    name: `Today`,
+    input: `today`,
+    period: `day`
+  },
+  {
+    name: `Week`,
+    input: `week`,
+    period: `week`
+  },
+  {
+    name: `Month`,
+    input: `month`,
+    period: `month`
+  },
+  {
+    name: `Year`,
+    input: `year`,
+    period: `year`
+  },
+
+];

@@ -23,6 +23,14 @@ export default class Sort extends AbstractSmartComponent {
     this._currentSortType = SortType.DEFAULT;
   }
 
+  hide() {
+    super.hide();
+  }
+
+  show() {
+    super.show();
+  }
+
   getSortType() {
     return this._currentSortType;
   }
