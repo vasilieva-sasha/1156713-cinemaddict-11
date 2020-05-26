@@ -12,7 +12,7 @@ export default class FilterController {
 
     this._showedFilmControllers = [];
 
-    this._activeFilterType = `all`;
+    this.activeFilterType = `all`;
     this._filterComponent = null;
 
     this._onStatsClick = null;
@@ -36,7 +36,7 @@ export default class FilterController {
         name: FilterType[filterType],
         link: filterType.toLowerCase(),
         count: getFilteredFilms[filterType.toLowerCase()](allFilms).length,
-        checked: this._activeFilterType === filterType.toLowerCase(),
+        checked: this.activeFilterType === filterType.toLowerCase(),
       };
     });
 
@@ -64,7 +64,6 @@ export default class FilterController {
 
   setFilterChangeHandler(handler) {
     this._filterComponent.setFilterChangeHandler(handler);
-
     this._onFilterClick = handler;
   }
 

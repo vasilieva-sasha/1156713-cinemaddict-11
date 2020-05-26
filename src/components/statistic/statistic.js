@@ -2,7 +2,6 @@ import AbstractSmartComponent from "../abstract-smart-component";
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {createStatisticTemplate} from "./components/statistic";
-import {getDateFromString} from "../../tools/utils/utils";
 
 
 export default class Statistic extends AbstractSmartComponent {
@@ -14,20 +13,42 @@ export default class Statistic extends AbstractSmartComponent {
     this._chartData = null;
     this._chartLabels = null;
     this._chartCounts = null;
+    this._currentFilterType = `all-time`;
+    this._filteredFilms = null;
+    this._statisticsResults = {};
 
     this.show.bind(this);
   }
 
   getTemplate() {
-    return createStatisticTemplate();
+    return createStatisticTemplate(this._filmsModel, this._filmsModel.getStisticsResults(this._currentFilterType));
   }
 
   render() {
+    this._filteredFilms = this._filmsModel.getWatchedFilms();
+
+    this._setFilterChangeHandler();
     this._setChartData();
     this._renderChart();
   }
 
+  rerender() {
+    this._setChartData();
+    super.rerender();
+
+    const input = this.getElement().querySelector(`[data-filter-type=${this._currentFilterType}]`);
+    input.setAttribute(`checked`, `checked`);
+
+    this._renderChart();
+    this.show();
+  }
+
+  recoveryListeners() {
+    this._setFilterChangeHandler();
+  }
+
   hide() {
+    this._currentFilterType = `all-time`;
     super.hide();
   }
 
@@ -35,8 +56,34 @@ export default class Statistic extends AbstractSmartComponent {
     super.show();
   }
 
+  _getStisticsResults() {
+    return {
+      filmCount: this._filteredFilms.length,
+      hoursCount: this._filteredFilms.reduce((length, film) => {
+        return length + film.details[4][`info`];
+      }, 0),
+      genre: this._chartLabels.slice(0, 1)
+    };
+  }
+
+  _setFilterChangeHandler() {
+    this.getElement().addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+
+      const filterType = evt.target.dataset.filterType;
+      this._filteredFilms = this._filmsModel.getFilteredFilmsforStats(filterType);
+
+      const input = this.getElement().querySelector(`[data-filter-type=${this._currentFilterType}]`);
+      input.setAttribute(`checked`, `checked`);
+
+      this._currentFilterType = filterType;
+
+      this.rerender();
+    });
+  }
+
   _setChartData() {
-    this._chartData = this._filmsModel.getWatchedFilmsCountByGenre();
+    this._chartData = this._filmsModel.getWatchedFilmsCountByGenre(this._filteredFilms, this._currentFilterType);
 
     this._chartLabels = this._chartData.map((genre) => genre.name);
     this._chartCounts = this._chartData.map((genre) => genre.count);
@@ -46,8 +93,6 @@ export default class Statistic extends AbstractSmartComponent {
     const BAR_HEIGHT = 50;
     const statisticCtx = document.querySelector(`.statistic__chart`);
 
-    console.log(this._filmsModel.getWatchedFilms());
-    // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
     statisticCtx.height = BAR_HEIGHT * this._chartData.length;
 
     this._chart = new Chart(statisticCtx, {

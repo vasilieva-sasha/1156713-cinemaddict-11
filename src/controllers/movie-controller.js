@@ -1,9 +1,7 @@
-import {Position} from "../consts/consts";
+import {Position, Class} from "../consts/consts";
 import {render, remove, replace} from "../tools/utils/render";
 import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
-// import API from "../api/api";
-// import Comments from "../components/popup/comments";
 import Movie from "../models/movie";
 
 const Mode = {
@@ -89,8 +87,7 @@ export default class MovieController {
     this._onViewChange();
     this._mode = Mode.OPEN;
 
-    const footer = document.querySelector(`.footer`);
-    render(footer, this._popupComponent, Position.AFTEREND);
+    render(Class.FOOTER, this._popupComponent, Position.AFTEREND);
 
     if (!this._popupComponent.getElement().querySelector(`.film-details__comments-wrap`)) {
       this._popupComponent.getComments();
@@ -108,7 +105,6 @@ export default class MovieController {
     this._mode = Mode.DEFAULT;
   }
 
-  // функция удал комм
 
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;

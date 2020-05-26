@@ -3,11 +3,12 @@ import ButtonShow from "../components/button-show/button-show";
 import FilmListExtra from "../components/film-list/film-list-extra";
 import NoFilmMessage from "../components/messages/no-films";
 import {render, remove} from "../tools/utils/render";
-import {Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT} from "../consts/consts";
+import {Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT, Class} from "../consts/consts";
 import {renderCards} from "../tools/render-cards";
 import Sort from "../components/sorting/sort";
 import {getSortedFilms} from "../components/sorting/components/sort";
 import Statistic from "../components/statistic/statistic";
+import HeaderProfile from "../components/header/header-pofile";
 
 const topRatedHeading = `Top rated`;
 const mostCommentedHeading = `Most commented`;
@@ -18,6 +19,7 @@ export default class PageController {
     this._filmsModel = filmsModel;
     this._api = api;
 
+    this._headerProfile = new HeaderProfile(this._filmsModel);
     this._sortComponent = new Sort();
     this._filmListComponent = new FilmList();
     this._buttonShowComponent = new ButtonShow();
@@ -39,6 +41,7 @@ export default class PageController {
     this._filmsModel.setFilterChangeHandler(this._onFilterChange);
 
     this._onButtonShowClick = this._onButtonShowClick.bind(this);
+    this.showMainPage.bind(this);
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -92,6 +95,8 @@ export default class PageController {
     const container = this._container.getElement();
     const films = this._filmsModel.getAllFilms();
 
+    this._renderProfileHeader();
+
     render(container, this._sortComponent, Position.BEFOREBEGIN);
 
     if (this._filmsModel.getAllFilms().length === 0) {
@@ -109,12 +114,6 @@ export default class PageController {
 
     this._statisticsComponent.render();
 
-    // выводы в консоль убрать
-    console.log(this._filmsModel.getAllFilms());
-    console.log(this._filmsModel.getWatchedFilms());
-
-    console.log(this._filmsModel.getWatchedFilmsCountByGenre(`Drama`));
-    console.log(this._filmsModel.getFimsByDateForStatistics(`month`));
   }
 
   hide() {
@@ -135,6 +134,7 @@ export default class PageController {
 
   showStatistics() {
     this.hide();
+    this._statisticsComponent.rerender();
     this._statisticsComponent.show();
   }
 
@@ -150,6 +150,10 @@ export default class PageController {
 
     this._showedExtraFilmControllers.forEach((filmController) => filmController.destroy());
     this._showedExtraFilmControllers = [];
+  }
+
+  _renderProfileHeader() {
+    render(Class.HEADER, this._headerProfile, Position.BEFOREEND);
   }
 
   _renderCards(films, container) {
@@ -209,26 +213,27 @@ export default class PageController {
 
     this._sortComponent.rerender();
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
-    this._onCardControlChange();
+
+    // this._onCardControlChange();
     // this._onPopupControlChange();
   }
 
-  _onCardControlChange() {
-    this._filmListComponent.getElement().querySelector(`.films-list__container`)
-    .addEventListener(`click`, (evt) => {
-      if (evt.target.tagName !== `BUTTON`) {
-        return;
-      }
-      this._updateCards(SHOW_CARD_AMOUNT);
+  // _onCardControlChange() {
+  //   this._filmListComponent.getElement().querySelector(`.films-list__container`)
+  //   .addEventListener(`click`, (evt) => {
+  //     if (evt.target.tagName !== `BUTTON`) {
+  //       return;
+  //     }
+  //     this._updateCards(SHOW_CARD_AMOUNT);
 
-      if (this._filmsModel.getFilms().length === 0) {
-        this._removeCards();
-        remove(this._buttonShowComponent);
-        render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
-        return;
-      }
-    });
-  }
+  //     if (this._filmsModel.getFilms().length === 0) {
+  //       this._removeCards();
+  //       remove(this._buttonShowComponent);
+  //       render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
+  //       return;
+  //     }
+  //   });
+  // }
 
 
   _onDataChange(movieController, oldData, newData) {
@@ -238,6 +243,7 @@ export default class PageController {
 
           if (isSuccess) {
             movieController.render(filmModel);
+            // с ней попап закрывается по клику на контролы, но карточка удаляется из отфильтр списка
             // this._updateCards(this._showingFilmsCount);
           }
         });

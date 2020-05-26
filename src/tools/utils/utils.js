@@ -1,28 +1,6 @@
 import {FormatDate} from "../../consts/consts";
 import moment from "moment";
 
-export const getRandomElement = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
-};
-
-export const getRandomArray = (array) => {
-  const randomArray = array.slice(0, Math.floor(Math.random() * array.length));
-  return randomArray;
-};
-
-export const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    let temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  return array;
-};
-
-export const getRandomDate = (start, end) => {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-};
 
 export const hideText = (text) => {
   const textString = text.toString();
@@ -32,8 +10,6 @@ export const hideText = (text) => {
     return textString;
   }
 };
-
-export const getBoolean = () => Math.random() > 0.5;
 
 export const getCommentDate = (commentDate) => {
   const today = new Date();
@@ -58,4 +34,18 @@ export const formatDate = (date, format) => {
 
 export const getDateFromString = (date) => {
   return moment(date).valueOf();
+};
+
+export const getProfileRange = (count) => {
+  let profileRange;
+  if (count === 0) {
+    profileRange = ``;
+  } else if (count > 0 && count <= 10) {
+    profileRange = `Novice`;
+  } else if (count > 10 && count <= 20) {
+    profileRange = `Fan`;
+  } else {
+    profileRange = `Movie Buff`;
+  }
+  return profileRange;
 };
