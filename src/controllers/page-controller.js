@@ -3,10 +3,11 @@ import ButtonShow from "../components/button-show/button-show";
 import FilmListExtra from "../components/film-list/film-list-extra";
 import NoFilmMessage from "../components/messages/no-films";
 import {render, remove} from "../tools/utils/render";
-import {CARD_AMOUNT, Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT} from "../consts/consts";
+import {Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT} from "../consts/consts";
 import {renderCards} from "../tools/render-cards";
 import Sort from "../components/sorting/sort";
 import {getSortedFilms} from "../components/sorting/components/sort";
+import Statistic from "../components/statistic/statistic";
 
 const topRatedHeading = `Top rated`;
 const mostCommentedHeading = `Most commented`;
@@ -23,6 +24,7 @@ export default class PageController {
     this._topRatedComponent = new FilmListExtra(topRatedHeading);
     this._mostComentedComponent = new FilmListExtra(mostCommentedHeading);
     this._noFilmComponent = new NoFilmMessage();
+    this._statisticsComponent = new Statistic(this._filmsModel);
 
     this._filmListContainer = this._filmListComponent.getElement().querySelector(`.films-list__container`);
 
@@ -92,7 +94,7 @@ export default class PageController {
 
     render(container, this._sortComponent, Position.BEFOREBEGIN);
 
-    if (CARD_AMOUNT === 0) {
+    if (this._filmsModel.getAllFilms().length === 0) {
       render(container, this._noFilmComponent, Position.AFTERBEGIN);
       return;
     }
@@ -100,6 +102,19 @@ export default class PageController {
     render(this._filmListComponent.getElement(), this._buttonShowComponent, Position.BEFOREEND);
     this.renderFilmList(container, films);
     this.renderExtraFilmLists(container, films);
+
+    render(container, this._statisticsComponent, Position.BEFOREEND);
+
+    this._statisticsComponent.hide();
+
+    this._statisticsComponent.render();
+
+    // выводы в консоль убрать
+    console.log(this._filmsModel.getAllFilms());
+    console.log(this._filmsModel.getWatchedFilms());
+
+    console.log(this._filmsModel.getWatchedFilmsCountByGenre(`Drama`));
+    console.log(this._filmsModel.getFimsByDateForStatistics(`month`));
   }
 
   hide() {
@@ -118,12 +133,23 @@ export default class PageController {
     this._buttonShowComponent.show();
   }
 
+  showStatistics() {
+    this.hide();
+    this._statisticsComponent.show();
+  }
+
+  showMainPage() {
+    this._statisticsComponent.hide();
+
+    this.show();
+  }
+
   _removeCards() {
     this._showedFilmControllers.forEach((filmController) => filmController.destroy());
     this._showedFilmControllers = [];
 
-    // this._showedExtraFilmControllers.forEach((filmController) => filmController.destroy());
-    // this._showedExtraFilmControllers = [];
+    this._showedExtraFilmControllers.forEach((filmController) => filmController.destroy());
+    this._showedExtraFilmControllers = [];
   }
 
   _renderCards(films, container) {
@@ -142,7 +168,7 @@ export default class PageController {
   _updateCards(count) {
     this._removeCards();
     this._renderCards(this._filmsModel.getFilms().slice(0, count), this._filmListContainer);
-    // this.renderExtraFilmLists(this._container.getElement(), this._filmsModel.getAllFilms());
+    this.renderExtraFilmLists(this._container.getElement(), this._filmsModel.getAllFilms());
     this.renderButtonShow();
   }
 
@@ -182,7 +208,7 @@ export default class PageController {
     this._updateCards(SHOW_CARD_AMOUNT);
 
     this._sortComponent.rerender();
-
+    this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
     this._onCardControlChange();
     // this._onPopupControlChange();
   }

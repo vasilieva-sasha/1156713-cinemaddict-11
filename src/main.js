@@ -24,7 +24,6 @@ const init = () => {
   const footerStatisticsComponent = new FooterStatisticsMarkup();
   const filmContainerComponent = new FilmContainer();
   const filmsModel = new Movies();
-  const statisticsComponent = new Statistic();
 
   const filterController = new FilterController(main, filmsModel);
   filterController.render();
@@ -40,17 +39,12 @@ const init = () => {
     pageController.render();
   });
 
-  render(main, statisticsComponent, Position.BEFOREEND);
-  statisticsComponent.hide();
-
   filterController.setStatisticHandler(() => {
-    pageController.hide();
-    statisticsComponent.show();
+    pageController.showStatistics();
   });
 
   filterController.setFilterChangeHandler((filterType) => {
-    statisticsComponent.hide();
-    pageController.show();
+    pageController.showMainPage();
     filmsModel.setFilter(filterType);
   });
 

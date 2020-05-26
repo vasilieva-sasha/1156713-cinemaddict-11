@@ -55,3 +55,7 @@ export const createElement = (template) => {
 export const formatDate = (date, format) => {
   return moment(date).format(format);
 };
+
+export const getDateFromString = (date) => {
+  return moment(date).valueOf();
+};

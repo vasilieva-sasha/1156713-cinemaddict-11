@@ -19,6 +19,7 @@ export default class Navigation extends AbstractComponent {
         this.getElement().querySelector(`.main-navigation__item--active`)
           .classList.remove(`main-navigation__item--active`);
         evt.target.classList.add(`main-navigation__item--active`);
+        console.log(this._filters);
         handler(filterName);
       }
     });

@@ -1,4 +1,5 @@
 import {SortType} from "../../../consts/consts";
+import {getDateFromString} from "../../../tools/utils/utils";
 
 const createSortingTemplate = () => {
   return (
@@ -14,7 +15,7 @@ let sortedFilms = [];
 
 const getSortedFilms = {
   [SortType.DATE]: (cards, from, to) => {
-    sortedFilms = cards.slice().sort((newerDate, olderDate) => olderDate.year - newerDate.year);
+    sortedFilms = cards.slice().sort((newerDate, olderDate) => getDateFromString(olderDate.year) - getDateFromString(newerDate.year));
     return sortedFilms.slice(from, to);
   },
   [SortType.RATE]: (cards, from, to) => {

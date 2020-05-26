@@ -36,8 +36,11 @@ export default class FilmCard extends AbstractSmartComponent {
       .addEventListener(`click`, (evt) => {
         this._onControlChange(evt);
         const controlType = evt.target.dataset.controlType;
+        this.rerender();
+        console.log(this._card);
         handler(controlType);
       });
+
     this._onControlsChange = handler;
   }
 

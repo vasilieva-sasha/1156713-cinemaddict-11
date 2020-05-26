@@ -54,6 +54,7 @@ export default class MovieController {
     this._popupComponent.setControlsChangeHandler((controlType) => {
       const newFilm = Movie.clone(this._card);
       newFilm[controlType] = !newFilm[controlType];
+      newFilm.watchDate = newFilm.inHistory ? new Date() : null;
       this._onDataChange(this, this._card, newFilm);
       this._mode = Mode.OPEN;
     });
@@ -77,7 +78,9 @@ export default class MovieController {
     this._filmCardComponent.setControlsChangeHandler((controlType) => {
       const newFilm = Movie.clone(this._card);
       newFilm[controlType] = !newFilm[controlType];
+      newFilm.watchDate = newFilm.inHistory ? new Date() : null;
       this._onDataChange(this, this._card, newFilm);
+
       this._mode = Mode.DEFAULT;
     });
   }
