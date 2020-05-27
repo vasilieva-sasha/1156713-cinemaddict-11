@@ -63,16 +63,16 @@ export default class Comments extends AbstractSmartComponent {
 
   createNewCommentObject() {
     this.newCommentObject = {
-      text: this._onCommentChange(),
-      name: getRandomElement(NAMES),
+      comment: this._onCommentChange(),
+      author: getRandomElement(NAMES),
       date: new Date().toISOString(),
-      emoji: this._emoji,
+      emotion: this._emoji,
     };
 
     return this.newCommentObject;
   }
 
-  addComment() {
+  addComment(newComment) {
     const commentList = this.getElement().querySelector(`.film-details__comments-list`);
     // this.newCommentObject = {
     //   text: this._onCommentChange(),
@@ -82,7 +82,8 @@ export default class Comments extends AbstractSmartComponent {
     // };
     // this.newComments = this.newComments.concat(this.newCommentObject);
 
-    this._newComment = createElement(createCommentTemplate(this.newCommentObject));
+    this.createNewCommentObject();
+    this._newComment = createElement(createCommentTemplate(newComment));
 
     commentList.append(this._newComment);
     console.log(this.newCommentObject);

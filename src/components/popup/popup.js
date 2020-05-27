@@ -84,7 +84,7 @@ export default class Popup extends AbstractSmartComponent {
 
           // this._onDataChange(movieController, this._card, newFilm);
         })
-        .then(this._commentsListComponent.addComment());
+        .then(this._commentsListComponent.addComment(newCommentModel));
 
     }
 

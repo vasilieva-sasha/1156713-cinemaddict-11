@@ -45,7 +45,7 @@ const API = class {
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
-      .then((data) => Comment.parseComments(data.commentsList));
+      .then((data) => Comment.parseComments(data.comments));
   }
 
   updateFilm(id, data) {
