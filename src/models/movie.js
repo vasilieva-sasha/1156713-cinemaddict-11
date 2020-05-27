@@ -31,6 +31,7 @@ export default class Movie {
     this.genres = data[`film_info`][`genre`];
     this.description = data[`film_info`][`description`];
     this.comments = data[`comments`];
+    this.commentsList = [];
     this.inWatchlist = Boolean(data[`user_details`][`watchlist`]);
     this.inHistory = Boolean(data[`user_details`][`already_watched`]);
     this.inFavorites = Boolean(data[`user_details`][`favorite`]);

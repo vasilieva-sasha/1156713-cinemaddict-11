@@ -55,19 +55,20 @@ export default class Popup extends AbstractSmartComponent {
   getComments() {
     this._api.getComments(this._card.id)
       .then((data) => {
-        this._commentsListComponent = new Comments(data);
+        this._card.commentsList = data;
+        this._commentsListComponent = new Comments(this._card.commentsList);
         this.getElement().querySelector(`.form-details__bottom-container`).append(this._commentsListComponent.getElement());
         this._commentsListComponent.setEmojiChangeHandler();
 
-        this._commentsListComponent.setOnCommentDelete(() => {
-          this._onDataChange(this, this._card, Object.assign({}, this._card, {
-            comments: this._commentsListComponent.newComments,
-          }));
-        });
+        // this._commentsListComponent.setOnCommentDelete(() => {
+        //   this._onDataChange(this, this._card, Object.assign({}, this._card, {
+        //     comments: this._commentsListComponent.newComments,
+        //   }));
+        // });
       });
   }
 
-  addComment(movieController) {
+  addComment() {
 
     const newCommentObject = this._commentsListComponent.createNewCommentObject();
     const newCommentModel = new Comment(newCommentObject);
@@ -76,17 +77,19 @@ export default class Popup extends AbstractSmartComponent {
       const newFilm = Movie.clone(this._card);
 
       this._api.createComment(newFilm.id, newCommentModel)
-        .then(() => {
-          newFilm.comments.concat(newCommentModel.id);
+        .then((comments) => {
+          const newCommentData = comments[comments.length - 1]; // последний элемент из массива с ответом
+          newFilm.comments.push(newCommentData.id);
+          newFilm.commentsList.push(newCommentData);
 
-          this._onDataChange(movieController, this._card, newFilm);
+          // this._onDataChange(movieController, this._card, newFilm);
         })
         .then(this._commentsListComponent.addComment());
 
     }
 
-    console.log(newCommentObject);
-    console.log(newCommentModel);
+    // console.log(newCommentObject);
+    // console.log(newCommentModel);
     // api.createComment(this._card.id, new Comment(this._commentsListComponent.newCommentObject))
     // .then(this._commentsListComponent.addComment());
   }

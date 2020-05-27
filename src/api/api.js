@@ -36,6 +36,8 @@ const API = class {
   }
 
   createComment(id, Commentdata) {
+    console.log(id);
+    console.log(Commentdata);
     return this._load({
       url: `comments/${id}`,
       method: Method.POST,
@@ -43,7 +45,7 @@ const API = class {
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
-      .then(Comment.parseComments);
+      .then((data) => Comment.parseComments(data.commentsList));
   }
 
   updateFilm(id, data) {

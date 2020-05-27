@@ -121,7 +121,7 @@ export default class MovieController {
     const enterKey = evt.key === `Enter`;
 
     if (evt.ctrlKey && enterKey) {
-      this._popupComponent.addComment(this);
+      this._popupComponent.addComment();
     }
   }
 

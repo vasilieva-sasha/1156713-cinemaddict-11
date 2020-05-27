@@ -12,7 +12,7 @@ export default class Comments extends AbstractSmartComponent {
     this._comments = comments;
     this._api = api;
     this._newComment = null;
-    this.newComments = this._comments;
+    // this.newComments = this._comments;
     this.newCommentObject = {};
 
     this._isEmoji = false;
@@ -20,8 +20,8 @@ export default class Comments extends AbstractSmartComponent {
     this._emojiContainer = null;
     this._emojiRadio = null;
 
-    this._commentDelete = null;
-    this._onCommentDelete = this._onCommentDelete.bind(this);
+    // this._commentDelete = null;
+    // this._onCommentDelete = this._onCommentDelete.bind(this);
     this._onEmojiChange = this._onEmojiChange.bind(this);
     this._onCommentChange = this._onCommentChange.bind(this);
   }
@@ -80,7 +80,7 @@ export default class Comments extends AbstractSmartComponent {
     //   date: new Date().toISOString(),
     //   emoji: this._emoji,
     // };
-    this.newComments = this.newComments.concat(this.newCommentObject);
+    // this.newComments = this.newComments.concat(this.newCommentObject);
 
     this._newComment = createElement(createCommentTemplate(this.newCommentObject));
 
@@ -126,16 +126,16 @@ export default class Comments extends AbstractSmartComponent {
     this._isEmoji = false;
   }
 
-  _onCommentDelete(evt) {
-    evt.preventDefault();
+  // _onCommentDelete(evt) {
+  //   evt.preventDefault();
 
-    const comment = evt.target.closest(`.film-details__comment`);
-    const CommentId = evt.target.dataset.id;
+  //   const comment = evt.target.closest(`.film-details__comment`);
+  //   const CommentId = evt.target.dataset.id;
 
-    const deletedComment = this.newComments.includes(CommentId);
+  //   const deletedComment = this.newComments.includes(CommentId);
 
-    this.newComments.splice([deletedComment], 1);
+  //   this.newComments.splice([deletedComment], 1);
 
-    comment.remove();
-  }
+  //   comment.remove();
+  // }
 }
