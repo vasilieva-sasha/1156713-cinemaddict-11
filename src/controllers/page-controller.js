@@ -157,14 +157,14 @@ export default class PageController {
   }
 
   _renderCards(films, container) {
-    const newFilms = renderCards(films, container, this._onDataChange, this._onViewChange);
+    const newFilms = renderCards(films, container, this._onDataChange, this._onViewChange, this._api);
 
     this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
     this._showingFilmsCount = this._showedFilmControllers.length;
   }
 
   _renderExtraCards(films, container) {
-    const newFilms = renderCards(films, container, this._onDataChange, this._onViewChange);
+    const newFilms = renderCards(films, container, this._onDataChange, this._onViewChange, this._api);
 
     this._showedExtraFilmControllers = this._showedExtraFilmControllers.concat(newFilms);
   }

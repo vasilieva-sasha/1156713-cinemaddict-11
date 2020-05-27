@@ -1,6 +1,9 @@
 import {FormatDate} from "../../consts/consts";
 import moment from "moment";
 
+export const getRandomElement = (array) => {
+  return array[Math.floor(Math.random() * array.length)];
+};
 
 export const hideText = (text) => {
   const textString = text.toString();

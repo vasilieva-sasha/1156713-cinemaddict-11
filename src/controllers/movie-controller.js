@@ -3,6 +3,7 @@ import {render, remove, replace} from "../tools/utils/render";
 import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
 import Movie from "../models/movie";
+import Comment from "../models/comment";
 
 const Mode = {
   DEFAULT: `default`,
@@ -10,10 +11,11 @@ const Mode = {
 };
 
 export default class MovieController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, onDataChange, onViewChange, api) {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
+    this._api = api;
     this._mode = Mode.DEFAULT;
 
     this._filmCardComponent = null;
@@ -31,7 +33,7 @@ export default class MovieController {
     const oldPopupComponent = this._popupComponent;
 
     this._filmCardComponent = new FilmCard(this._card);
-    this._popupComponent = new Popup(this._card);
+    this._popupComponent = new Popup(this._card, this._api);
 
     if (oldFilmCardComponent && oldPopupComponent) {
       replace(this._filmCardComponent, oldFilmCardComponent);
@@ -119,8 +121,8 @@ export default class MovieController {
     const enterKey = evt.key === `Enter`;
 
     if (evt.ctrlKey && enterKey) {
-      this._commentsListComponent.addComment();
+      this._popupComponent.addComment(this);
     }
-
   }
+
 }

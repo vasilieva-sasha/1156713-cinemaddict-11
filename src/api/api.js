@@ -35,11 +35,11 @@ const API = class {
       .then(Comment.parseComments);
   }
 
-  createComment(id, data) {
+  createComment(id, Commentdata) {
     return this._load({
       url: `comments/${id}`,
       method: Method.POST,
-      body: JSON.stringify(data.toRAW()),
+      body: JSON.stringify(Commentdata.toRAW()),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())

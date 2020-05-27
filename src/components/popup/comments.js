@@ -6,12 +6,14 @@ import {NAMES, EMOJI_SIZE} from "../../consts/consts";
 import {encode} from "he";
 
 export default class Comments extends AbstractSmartComponent {
-  constructor(comments) {
+  constructor(comments, api) {
     super();
 
     this._comments = comments;
+    this._api = api;
     this._newComment = null;
     this.newComments = this._comments;
+    this.newCommentObject = {};
 
     this._isEmoji = false;
     this._emoji = null;
@@ -59,22 +61,33 @@ export default class Comments extends AbstractSmartComponent {
       });
   }
 
-  addComment(handler) {
-    const commentList = this.getElement().querySelector(`.film-details__comments-list`);
-    const newCommentObject = {
+  createNewCommentObject() {
+    this.newCommentObject = {
       text: this._onCommentChange(),
       name: getRandomElement(NAMES),
-      date: new Date(),
+      date: new Date().toISOString(),
       emoji: this._emoji,
     };
-    this.newComments = this.newComments.concat(newCommentObject);
 
-    this._newComment = createElement(createCommentTemplate(newCommentObject));
+    return this.newCommentObject;
+  }
+
+  addComment() {
+    const commentList = this.getElement().querySelector(`.film-details__comments-list`);
+    // this.newCommentObject = {
+    //   text: this._onCommentChange(),
+    //   name: getRandomElement(NAMES),
+    //   date: new Date().toISOString(),
+    //   emoji: this._emoji,
+    // };
+    this.newComments = this.newComments.concat(this.newCommentObject);
+
+    this._newComment = createElement(createCommentTemplate(this.newCommentObject));
 
     commentList.append(this._newComment);
+    console.log(this.newCommentObject);
 
     this._clearInput();
-    handler();
   }
 
   _onEmojiChange(label) {
