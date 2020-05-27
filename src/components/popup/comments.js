@@ -5,13 +5,17 @@ import {getRandomElement, createElement} from "../../tools/utils/utils";
 import {NAMES, EMOJI_SIZE} from "../../consts/consts";
 import {encode} from "he";
 
+const SHAKE_ANIMATION_TIMEOUT = 600;
+const SHAKE_LENGTH = 1000;
+
 export default class Comments extends AbstractSmartComponent {
-  constructor(comments, api) {
+  constructor(comments, onDataChange, api) {
     super();
 
     this._comments = comments;
     this._api = api;
     this._newComment = null;
+    this._onDataChange = onDataChange;
     // this.newComments = this._comments;
     this.newCommentObject = {};
 
@@ -20,8 +24,8 @@ export default class Comments extends AbstractSmartComponent {
     this._emojiContainer = null;
     this._emojiRadio = null;
 
-    // this._commentDelete = null;
-    // this._onCommentDelete = this._onCommentDelete.bind(this);
+    this._commentDelete = null;
+    this.onCommentDelete = this.onCommentDelete.bind(this);
     this._onEmojiChange = this._onEmojiChange.bind(this);
     this._onCommentChange = this._onCommentChange.bind(this);
   }
@@ -53,10 +57,7 @@ export default class Comments extends AbstractSmartComponent {
   setOnCommentDelete(handler) {
     this.getElement().querySelectorAll(`.film-details__comment-delete`)
       .forEach((button) => {
-        button.addEventListener(`click`, (evt) => {
-          this._onCommentDelete(evt);
-          handler();
-        });
+        button.addEventListener(`click`, handler);
         this._commentDelete = handler;
       });
   }
@@ -74,21 +75,42 @@ export default class Comments extends AbstractSmartComponent {
 
   addComment(newComment) {
     const commentList = this.getElement().querySelector(`.film-details__comments-list`);
-    // this.newCommentObject = {
-    //   text: this._onCommentChange(),
-    //   name: getRandomElement(NAMES),
-    //   date: new Date().toISOString(),
-    //   emoji: this._emoji,
-    // };
-    // this.newComments = this.newComments.concat(this.newCommentObject);
+
+    const input = this.getElement().querySelector(`.film-details__comment-input`);
+    input.setAttribute(`disabled`, `disabled`);
 
     this.createNewCommentObject();
     this._newComment = createElement(createCommentTemplate(newComment));
 
     commentList.append(this._newComment);
-    console.log(this.newCommentObject);
 
     this._clearInput();
+  }
+
+  errorSendHandler() {
+    const input = this.getElement().querySelector(`.film-details__comment-input`);
+    input.removeAttribute(`disabled`);
+
+    const newCommentBlock = this.getElement().querySelector(`.film-details__new-comment`);
+    newCommentBlock.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / SHAKE_LENGTH}s`;
+
+    newCommentBlock.querySelector(`.film-details__comment-input`).style.border = `2px solid red`;
+
+    setTimeout(() => {
+      newCommentBlock.style.animation = ``;
+      newCommentBlock.style.animation = ``;
+      newCommentBlock.querySelector(`.film-details__comment-input`).style.border = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
+  errorDeleteHandler(evt) {
+    const commentBlock = evt.target.closest(`.film-details__comment`);
+    commentBlock.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / SHAKE_LENGTH}s`;
+
+    setTimeout(() => {
+      commentBlock.style.animation = ``;
+      commentBlock.style.animation = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _onEmojiChange(label) {
@@ -127,16 +149,27 @@ export default class Comments extends AbstractSmartComponent {
     this._isEmoji = false;
   }
 
-  // _onCommentDelete(evt) {
-  //   evt.preventDefault();
+  onCommentDelete(evt) {
+    evt.preventDefault();
 
-  //   const comment = evt.target.closest(`.film-details__comment`);
-  //   const CommentId = evt.target.dataset.id;
+    const comment = evt.target.closest(`.film-details__comment`);
+    const commentId = comment.dataset.id;
+    const deleteButton = evt.target;
 
-  //   const deletedComment = this.newComments.includes(CommentId);
+    this._api.deleteComment(commentId)
+      .then(() => {
+        deleteButton.innerHTML = `Deleting...`;
+        deleteButton.setAttribute(`disabled`, `disabled`);
+        comment.remove();
+      })
+      .catch(() => {
+        deleteButton.removeAttribute(`disabled`, `disabled`);
+        this.errorDeleteHandler(evt);
+      });
+  }
 
-  //   this.newComments.splice([deletedComment], 1);
-
-  //   comment.remove();
-  // }
+  _updateCommentsCount() {
+    this.getElement().querySelector(`.film-details__comments-count`)
+      .textContent = this._comments.length;
+  }
 }

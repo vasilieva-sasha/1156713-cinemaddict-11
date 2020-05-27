@@ -3,7 +3,6 @@ import {render, remove, replace} from "../tools/utils/render";
 import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
 import Movie from "../models/movie";
-import Comment from "../models/comment";
 
 const Mode = {
   DEFAULT: `default`,
@@ -33,7 +32,7 @@ export default class MovieController {
     const oldPopupComponent = this._popupComponent;
 
     this._filmCardComponent = new FilmCard(this._card);
-    this._popupComponent = new Popup(this._card, this._api);
+    this._popupComponent = new Popup(this._card, this._api, this._onDataChange, this);
 
     if (oldFilmCardComponent && oldPopupComponent) {
       replace(this._filmCardComponent, oldFilmCardComponent);

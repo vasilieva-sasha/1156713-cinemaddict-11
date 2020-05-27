@@ -36,8 +36,6 @@ const API = class {
   }
 
   createComment(id, Commentdata) {
-    console.log(id);
-    console.log(Commentdata);
     return this._load({
       url: `comments/${id}`,
       method: Method.POST,
@@ -46,6 +44,12 @@ const API = class {
     })
       .then((response) => response.json())
       .then((data) => Comment.parseComments(data.comments));
+  }
+
+  deleteComment(id) {
+    return this._load({
+      url: `comments/${id}`,
+      method: Method.DELETE});
   }
 
   updateFilm(id, data) {

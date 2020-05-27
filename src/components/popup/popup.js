@@ -1,22 +1,20 @@
 import {createPopupTemplate} from "./components/popup";
 import AbstractSmartComponent from "../abstract-smart-component";
-import API from "../../api/api";
 import Comments from "./comments";
 import Comment from "../../models/comment";
 import Movie from "../../models/movie";
 
-// const AUTHORIZATION = `Basic ghfghgggjgm56vjckxg`;
-// const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
-// const api = new API(END_POINT, AUTHORIZATION);
 
 export default class Popup extends AbstractSmartComponent {
-  constructor(card, api) {
+  constructor(card, api, onDataChange, movieController) {
     super();
     this._card = card;
     this._api = api;
+    this._movieController = movieController;
 
     this._popupClose = null;
     this._onControlsChange = null;
+    this._onDataChange = onDataChange;
   }
 
   getTemplate() {
@@ -56,42 +54,37 @@ export default class Popup extends AbstractSmartComponent {
     this._api.getComments(this._card.id)
       .then((data) => {
         this._card.commentsList = data;
-        this._commentsListComponent = new Comments(this._card.commentsList);
+        this._commentsListComponent = new Comments(this._card.commentsList, this._onDataChange, this._api);
         this.getElement().querySelector(`.form-details__bottom-container`).append(this._commentsListComponent.getElement());
         this._commentsListComponent.setEmojiChangeHandler();
 
-        // this._commentsListComponent.setOnCommentDelete(() => {
-        //   this._onDataChange(this, this._card, Object.assign({}, this._card, {
-        //     comments: this._commentsListComponent.newComments,
-        //   }));
-        // });
+        this._commentsListComponent.setOnCommentDelete((evt) => {
+          this._commentsListComponent.onCommentDelete(evt);
+          this._onDataChange(this._movieController, this._card, this._card);
+        });
       });
   }
 
-  addComment() {
 
+  addComment() {
     const newCommentObject = this._commentsListComponent.createNewCommentObject();
     const newCommentModel = new Comment(newCommentObject);
 
-    if (newCommentModel) {
-      const newFilm = Movie.clone(this._card);
+    const newFilm = Movie.clone(this._card);
 
-      this._api.createComment(newFilm.id, newCommentModel)
-        .then((comments) => {
-          const newCommentData = comments[comments.length - 1]; // последний элемент из массива с ответом
-          newFilm.comments.push(newCommentData.id);
-          newFilm.commentsList.push(newCommentData);
+    this._api.createComment(newFilm.id, newCommentModel)
+      .then((comments) => {
+        const newCommentData = comments[comments.length - 1];
+        newFilm.comments.push(newCommentData.id);
+        newFilm.commentsList.push(newCommentData);
+        this._commentsListComponent.addComment(newCommentModel);
 
-          // this._onDataChange(movieController, this._card, newFilm);
-        })
-        .then(this._commentsListComponent.addComment(newCommentModel));
+        this._onDataChange(this._movieController, this._card, newFilm);
+      })
+      .catch(() => {
+        this._commentsListComponent.errorSendHandler();
+      });
 
-    }
-
-    // console.log(newCommentObject);
-    // console.log(newCommentModel);
-    // api.createComment(this._card.id, new Comment(this._commentsListComponent.newCommentObject))
-    // .then(this._commentsListComponent.addComment());
   }
 
 }
