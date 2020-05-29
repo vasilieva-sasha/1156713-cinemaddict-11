@@ -1,4 +1,4 @@
-const createNoFilmsMarkup = () => {
+const createNoFilmsMessageMarkup = () => {
   return (
     `<section class="films">
       <section class="films-list">
@@ -8,4 +8,4 @@ const createNoFilmsMarkup = () => {
   );
 };
 
-export {createNoFilmsMarkup};
+export {createNoFilmsMessageMarkup};

@@ -1,6 +1,5 @@
 export const SHOW_CARD_AMOUNT = 5;
 export const SHOW_EXTRA_CARD_AMOUNT = 2;
-export const CARD_AMOUNT = 24;
 export const EMOJI_SIZE = 55;
 
 export const Position = {
@@ -18,57 +17,9 @@ export const Class = {
 
 export const FormatDate = {
   COMMENT_DATE: `YYYY/MM/DD HH:MM`,
-  FILM_DURATION: `h[h] mm[m]`,
-  FILM_DURATION_SHORT: `mm[m]`,
   RELEASE_YEAR: `YYYY`,
   RELEASE_DATE: `DD MMMM YYYY`
 };
-
-export const NAMES = [
-  `Tim Macoveev`,
-  `John Doe`,
-  `Vasya Pupkin`,
-  `Brad Pitt`,
-  `Anne Wigton`,
-  `Heinz Herald`,
-  `Richard Weil`,
-  `Anthony Mann`,
-  `Erich von Stroheim`,
-  `Mary Beth Hughes`,
-  `Dan Duryea`
-];
-
-export const COUNTRIES = [
-  `USA`,
-  `Russia`,
-  `Turkey`,
-  `France`
-];
-
-export const GENRES = [
-  `Musical`,
-  `Horror`,
-  `Thriller`,
-  `Drama`,
-  `Romance`,
-];
-
-export const MONTH_NAMES = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`,
-];
-
-export const WEEK = 7;
 
 export const SortType = {
   DATE: `date`,
@@ -117,3 +68,9 @@ export const STATISTIC_FILTER = [
   },
 
 ];
+
+
+export const Mode = {
+  DEFAULT: `default`,
+  OPEN: `open`,
+};

@@ -1,4 +1,4 @@
-import {getRightWordComments} from "../../../../mock/comments/comment";
+import {getRightWordComments} from "../../../../tools/utils/utils";
 
 const createCommentsMurkup = (commentItem, comments) => {
   return (

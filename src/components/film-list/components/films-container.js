@@ -1,7 +1,7 @@
-const createMainContentTemplate = () => {
+const createFilmsContainerTemplate = () => {
   return (
     `<section class="films"></section>`
   );
 };
 
-export {createMainContentTemplate};
+export {createFilmsContainerTemplate};

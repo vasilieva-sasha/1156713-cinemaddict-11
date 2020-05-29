@@ -1,3 +1,5 @@
+import {getFilmDuration} from "../../../tools/utils/utils";
+
 const createTableRowMarkup = ({name, info}) => {
   return (
     `<tr class="film-details__row">
@@ -22,6 +24,8 @@ const getCorrectWord = (genres) => {
   }
 };
 
+const createTableRowsMarkup = (rows) => rows.map(createTableRowMarkup).join(`\n`);
+
 const createGenresRow = (genres) => {
   return (
     `<tr class="film-details__row">
@@ -33,11 +37,34 @@ const createGenresRow = (genres) => {
   );
 };
 
+const updateFormatDuration = (runtime) => {
+  return {
+    name: runtime.name,
+    info: getFilmDuration(runtime.info)
+  };
+};
+
+const addSpaces = (details) => {
+  return {
+    name: details.name,
+    info: details.info.join(`, `)
+  };
+};
+
+const getRows = ({director, writers, actors, release, runtime, country}) =>
+  Object.values({
+    director,
+    writers: addSpaces(writers),
+    actors: addSpaces(actors),
+    release,
+    runtime: updateFormatDuration(runtime),
+    country
+  });
+
 const createTableTemplate = (details, genres) => {
-  const tableRowMarkup = details.map(createTableRowMarkup).join(`\n`);
   return (
     `<table class="film-details__table">
-    ${tableRowMarkup}
+    ${createTableRowsMarkup(getRows(details))}
     ${createGenresRow(genres)}
     </table>`
   );

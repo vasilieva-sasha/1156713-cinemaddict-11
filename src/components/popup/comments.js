@@ -1,83 +1,184 @@
 import AbstractSmartComponent from "../abstract-smart-component";
 import {createCommentTemplate} from "./components/comments/comment-markup";
 import {createCommentsMurkup} from "./components/comments/comments-list-markup";
-import {getRandomElement, createElement} from "../../tools/utils/utils";
-import {NAMES, EMOJI_SIZE} from "../../consts/consts";
+import {createElement} from "../../tools/utils/utils";
+import {EMOJI_SIZE, Mode} from "../../consts/consts";
 import {encode} from "he";
+import Movie from "../../models/movie";
+import Comment from "../../models/comment";
+
+const SHAKE_ANIMATION_TIMEOUT = 600;
+const SHAKE_LENGTH = 1000;
 
 export default class Comments extends AbstractSmartComponent {
-  constructor(comments) {
+  constructor(card, dataChangeHandler, api, movieController) {
     super();
 
-    this._comments = comments;
+    this._card = card;
+    this._list = this._card.commentsList;
+    this._api = api;
+    this._movieController = movieController;
     this._newComment = null;
-    this.newComments = this._comments;
+    this._dataChangeHandler = dataChangeHandler;
 
+    this._mode = Mode.OPEN;
     this._isEmoji = false;
     this._emoji = null;
     this._emojiContainer = null;
     this._emojiRadio = null;
 
-    this._commentDelete = null;
-    this._onCommentDelete = this._onCommentDelete.bind(this);
-    this._onEmojiChange = this._onEmojiChange.bind(this);
-    this._onCommentChange = this._onCommentChange.bind(this);
+    this._deleteHandlerHandler = null;
+    this.deleteHandler = this.deleteHandler.bind(this);
+    this._emojiChangeHandler = this._emojiChangeHandler.bind(this);
+    this._changeHandler = this._changeHandler.bind(this);
+    this._ctrlEnterEventHandler = this._ctrlEnterEventHandler.bind(this);
   }
 
   getTemplate() {
-    const listMarkup = this._comments.map((comment) => this.getComment(comment)).join(`\n`);
+    const listMarkup = this._list.map((comment) => this.getItemTemplate(comment)).join(`\n`);
 
-    return createCommentsMurkup(listMarkup, this._comments);
+    return createCommentsMurkup(listMarkup, this._list);
   }
 
-  getComment(comment) {
+  getItemTemplate(comment) {
     return createCommentTemplate(comment);
   }
 
   recoveryListeners() {
     this.setEmojiChangeHandler();
-    this.setOnCommentDelete(this._commentDelete);
+    this.setDeleteHandler(this._deleteHandlerHandler);
+    this.setSendCommentHandler();
   }
 
   setEmojiChangeHandler() {
     this.getElement().querySelectorAll(`.film-details__emoji-label`)
       .forEach((label) => {
         label.addEventListener(`click`, () => {
-          this._onEmojiChange(label);
+          this._emojiChangeHandler(label);
         });
       });
   }
 
-  setOnCommentDelete(handler) {
+  setSendCommentHandler() {
+    this.getElement().querySelector(`.film-details__new-comment`)
+     .addEventListener(`keyup`, this._ctrlEnterEventHandler);
+  }
+
+  setDeleteHandler(handler) {
     this.getElement().querySelectorAll(`.film-details__comment-delete`)
       .forEach((button) => {
-        button.addEventListener(`click`, (evt) => {
-          this._onCommentDelete(evt);
-          handler();
-        });
-        this._commentDelete = handler;
+        button.addEventListener(`click`, handler);
+        this._deleteHandler = handler;
       });
   }
 
-  addComment(handler) {
-    const commentList = this.getElement().querySelector(`.film-details__comments-list`);
-    const newCommentObject = {
-      text: this._onCommentChange(),
-      name: getRandomElement(NAMES),
-      date: new Date(),
-      emoji: this._emoji,
-    };
-    this.newComments = this.newComments.concat(newCommentObject);
+  addComment() {
+    const newComment = this.createNewData();
+    if (newComment.emotion && newComment.comment) {
+      const newCommentModel = new Comment(newComment);
 
-    this._newComment = createElement(createCommentTemplate(newCommentObject));
+      const newFilm = Movie.clone(this._card);
+
+      this._api.createComment(newFilm.id, newCommentModel)
+        .then((comments) => {
+          const newCommentData = comments[comments.length - 1];
+          newFilm.comments.push(newCommentData.id);
+          newFilm.commentsList.push(newCommentData);
+          this.addCommentMarkup(newCommentModel);
+          this._dataChangeHandler(this._movieController, this._card, newFilm, this._mode);
+        })
+        .catch(() => {
+          this.errorSendHandler();
+        });
+    } else if (!newComment.comment) {
+      this.validateInput();
+    } else if (!newComment.emotion) {
+      this.validateEmoji();
+    }
+  }
+
+  createNewData() {
+    return {
+      comment: this._changeHandler(),
+      date: new Date().toISOString(),
+      emotion: this._emoji,
+    };
+  }
+
+  addCommentMarkup(newComment) {
+    const commentList = this.getElement().querySelector(`.film-details__comments-list`);
+
+    const input = this.getElement().querySelector(`.film-details__comment-input`);
+    input.setAttribute(`disabled`, `disabled`);
+
+    this.createNewData();
+    this._newComment = createElement(createCommentTemplate(newComment));
 
     commentList.append(this._newComment);
 
     this._clearInput();
-    handler();
   }
 
-  _onEmojiChange(label) {
+  validateInput() {
+    this.getElement().querySelector(`.film-details__comment-input`).style.border = `2px solid red`;
+    setTimeout(() => {
+      this.getElement().querySelector(`.film-details__comment-input`).style.border = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
+  validateEmoji() {
+    this.getElement().querySelector(`.film-details__add-emoji-label`).style.border = `2px solid red`;
+    setTimeout(() => {
+      this.getElement().querySelector(`.film-details__add-emoji-label`).style.border = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
+  errorSendHandler() {
+    const input = this.getElement().querySelector(`.film-details__comment-input`);
+    input.removeAttribute(`disabled`);
+
+    const newCommentBlock = this.getElement().querySelector(`.film-details__new-comment`);
+    newCommentBlock.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / SHAKE_LENGTH}s`;
+
+    newCommentBlock.querySelector(`.film-details__comment-input`).style.border = `2px solid red`;
+
+    setTimeout(() => {
+      newCommentBlock.style.animation = ``;
+      newCommentBlock.style.animation = ``;
+      newCommentBlock.querySelector(`.film-details__comment-input`).style.border = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
+  errorDeleteHandler(evt) {
+    const commentBlock = evt.target.closest(`.film-details__comment`);
+    commentBlock.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / SHAKE_LENGTH}s`;
+
+    setTimeout(() => {
+      commentBlock.style.animation = ``;
+      commentBlock.style.animation = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
+  deleteHandler(evt) {
+    evt.preventDefault();
+
+    const comment = evt.target.closest(`.film-details__comment`);
+    const commentId = comment.dataset.id;
+    const deleteButton = evt.target;
+
+    this._api.deleteComment(commentId)
+      .then(() => {
+        deleteButton.innerHTML = `Deleting...`;
+        deleteButton.setAttribute(`disabled`, `disabled`);
+        comment.remove();
+      })
+      .catch(() => {
+        deleteButton.removeAttribute(`disabled`, `disabled`);
+        this.errorDeleteHandler(evt);
+      });
+  }
+
+  _emojiChangeHandler(label) {
     this._emojiContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
 
     const labelId = label.getAttribute(`for`);
@@ -100,12 +201,11 @@ export default class Comments extends AbstractSmartComponent {
     }
   }
 
-  _onCommentChange() {
+  _changeHandler() {
     const commentText = encode(this.getElement().querySelector(`.film-details__comment-input`).value);
     return commentText;
   }
 
-  // наверное убрать
   _clearInput() {
     this._emojiContainer.removeChild(this._emojiContainer.querySelector(`img`));
     this._emojiRadio.removeAttribute(`checked`);
@@ -113,16 +213,11 @@ export default class Comments extends AbstractSmartComponent {
     this._isEmoji = false;
   }
 
-  _onCommentDelete(evt) {
-    evt.preventDefault();
+  _ctrlEnterEventHandler(evt) {
+    const enterKey = evt.key === `Enter`;
 
-    const comment = evt.target.closest(`.film-details__comment`);
-    const CommentId = evt.target.dataset.id;
-
-    const deletedComment = this.newComments.includes(CommentId);
-
-    this.newComments.splice([deletedComment], 1);
-
-    comment.remove();
+    if (evt.ctrlKey && enterKey) {
+      this.addComment();
+    }
   }
 }

@@ -1,17 +1,26 @@
 export default class Comment {
-  constructor(data) {
-    this.id = data[`id`];
-    this.text = data[`comment`];
-    this.name = data[`author`];
-    this.date = data[`date`];
-    this.emoji = data[`emotion`];
+  constructor(CommentData) {
+    this.id = CommentData[`id`] ? CommentData[`id`] : null;
+    this.text = CommentData[`comment`];
+    this.name = CommentData[`author`];
+    this.date = CommentData[`date`];
+    this.emoji = CommentData[`emotion`];
   }
 
-  static parseComment(data) {
-    return new Comment(data);
+  toRAW() {
+    return {
+      "author": this.name,
+      "comment": this.text,
+      "date": this.date,
+      "emotion": this.emoji
+    };
   }
 
-  static parseComments(data) {
-    return data.map(Comment.parseComment);
+  static parseComment(CommentData) {
+    return new Comment(CommentData);
+  }
+
+  static parseComments(CommentsData) {
+    return CommentsData.map(Comment.parseComment);
   }
 }

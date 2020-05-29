@@ -15,7 +15,6 @@ export default class Statistic extends AbstractSmartComponent {
     this._chartCounts = null;
     this._currentFilterType = `all-time`;
     this._filteredFilms = null;
-    this._statisticsResults = {};
 
     this.show.bind(this);
   }
@@ -28,12 +27,10 @@ export default class Statistic extends AbstractSmartComponent {
     this._filteredFilms = this._filmsModel.getWatchedFilms();
 
     this._setFilterChangeHandler();
-    this._setChartData();
     this._renderChart();
   }
 
   rerender() {
-    this._setChartData();
     super.rerender();
 
     const input = this.getElement().querySelector(`[data-filter-type=${this._currentFilterType}]`);
@@ -82,26 +79,20 @@ export default class Statistic extends AbstractSmartComponent {
     });
   }
 
-  _setChartData() {
-    this._chartData = this._filmsModel.getWatchedFilmsCountByGenre(this._filteredFilms, this._currentFilterType);
-
-    this._chartLabels = this._chartData.map((genre) => genre.name);
-    this._chartCounts = this._chartData.map((genre) => genre.count);
-  }
-
   _renderChart() {
     const BAR_HEIGHT = 50;
     const statisticCtx = document.querySelector(`.statistic__chart`);
 
+    this._chartData = this._filmsModel.getWatchedFilmsCountByGenre(this._filteredFilms, this._currentFilterType);
     statisticCtx.height = BAR_HEIGHT * this._chartData.length;
 
     this._chart = new Chart(statisticCtx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
       data: {
-        labels: this._chartLabels,
+        labels: this._chartData.map((genre) => genre.name),
         datasets: [{
-          data: this._chartCounts,
+          data: this._chartData.map((genre) => genre.count),
           backgroundColor: `#ffe800`,
           hoverBackgroundColor: `#ffe800`,
           anchor: `start`,

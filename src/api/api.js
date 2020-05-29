@@ -35,22 +35,28 @@ const API = class {
       .then(Comment.parseComments);
   }
 
-  createComment(id, data) {
+  createComment(id, Commentdata) {
     return this._load({
       url: `comments/${id}`,
       method: Method.POST,
-      body: JSON.stringify(data.toRAW()),
+      body: JSON.stringify(Commentdata.toRAW()),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
-      .then(Comment.parseComments);
+      .then((film) => Comment.parseComments(film.comments));
   }
 
-  updateFilm(id, data) {
+  deleteComment(id) {
+    return this._load({
+      url: `comments/${id}`,
+      method: Method.DELETE});
+  }
+
+  updateFilm(id, filmData) {
     return this._load({
       url: `movies/${id}`,
       method: Method.PUT,
-      body: JSON.stringify(data.toRAW()),
+      body: JSON.stringify(filmData.toRAW()),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())

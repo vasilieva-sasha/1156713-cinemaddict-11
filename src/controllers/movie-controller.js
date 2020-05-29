@@ -1,27 +1,24 @@
-import {Position, Class} from "../consts/consts";
+import {Position, Class, Mode} from "../consts/consts";
 import {render, remove, replace} from "../tools/utils/render";
 import Popup from "../components/popup/popup";
 import FilmCard from "../components/film-card/film-card";
 import Movie from "../models/movie";
 
-const Mode = {
-  DEFAULT: `default`,
-  OPEN: `open`,
-};
 
 export default class MovieController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, dataChangeHandler, viewChangeHandler, api, cardControlChangeHandler) {
     this._container = container;
-    this._onDataChange = onDataChange;
-    this._onViewChange = onViewChange;
+    this._dataChangeHandler = dataChangeHandler;
+    this._viewChangeHandler = viewChangeHandler;
+    this._api = api;
+    this._cardControlChangeHandler = cardControlChangeHandler;
     this._mode = Mode.DEFAULT;
 
     this._filmCardComponent = null;
     this._popupComponent = null;
     this._commentsListComponent = null;
 
-    this._onEscKeyDown = this._onEscKeyDown.bind(this);
-    this._onCtrlEnterEvent = this._onCtrlEnterEvent.bind(this);
+    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
   render(card) {
@@ -31,7 +28,7 @@ export default class MovieController {
     const oldPopupComponent = this._popupComponent;
 
     this._filmCardComponent = new FilmCard(this._card);
-    this._popupComponent = new Popup(this._card);
+    this._popupComponent = new Popup(this._card, this._api, this._dataChangeHandler, this);
 
     if (oldFilmCardComponent && oldPopupComponent) {
       replace(this._filmCardComponent, oldFilmCardComponent);
@@ -41,20 +38,21 @@ export default class MovieController {
     }
 
     this._filmCardComponent.setClickHandler(() => {
-      this._onCardClick();
+      this._cardClickHandler();
     });
 
     this._popupComponent.getComments();
 
-    this._onPopupClose = this._onPopupClose.bind(this);
-    this._popupComponent.setPopupClose(this._onPopupClose);
+    this._popupCloseHandler = this._popupCloseHandler.bind(this);
+    this._popupComponent.setCloseHandler(this._popupCloseHandler);
 
     this._popupComponent.setControlsChangeHandler((controlType) => {
+      this._mode = Mode.OPEN;
       const newFilm = Movie.clone(this._card);
       newFilm[controlType] = !newFilm[controlType];
       newFilm.watchDate = newFilm.inHistory ? new Date() : null;
-      this._onDataChange(this, this._card, newFilm);
-      this._mode = Mode.OPEN;
+      this._dataChangeHandler(this, this._card, newFilm, this._mode);
+      this._popupComponent.getComments();
     });
 
     this._setControlsListeners();
@@ -62,29 +60,28 @@ export default class MovieController {
 
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
-      this._onPopupClose();
+      this._popupCloseHandler();
     }
   }
 
   destroy() {
     remove(this._filmCardComponent);
     remove(this._popupComponent);
-    document.removeEventListener(`keydown`, this._onEscKeyDown);
+    document.removeEventListener(`keydown`, this._escKeyDownHandler);
   }
 
   _setControlsListeners() {
     this._filmCardComponent.setControlsChangeHandler((controlType) => {
+      this._mode = Mode.DEFAULT;
       const newFilm = Movie.clone(this._card);
       newFilm[controlType] = !newFilm[controlType];
       newFilm.watchDate = newFilm.inHistory ? new Date() : null;
-      this._onDataChange(this, this._card, newFilm);
-
-      this._mode = Mode.DEFAULT;
+      this._dataChangeHandler(this, this._card, newFilm, this._mode);
     });
   }
 
-  _onCardClick() {
-    this._onViewChange();
+  _cardClickHandler() {
+    this._viewChangeHandler();
     this._mode = Mode.OPEN;
 
     render(Class.FOOTER, this._popupComponent, Position.AFTEREND);
@@ -94,33 +91,20 @@ export default class MovieController {
     }
     this._popupComponent.recoveryListeners();
 
-    document.addEventListener(`keydown`, this._onEscKeyDown);
-    document.addEventListener(`keyup`, this._onCtrlEnterEvent);
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
   }
 
-  _onPopupClose() {
+  _popupCloseHandler() {
     remove(this._popupComponent);
-    document.removeEventListener(`keydown`, this._onEscKeyDown);
 
     this._mode = Mode.DEFAULT;
   }
 
-
-  _onEscKeyDown(evt) {
+  _escKeyDownHandler(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
-      this._onPopupClose();
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
+      this._popupCloseHandler();
     }
-  }
-
-  _onCtrlEnterEvent(evt) {
-    const enterKey = evt.key === `Enter`;
-
-    if (evt.ctrlKey && enterKey) {
-      this._commentsListComponent.addComment();
-    }
-
   }
 }

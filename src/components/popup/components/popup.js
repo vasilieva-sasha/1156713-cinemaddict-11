@@ -25,7 +25,7 @@ const createPopupTemplate = (card) => {
               </div>
                 ${createTableTemplate(details, genres)}
               <p class="film-details__film-description">
-                ${description}
+                ${description[0].toUpperCase() + description.substring(1)}
               </p>
             </div>
           </div>

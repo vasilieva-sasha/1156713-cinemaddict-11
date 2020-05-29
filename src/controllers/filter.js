@@ -13,17 +13,17 @@ export default class FilterController {
     this._showedFilmControllers = [];
 
     this.activeFilterType = `all`;
-    this._filterComponent = null;
+    this._navigationComponent = null;
 
-    this._onStatsClick = null;
-    this._onFilterClick = null;
-    this._onDataChange = this._onDataChange.bind(this);
+    this._statsClickHandler = null;
+    this._changeHandler = null;
+    this._dataChangeHandler = this._dataChangeHandler.bind(this);
 
     this.setStatisticHandler = this.setStatisticHandler.bind(this);
-    this.setFilterChangeHandler = this.setFilterChangeHandler.bind(this);
+    this.setChangeHandler = this.setChangeHandler.bind(this);
 
 
-    this._filmsModel.setDataChangeHandler(this._onDataChange);
+    this._filmsModel.setDataChangeHandler(this._dataChangeHandler);
 
   }
 
@@ -40,40 +40,40 @@ export default class FilterController {
       };
     });
 
-    const oldComponent = this._filterComponent;
+    const oldComponent = this._navigationComponent;
 
-    this._filterComponent = new Navigation(filters);
+    this._navigationComponent = new Navigation(filters);
 
-    if (this._onFilterClick) {
-      this.setFilterChangeHandler(this._onFilterClick);
+    if (this._changeHandler) {
+      this.setChangeHandler(this._changeHandler);
     }
 
 
-    if (this._onStatsClick) {
-      this._filterComponent.setStatsSelectHandler(this._onStatsClick);
+    if (this._statsClickHandler) {
+      this._navigationComponent.setStatsSelectHandler(this._statsClickHandler);
     }
 
 
     if (oldComponent) {
-      replace(this._filterComponent, oldComponent);
+      replace(this._navigationComponent, oldComponent);
     } else {
-      render(container, this._filterComponent, Position.BEFOREEND);
+      render(container, this._navigationComponent, Position.BEFOREEND);
     }
 
   }
 
-  setFilterChangeHandler(handler) {
-    this._filterComponent.setFilterChangeHandler(handler);
-    this._onFilterClick = handler;
+  setChangeHandler(handler) {
+    this._navigationComponent.setFilterChangeHandler(handler);
+    this._changeHandler = handler;
   }
 
   setStatisticHandler(handler) {
-    this._filterComponent.setStatsSelectHandler(handler);
+    this._navigationComponent.setStatsSelectHandler(handler);
 
-    this._onStatsClick = handler;
+    this._statsClickHandler = handler;
   }
 
-  _onDataChange() {
+  _dataChangeHandler() {
     this.render();
   }
 }

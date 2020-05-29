@@ -1,40 +1,49 @@
+import {FormatDate} from "../consts/consts";
+import {formatDate} from "../tools/utils/utils";
+
 export default class Movie {
-  constructor(data) {
-    this.id = data[`id`];
-    this.title = data[`film_info`][`title`];
-    this.original = data[`film_info`][`alternative_title`];
-    this.poster = data[`film_info`][`poster`];
-    this.filmAge = data[`film_info`][`age_rating`];
-    this.rate = data[`film_info`][`total_rating`];
-    this.year = data[`film_info`][`release`][`date`];
-    this.details = [
-      {
+  constructor(movieData) {
+    this.id = movieData[`id`];
+    this.title = movieData[`film_info`][`title`];
+    this.original = movieData[`film_info`][`alternative_title`];
+    this.poster = movieData[`film_info`][`poster`];
+    this.filmAge = movieData[`film_info`][`age_rating`];
+    this.rate = movieData[`film_info`][`total_rating`];
+    this.year = movieData[`film_info`][`release`][`date`];
+    this.details = {
+      director: {
         name: `Director`,
-        info: data[`film_info`][`director`]
-      }, {
-        name: `Writers`,
-        info: data[`film_info`][`writers`]
-      }, {
-        name: `Actors`,
-        info: data[`film_info`][`actors`]
-      }, {
-        name: `Release Date`,
-        info: data[`film_info`][`release`][`date`]
-      }, {
-        name: `Runtime`,
-        info: data[`film_info`][`runtime`]
-      }, {
-        name: `Country`,
-        info: data[`film_info`][`release`][`release_country`]
+        info: movieData[`film_info`][`director`]
       },
-    ];
-    this.genres = data[`film_info`][`genre`];
-    this.description = data[`film_info`][`description`];
-    this.comments = data[`comments`];
-    this.inWatchlist = Boolean(data[`user_details`][`watchlist`]);
-    this.inHistory = Boolean(data[`user_details`][`already_watched`]);
-    this.inFavorites = Boolean(data[`user_details`][`favorite`]);
-    this.watchDate = data[`user_details`][`watching_date`];
+      writers: {
+        name: `Writers`,
+        info: movieData[`film_info`][`writers`]
+      },
+      actors: {
+        name: `Actors`,
+        info: movieData[`film_info`][`actors`]
+      },
+      release: {
+        name: `Release Date`,
+        info: formatDate(movieData[`film_info`][`release`][`date`], FormatDate.RELEASE_DATE)
+      },
+      runtime: {
+        name: `Runtime`,
+        info: movieData[`film_info`][`runtime`]
+      },
+      country: {
+        name: `Country`,
+        info: movieData[`film_info`][`release`][`release_country`]
+      },
+    };
+    this.genres = movieData[`film_info`][`genre`];
+    this.description = movieData[`film_info`][`description`];
+    this.comments = movieData[`comments`];
+    this.commentsList = [];
+    this.inWatchlist = Boolean(movieData[`user_details`][`watchlist`]);
+    this.inHistory = Boolean(movieData[`user_details`][`already_watched`]);
+    this.inFavorites = Boolean(movieData[`user_details`][`favorite`]);
+    this.watchDate = movieData[`user_details`][`watching_date`];
   }
 
   toRAW() {
@@ -47,14 +56,14 @@ export default class Movie {
         "total_rating": this.rate,
         "poster": this.poster,
         "age_rating": this.filmAge,
-        "director": this.details[0][`info`],
-        "writers": this.details[1][`info`],
-        "actors": this.details[2][`info`],
+        "director": this.details.director.info,
+        "writers": this.details.writers.info,
+        "actors": this.details.actors.info,
         "release": {
-          "date": this.details[3][`info`],
-          "release_country": this.details[5][`info`]
+          "date": new Date(this.details.release.info).toISOString(),
+          "release_country": this.details.country.info
         },
-        "runtime": this.details[4][`info`],
+        "runtime": this.details.runtime.info,
         "genre": this.genres,
         "description": this.description
       },
@@ -67,15 +76,15 @@ export default class Movie {
     };
   }
 
-  static parseMovie(data) {
-    return new Movie(data);
+  static parseMovie(movieData) {
+    return new Movie(movieData);
   }
 
-  static parseMovies(data) {
-    return data.map(Movie.parseMovie);
+  static parseMovies(moviesData) {
+    return moviesData.map(Movie.parseMovie);
   }
 
-  static clone(data) {
-    return new Movie(data.toRAW());
+  static clone(movieData) {
+    return new Movie(movieData.toRAW());
   }
 }

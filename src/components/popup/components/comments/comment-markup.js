@@ -7,7 +7,7 @@ const createCommentTemplate = ({id, text, name, date, emoji}) => {
         <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
       </span>
       <div>
-        <p class="film-details__comment-text">${text}</p>
+        <p class="film-details__comment-text">${text[0].toUpperCase() + text.substring(1)}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${name}</span>
           <span class="film-details__comment-day">${getCommentDate(date)}</span>

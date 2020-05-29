@@ -1,8 +1,8 @@
-import {createMainContentTemplate} from "./components/films-container";
+import {createFilmsContainerTemplate} from "./components/films-container";
 import AbstractComponent from "../abstract-component";
 
 export default class FilmContainer extends AbstractComponent {
   getTemplate() {
-    return createMainContentTemplate(this._element);
+    return createFilmsContainerTemplate(this._element);
   }
 }

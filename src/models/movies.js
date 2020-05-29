@@ -9,9 +9,9 @@ export default class Movies {
 
     this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];
-    this.setFilterChangeHandler.bind(this);
-    this.getWatchedFilms.bind(this);
-    this.getWatchedFilmsCountByGenre.bind(this);
+    this.setFilterChangeHandler = this.setFilterChangeHandler.bind(this);
+    this.getWatchedFilms = this.getWatchedFilms.bind(this);
+    this.getWatchedFilmsCountByGenre = this.getWatchedFilmsCountByGenre.bind(this);
   }
 
   getFilms() {
@@ -67,7 +67,7 @@ export default class Movies {
     const watchedFilms = this.getFilteredFilmsforStats(filterType);
 
     return watchedFilms.reduce((length, film) => {
-      return length + film.details[4][`info`];
+      return length + film.details.runtime.info;
     }, 0);
   }
 

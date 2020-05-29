@@ -107,13 +107,13 @@ const createButtonShowTemplate = () => {
 /*!********************************************!*\
   !*** ./src/components/extra-film-lists.js ***!
   \********************************************/
-/*! exports provided: createExtraFilmsContainer */
+/*! exports provided: createExtraFilmListContainer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createExtraFilmsContainer", function() { return createExtraFilmsContainer; });
-const createExtraFilmsContainer = (heading) => {
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createExtraFilmListContainer", function() { return createExtraFilmListContainer; });
+const createExtraFilmListContainer = (heading) => {
   return (
     `<section class="films-list--extra">
     <h2 class="films-list__title">${heading}</h2>
@@ -129,13 +129,13 @@ const createExtraFilmsContainer = (heading) => {
 /*!*************************************!*\
   !*** ./src/components/film-card.js ***!
   \*************************************/
-/*! exports provided: createCardTemplate */
+/*! exports provided: createFilmCardTemplate */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCardTemplate", function() { return createCardTemplate; });
-const createCardTemplate = () => {
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFilmCardTemplate", function() { return createFilmCardTemplate; });
+const createFilmCardTemplate = () => {
   return (
     `<article class="film-card">
       <h3 class="film-card__title">The Dance of Life</h3>
@@ -164,12 +164,12 @@ const createCardTemplate = () => {
 /*!*******************************************!*\
   !*** ./src/components/films-container.js ***!
   \*******************************************/
-/*! exports provided: createMainContentTemplate */
+/*! exports provided: createFilmsContainerTemplate */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMainContentTemplate", function() { return createMainContentTemplate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFilmsContainerTemplate", function() { return createFilmsContainerTemplate; });
 /* harmony import */ var _button_show_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./button-show.js */ "./src/components/button-show.js");
 /* harmony import */ var _extra_film_lists_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./extra-film-lists.js */ "./src/components/extra-film-lists.js");
 
@@ -178,7 +178,7 @@ __webpack_require__.r(__webpack_exports__);
 const topRatedHeading = `Top rated`;
 const mostCommentedHeading = `Most commented`;
 
-const createMainContentTemplate = () => {
+const createFilmsContainerTemplate = () => {
   return (
     `<section class="films">
       <section class="films-list">
@@ -187,8 +187,8 @@ const createMainContentTemplate = () => {
         </div>
         ${Object(_button_show_js__WEBPACK_IMPORTED_MODULE_0__["createButtonShowTemplate"])()}
       </section>
-      ${Object(_extra_film_lists_js__WEBPACK_IMPORTED_MODULE_1__["createExtraFilmsContainer"])(topRatedHeading)}
-      ${Object(_extra_film_lists_js__WEBPACK_IMPORTED_MODULE_1__["createExtraFilmsContainer"])(mostCommentedHeading)}
+      ${Object(_extra_film_lists_js__WEBPACK_IMPORTED_MODULE_1__["createExtraFilmListContainer"])(topRatedHeading)}
+      ${Object(_extra_film_lists_js__WEBPACK_IMPORTED_MODULE_1__["createExtraFilmListContainer"])(mostCommentedHeading)}
     </section>`
   );
 };
@@ -489,7 +489,7 @@ const init = () => {
   Object(_tools_utils_js__WEBPACK_IMPORTED_MODULE_5__["render"])(header, Object(_components_header_profile_js__WEBPACK_IMPORTED_MODULE_0__["createHeaderProfileTemplate"])(), _tools_consts__WEBPACK_IMPORTED_MODULE_6__["Position"].BEFOREEND);
   Object(_tools_utils_js__WEBPACK_IMPORTED_MODULE_5__["render"])(main, Object(_components_navigation_js__WEBPACK_IMPORTED_MODULE_1__["createSiteNavigationTemplate"])(), _tools_consts__WEBPACK_IMPORTED_MODULE_6__["Position"].BEFOREEND);
   Object(_tools_utils_js__WEBPACK_IMPORTED_MODULE_5__["render"])(main, Object(_components_sorting_js__WEBPACK_IMPORTED_MODULE_2__["createSortingTemplate"])(), _tools_consts__WEBPACK_IMPORTED_MODULE_6__["Position"].BEFOREEND);
-  Object(_tools_utils_js__WEBPACK_IMPORTED_MODULE_5__["render"])(main, Object(_components_films_container_js__WEBPACK_IMPORTED_MODULE_3__["createMainContentTemplate"])(), _tools_consts__WEBPACK_IMPORTED_MODULE_6__["Position"].BEFOREEND);
+  Object(_tools_utils_js__WEBPACK_IMPORTED_MODULE_5__["render"])(main, Object(_components_films_container_js__WEBPACK_IMPORTED_MODULE_3__["createFilmsContainerTemplate"])(), _tools_consts__WEBPACK_IMPORTED_MODULE_6__["Position"].BEFOREEND);
 
   const filmListContainer = document.querySelector(`.films-list`);
   const filmListElement = filmListContainer.querySelector(`.films-list__container`);
@@ -554,7 +554,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const renderCards = (amount, container) => {
   for (let i = 0; i < amount; i++) {
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["render"])(container, Object(_components_film_card_js__WEBPACK_IMPORTED_MODULE_0__["createCardTemplate"])(), _consts__WEBPACK_IMPORTED_MODULE_2__["Position"].BEFOREEND);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["render"])(container, Object(_components_film_card_js__WEBPACK_IMPORTED_MODULE_0__["createFilmCardTemplate"])(), _consts__WEBPACK_IMPORTED_MODULE_2__["Position"].BEFOREEND);
   }
 };
 

@@ -1,4 +1,4 @@
-import {createCardTemplate} from "./components/film-card";
+import {createFilmCardTemplate} from "./components/film-card";
 import AbstractSmartComponent from "../abstract-smart-component";
 
 export default class FilmCard extends AbstractSmartComponent {
@@ -7,15 +7,15 @@ export default class FilmCard extends AbstractSmartComponent {
     this._card = card;
     this._element = null;
 
-    this._onControlsChange = null;
+    this._controlsChangeHandler = null;
   }
 
   getTemplate() {
-    return createCardTemplate(this._card);
+    return createFilmCardTemplate(this._card);
   }
 
   recoveryListeners() {
-    this.setControlsChangeHandler(this._onControlsChange);
+    this.setControlsChangeHandler(this._controlsChangeHandler);
   }
 
   rerender() {
@@ -34,17 +34,16 @@ export default class FilmCard extends AbstractSmartComponent {
   setControlsChangeHandler(handler) {
     this.getElement().querySelector(`.film-card__controls`)
       .addEventListener(`click`, (evt) => {
-        this._onControlChange(evt);
+        this._controlChangeHandler(evt);
         const controlType = evt.target.dataset.controlType;
         this.rerender();
-        console.log(this._card);
         handler(controlType);
       });
 
-    this._onControlsChange = handler;
+    this._controlsChangeHandler = handler;
   }
 
-  _onControlChange(evt) {
+  _controlChangeHandler(evt) {
     evt.preventDefault();
 
     if (evt.target.tagName !== `BUTTON`) {

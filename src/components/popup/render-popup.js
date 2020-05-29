@@ -12,7 +12,7 @@ const onCardClick = (popupElement) => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
-  popupElement.setPopupClose(() => {
+  popupElement.setCloseHandler(() => {
     onPopupClose(popupElement);
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
