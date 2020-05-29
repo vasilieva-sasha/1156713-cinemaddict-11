@@ -1,10 +1,6 @@
 import {FormatDate} from "../../consts/consts";
 import moment from "moment";
 
-export const getRandomElement = (array) => {
-  return array[Math.floor(Math.random() * array.length)];
-};
-
 export const hideText = (text) => {
   const textString = text.toString();
   if (textString.length > 140) {
@@ -12,6 +8,13 @@ export const hideText = (text) => {
   } else {
     return textString;
   }
+};
+
+export const getFilmDuration = (duration) => {
+  const hours = Math.floor(duration / 60);
+  const minutes = duration % 60;
+  const filmDuration = `${hours}h ${minutes}m`;
+  return filmDuration;
 };
 
 export const getCommentDate = (commentDate) => {
@@ -52,3 +55,5 @@ export const getProfileRange = (count) => {
   }
   return profileRange;
 };
+
+export const getRightWordComments = (comments) => comments.length % 10 === 1 ? `Comment` : `Comments`;

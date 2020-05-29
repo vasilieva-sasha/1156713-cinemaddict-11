@@ -1,9 +1,7 @@
-import {CARD_AMOUNT} from "../../../consts/consts";
-
-const createFooterStatisticsMarkup = () => {
+const createFooterStatisticsMarkup = (filmsModel) => {
   return (
     `<section class="footer__statistics">
-      <p>${CARD_AMOUNT} movies inside</p>
+      <p>${filmsModel.getFilms().length} movies inside</p>
     </section>`
   );
 };

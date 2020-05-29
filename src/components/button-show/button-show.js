@@ -7,10 +7,6 @@ export default class ButtonShow extends AbstractSmartComponent {
     return createButtonShowTemplate();
   }
 
-  setButtonClick(handler) {
-    this.getElement().addEventListener(`click`, handler);
-  }
-
   hide() {
     super.hide();
   }
@@ -18,4 +14,9 @@ export default class ButtonShow extends AbstractSmartComponent {
   show() {
     super.show();
   }
+
+  setButtonClick(handler) {
+    this.getElement().addEventListener(`click`, handler);
+  }
+
 }

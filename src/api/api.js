@@ -43,7 +43,7 @@ const API = class {
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
-      .then((data) => Comment.parseComments(data.comments));
+      .then((film) => Comment.parseComments(film.comments));
   }
 
   deleteComment(id) {
@@ -52,11 +52,11 @@ const API = class {
       method: Method.DELETE});
   }
 
-  updateFilm(id, data) {
+  updateFilm(id, filmData) {
     return this._load({
       url: `movies/${id}`,
       method: Method.PUT,
-      body: JSON.stringify(data.toRAW()),
+      body: JSON.stringify(filmData.toRAW()),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())

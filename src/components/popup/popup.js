@@ -1,20 +1,19 @@
 import {createPopupTemplate} from "./components/popup";
 import AbstractSmartComponent from "../abstract-smart-component";
 import Comments from "./comments";
-import Comment from "../../models/comment";
-import Movie from "../../models/movie";
-
+import {Mode} from "../../consts/consts";
 
 export default class Popup extends AbstractSmartComponent {
-  constructor(card, api, onDataChange, movieController) {
+  constructor(card, api, dataChangeHandler, movieController) {
     super();
     this._card = card;
     this._api = api;
     this._movieController = movieController;
 
-    this._popupClose = null;
-    this._onControlsChange = null;
-    this._onDataChange = onDataChange;
+    this._mode = Mode.OPEN;
+    this._closeHandler = null;
+    this._controlsChangeHandler = null;
+    this._dataChangeHandler = dataChangeHandler;
   }
 
   getTemplate() {
@@ -22,20 +21,20 @@ export default class Popup extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setPopupClose(this._popupClose);
-    this.setControlsChangeHandler(this._onControlsChange);
+    this.setCloseHandler(this._closeHandler);
+    this.setControlsChangeHandler(this._controlsChangeHandler);
   }
 
   rerender() {
     super.rerender();
   }
 
-  setPopupClose(handler) {
+  setCloseHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
     this._isEmoji = false;
 
-    this._popupClose = handler;
+    this._closeHandler = handler;
   }
 
   setControlsChangeHandler(handler) {
@@ -47,44 +46,24 @@ export default class Popup extends AbstractSmartComponent {
         handler(controlType);
       });
 
-    this._onControlsChange = handler;
+    this._controlsChangeHandler = handler;
   }
 
   getComments() {
     this._api.getComments(this._card.id)
-      .then((data) => {
-        this._card.commentsList = data;
-        this._commentsListComponent = new Comments(this._card.commentsList, this._onDataChange, this._api);
+      .then((comments) => {
+        this._card.commentsList = comments;
+        this._commentsListComponent = new Comments(this._card, this._dataChangeHandler, this._api, this._movieController);
         this.getElement().querySelector(`.form-details__bottom-container`).append(this._commentsListComponent.getElement());
         this._commentsListComponent.setEmojiChangeHandler();
 
-        this._commentsListComponent.setOnCommentDelete((evt) => {
-          this._commentsListComponent.onCommentDelete(evt);
-          this._onDataChange(this._movieController, this._card, this._card);
+        this._commentsListComponent.setDeleteHandler((evt) => {
+          this._commentsListComponent.deleteHandler(evt);
+          this._dataChangeHandler(this._movieController, this._card, this._card, this._mode);
         });
-      });
-  }
-
-
-  addComment() {
-    const newCommentObject = this._commentsListComponent.createNewCommentObject();
-    const newCommentModel = new Comment(newCommentObject);
-
-    const newFilm = Movie.clone(this._card);
-
-    this._api.createComment(newFilm.id, newCommentModel)
-      .then((comments) => {
-        const newCommentData = comments[comments.length - 1];
-        newFilm.comments.push(newCommentData.id);
-        newFilm.commentsList.push(newCommentData);
-        this._commentsListComponent.addComment(newCommentModel);
-
-        this._onDataChange(this._movieController, this._card, newFilm);
       })
-      .catch(() => {
-        this._commentsListComponent.errorSendHandler();
+      .then(() => {
+        this._commentsListComponent.setSendCommentHandler();
       });
-
   }
-
 }

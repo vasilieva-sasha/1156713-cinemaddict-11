@@ -1,4 +1,4 @@
-import {createExtraFilmsContainer} from "./components/extra-film-lists";
+import {createExtraFilmListContainer} from "./components/extra-film-lists";
 import AbstractSmartComponent from "../abstract-smart-component";
 
 export default class FilmListExtra extends AbstractSmartComponent {
@@ -9,7 +9,7 @@ export default class FilmListExtra extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createExtraFilmsContainer(this._heading);
+    return createExtraFilmListContainer(this._heading);
   }
 
   hide() {
