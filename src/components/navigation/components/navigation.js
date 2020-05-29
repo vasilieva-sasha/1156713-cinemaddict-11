@@ -1,4 +1,4 @@
-import { FilterType } from "../../../consts/consts";
+import {FilterType} from "../../../consts/consts";
 
 const createSiteNavigationTemplate = (filters) => {
   return (
