@@ -1,18 +1,18 @@
-import {FormatDate} from "../../consts/consts";
+import {FormatDate, TextLength, MINUTES_IN_HOUR, ProfileRank} from "../../consts/consts";
 import moment from "moment";
 
 export const hideText = (text) => {
   const textString = text.toString();
-  if (textString.length > 140) {
-    return textString.slice(0, 139) + `...`;
+  if (textString.length > TextLength.MAX) {
+    return textString.slice(0, TextLength.MIN) + `...`;
   } else {
     return textString;
   }
 };
 
 export const getFilmDuration = (duration) => {
-  const hours = Math.floor(duration / 60);
-  const minutes = duration % 60;
+  const hours = Math.floor(duration / MINUTES_IN_HOUR);
+  const minutes = duration % MINUTES_IN_HOUR;
   const filmDuration = `${hours}h ${minutes}m`;
   return filmDuration;
 };
@@ -46,12 +46,12 @@ export const getProfileRange = (count) => {
   let profileRange;
   if (count === 0) {
     profileRange = ``;
-  } else if (count > 0 && count <= 10) {
-    profileRange = `Novice`;
-  } else if (count > 10 && count <= 20) {
-    profileRange = `Fan`;
+  } else if (count >= ProfileRank.NOVICE.from && count < ProfileRank.FUN.from) {
+    profileRange = ProfileRank.NOVICE.rank;
+  } else if (count >= ProfileRank.FUN.from && count < ProfileRank.MOVIE_BUFF.from) {
+    profileRange = ProfileRank.FUN.rank;
   } else {
-    profileRange = `Movie Buff`;
+    profileRange = ProfileRank.MOVIE_BUFF.rank;
   }
   return profileRange;
 };

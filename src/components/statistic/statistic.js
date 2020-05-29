@@ -2,6 +2,7 @@ import AbstractSmartComponent from "../abstract-smart-component";
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {createStatisticTemplate} from "./components/statistic";
+import {STATISTIC_FILTER, BAR_HEIGHT} from "../../consts/consts";
 
 
 export default class Statistic extends AbstractSmartComponent {
@@ -13,7 +14,7 @@ export default class Statistic extends AbstractSmartComponent {
     this._chartData = null;
     this._chartLabels = null;
     this._chartCounts = null;
-    this._currentFilterType = `all-time`;
+    this._currentFilterType = STATISTIC_FILTER[0].period;
     this._filteredFilms = null;
 
     this.show.bind(this);
@@ -45,7 +46,7 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   hide() {
-    this._currentFilterType = `all-time`;
+    this._currentFilterType = STATISTIC_FILTER[0].period;
     super.hide();
   }
 
@@ -80,7 +81,6 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   _renderChart() {
-    const BAR_HEIGHT = 50;
     const statisticCtx = document.querySelector(`.statistic__chart`);
 
     this._chartData = this._filmsModel.getWatchedFilmsCountByGenre(this._filteredFilms, this._currentFilterType);

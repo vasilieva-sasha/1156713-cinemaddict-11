@@ -1,11 +1,12 @@
 import {getFilteredFilms} from "../components/navigation/components/navigation";
 import {getDateFromString, getProfileRange} from "../tools/utils/utils";
 import moment from "moment";
+import {DEFAULT_FILTER_TYPE, DEFAULT_FILTER_TYPE_STATS, STATISTIC_FILTER} from "../consts/consts";
 
 export default class Movies {
   constructor() {
     this._films = [];
-    this.activeFilterType = `all`;
+    this.activeFilterType = DEFAULT_FILTER_TYPE;
 
     this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];
@@ -56,11 +57,12 @@ export default class Movies {
     const watchedFilms = this.getWatchedFilms();
 
     switch (period) {
-      case `all time`:
+      case DEFAULT_FILTER_TYPE_STATS:
         return watchedFilms;
       default:
         return watchedFilms.filter((film) => getDateFromString(film.watchDate) >= moment().subtract(1, period));
     }
+
   }
 
   getWatchedMoviesLength(filterType) {
@@ -72,7 +74,7 @@ export default class Movies {
   }
 
   getFilteredFilmsforStats(filterType) {
-    return filterType === `all-time` ? this.getWatchedFilms() : this.getFilmsByDateForStatistics(filterType);
+    return filterType === STATISTIC_FILTER[0].period ? this.getWatchedFilms() : this.getFilmsByDateForStatistics(filterType);
   }
 
   getStisticsResults(filterType) {

@@ -1,3 +1,5 @@
+import { FilterType } from "../../../consts/consts";
+
 const createSiteNavigationTemplate = (filters) => {
   return (
     `<nav class="main-navigation">
@@ -10,7 +12,7 @@ const createSiteNavigationTemplate = (filters) => {
 };
 
 const getActiveClass = (filter) => filter.checked ? `main-navigation__item--active` : ``;
-const showAmount = (filter) => filter.name === `All movies` ? `` : `<span class="main-navigation__item-count">${filter.count}</span>`;
+const showAmount = (filter) => filter.name === FilterType.ALL ? `` : `<span class="main-navigation__item-count">${filter.count}</span>`;
 
 const createNavigationItemMarkup = (filter) => {
   return (
