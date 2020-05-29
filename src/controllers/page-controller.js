@@ -3,7 +3,7 @@ import ButtonShow from "../components/button-show/button-show";
 import FilmListExtra from "../components/film-list/film-list-extra";
 import NoFilmMessage from "../components/messages/no-films-message";
 import {render, remove} from "../tools/utils/render";
-import {Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT, Class, Mode} from "../consts/consts";
+import {Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT, Class, Mode, SortType} from "../consts/consts";
 import {renderCards} from "../tools/render-cards";
 import Sort from "../components/sorting/sort";
 import {getSortedFilms} from "../components/sorting/components/sort";
@@ -212,7 +212,7 @@ export default class PageController {
 
   _sortTypeChangeHandler(sortType) {
     this._showingFilmsCount = SHOW_CARD_AMOUNT;
-
+    this._sortComponent.setType(sortType);
     const sortedFilms = getSortedFilms[sortType](this._filmsModel.getFilms(), 0, this._showingFilmsCount);
 
     this._removeCards();
@@ -229,12 +229,12 @@ export default class PageController {
       render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
       return;
     }
+
     remove(this._noFilmComponent);
     this._updateCards(SHOW_CARD_AMOUNT);
 
+    this._sortComponent.setType(SortType.DEFAULT);
     this._sortComponent.rerender();
-
-    this._sortComponent.setTypeChangeHandler(this._sortTypeChangeHandler);
   }
 
 

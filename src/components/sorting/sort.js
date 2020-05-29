@@ -8,7 +8,6 @@ export default class Sort extends AbstractSmartComponent {
     this._currentType = SortType.DEFAULT;
 
     this._typeChangeHandler = null;
-    this.setTypeChangeHandler = this.setTypeChangeHandler.bind(this);
   }
 
   getTemplate() {
@@ -36,6 +35,10 @@ export default class Sort extends AbstractSmartComponent {
     return this._currentType;
   }
 
+  setType(value) {
+    this._currentType = value;
+  }
+
   setTypeChangeHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       evt.preventDefault();
@@ -57,8 +60,7 @@ export default class Sort extends AbstractSmartComponent {
       this._currentType = sortType;
 
       handler(this._currentType);
-      this._typeChangeHandler = handler;
     });
-
+    this._typeChangeHandler = handler;
   }
 }
