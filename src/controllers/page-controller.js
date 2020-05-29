@@ -198,7 +198,7 @@ export default class PageController {
   }
 
   _buttonShowClickHandler() {
-    let prevCardsCount = this._showingFilmsCount;
+    const prevCardsCount = this._showingFilmsCount;
     this._showingFilmsCount = this._showingFilmsCount + SHOW_CARD_AMOUNT;
 
     const sortedFilms = getSortedFilms[this._sortComponent.getType()](this._filmsModel.getFilms(), prevCardsCount, this._showingFilmsCount);
