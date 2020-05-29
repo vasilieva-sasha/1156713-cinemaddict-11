@@ -3,15 +3,13 @@ import ButtonShow from "../components/button-show/button-show";
 import FilmListExtra from "../components/film-list/film-list-extra";
 import NoFilmMessage from "../components/messages/no-films-message";
 import {render, remove} from "../tools/utils/render";
-import {Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT, Class, Mode, SortType} from "../consts/consts";
+import {Position, SHOW_CARD_AMOUNT, SHOW_EXTRA_CARD_AMOUNT, Class, Mode, SortType, Heading} from "../consts/consts";
 import {renderCards} from "../tools/render-cards";
 import Sort from "../components/sorting/sort";
 import {getSortedFilms} from "../components/sorting/components/sort";
 import Statistic from "../components/statistic/statistic";
 import HeaderProfile from "../components/header/header-pofile";
 
-const topRatedHeading = `Top rated`;
-const mostCommentedHeading = `Most commented`;
 
 export default class PageController {
   constructor(container, filmsModel, api) {
@@ -23,8 +21,8 @@ export default class PageController {
     this._sortComponent = new Sort();
     this._filmListComponent = new FilmList();
     this._buttonShowComponent = new ButtonShow();
-    this._topRatedComponent = new FilmListExtra(topRatedHeading);
-    this._mostComentedComponent = new FilmListExtra(mostCommentedHeading);
+    this._topRatedComponent = new FilmListExtra(Heading.TOP_RATED);
+    this._mostComentedComponent = new FilmListExtra(Heading.MOST_COMMENTED);
     this._noFilmComponent = new NoFilmMessage();
     this._statisticsComponent = new Statistic(this._filmsModel);
 
@@ -181,6 +179,15 @@ export default class PageController {
     this.renderButtonShow();
   }
 
+  _renderNoFilms() {
+    if (!this._filmsModel.getFilms().length) {
+      this._removeCards();
+      remove(this._buttonShowComponent);
+      render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
+      return;
+    }
+  }
+
   _updateSortedCards(count) {
     this._removeCards();
     const sortedFilms = getSortedFilms[this._sortComponent.getType()](this._filmsModel.getFilms(), 0, count);
@@ -189,12 +196,8 @@ export default class PageController {
 
     this.renderExtraFilmLists(this._container.getElement(), this._filmsModel.getAllFilms());
     this.renderButtonShow();
-    if (this._filmsModel.getFilms().length === 0) {
-      this._removeCards();
-      remove(this._buttonShowComponent);
-      render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
-      return;
-    }
+
+    this._renderNoFilms();
   }
 
   _buttonShowClickHandler() {
@@ -223,14 +226,10 @@ export default class PageController {
   }
 
   _filterChangeHandler() {
-    if (this._filmsModel.getFilms().length === 0) {
-      this._removeCards();
-      remove(this._buttonShowComponent);
-      render(this._container.getElement(), this._noFilmComponent, Position.AFTERBEGIN);
-      return;
-    }
-
     remove(this._noFilmComponent);
+
+    this._renderNoFilms();
+
     this._updateCards(SHOW_CARD_AMOUNT);
 
     this._sortComponent.setType(SortType.DEFAULT);

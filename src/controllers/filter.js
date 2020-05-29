@@ -1,4 +1,4 @@
-import {FilterType, Position} from "../consts/consts";
+import {FilterType, Position, DEFAULT_FILTER_TYPE} from "../consts/consts";
 import {replace, render} from "../tools/utils/render";
 import Navigation from "../components/navigation/navigation";
 import {getFilteredFilms} from "../components/navigation/components/navigation";
@@ -12,7 +12,7 @@ export default class FilterController {
 
     this._showedFilmControllers = [];
 
-    this.activeFilterType = `all`;
+    this.activeFilterType = DEFAULT_FILTER_TYPE;
     this._navigationComponent = null;
 
     this._statsClickHandler = null;

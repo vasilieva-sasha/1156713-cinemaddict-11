@@ -1,5 +1,5 @@
 import {render, remove} from "./tools/utils/render";
-import {Position, Class} from "./consts/consts";
+import {END_POINT, AUTHORIZATION, Position, Class} from "./consts/consts";
 import FooterStatistics from "./components/footer/footer-statistics";
 import PageController from "./controllers/page-controller";
 import FilmContainer from "./components/film-list/film-container";
@@ -11,8 +11,7 @@ import NoFilmMessage from "./components/messages/no-films-message";
 
 
 const init = () => {
-  const AUTHORIZATION = `Basic ghfgh6h9gm56vjckxg`;
-  const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
+
   const api = new API(END_POINT, AUTHORIZATION);
 
   const filmsModel = new Movies();

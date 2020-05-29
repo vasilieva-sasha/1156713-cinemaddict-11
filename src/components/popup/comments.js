@@ -2,7 +2,7 @@ import AbstractSmartComponent from "../abstract-smart-component";
 import {createCommentTemplate} from "./components/comments/comment-markup";
 import {createCommentsMurkup} from "./components/comments/comments-list-markup";
 import {createElement} from "../../tools/utils/utils";
-import {EMOJI_SIZE, Mode} from "../../consts/consts";
+import {EMOJI_SIZE, Mode, BORDER} from "../../consts/consts";
 import {encode} from "he";
 import Movie from "../../models/movie";
 import Comment from "../../models/comment";
@@ -120,14 +120,14 @@ export default class Comments extends AbstractSmartComponent {
   }
 
   validateInput() {
-    this.getElement().querySelector(`.film-details__comment-input`).style.border = `2px solid red`;
+    this.getElement().querySelector(`.film-details__comment-input`).style.border = BORDER;
     setTimeout(() => {
       this.getElement().querySelector(`.film-details__comment-input`).style.border = ``;
     }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   validateEmoji() {
-    this.getElement().querySelector(`.film-details__add-emoji-label`).style.border = `2px solid red`;
+    this.getElement().querySelector(`.film-details__add-emoji-label`).style.border = BORDER;
     setTimeout(() => {
       this.getElement().querySelector(`.film-details__add-emoji-label`).style.border = ``;
     }, SHAKE_ANIMATION_TIMEOUT);
@@ -140,7 +140,7 @@ export default class Comments extends AbstractSmartComponent {
     const newCommentBlock = this.getElement().querySelector(`.film-details__new-comment`);
     newCommentBlock.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / SHAKE_LENGTH}s`;
 
-    newCommentBlock.querySelector(`.film-details__comment-input`).style.border = `2px solid red`;
+    newCommentBlock.querySelector(`.film-details__comment-input`).style.border = BORDER;
 
     setTimeout(() => {
       newCommentBlock.style.animation = ``;
@@ -192,7 +192,7 @@ export default class Comments extends AbstractSmartComponent {
     emojiImage.setAttribute(`height`, EMOJI_SIZE);
     emojiImage.setAttribute(`width`, EMOJI_SIZE);
 
-    if (this._isEmoji === false) {
+    if (!this._isEmoji) {
       this._emojiContainer.appendChild(emojiImage);
       this._isEmoji = true;
     } else {
