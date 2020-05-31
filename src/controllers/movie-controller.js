@@ -48,11 +48,15 @@ export default class MovieController {
 
     this._popupComponent.setControlsChangeHandler((controlType) => {
       this._mode = Mode.OPEN;
-      const newFilm = Movie.clone(this._card);
-      newFilm[controlType] = !newFilm[controlType];
-      newFilm.watchDate = newFilm.inHistory ? new Date() : null;
-      this._dataChangeHandler(this, this._card, newFilm, this._mode);
-      this._popupComponent.getComments();
+      // const newFilm = Movie.clone(this._card);
+      // newFilm[controlType] = !newFilm[controlType];
+      // newFilm.watchDate = newFilm.inHistory ? new Date() : null;
+      // this._dataChangeHandler(this, this._card, newFilm, this._mode);
+      // this._popupComponent.getComments();
+      this._card[controlType] = !this._card[controlType];
+      this._card.watchDate = this._card.inHistory ? new Date() : null;
+      console.log(this._card);
+      return this._card;
     });
 
     this._setControlsListeners();
@@ -98,6 +102,8 @@ export default class MovieController {
     remove(this._popupComponent);
 
     this._mode = Mode.DEFAULT;
+    const newFilm = Movie.clone(this._card);
+    this._dataChangeHandler(this, this._card, newFilm, this._mode);
   }
 
   _escKeyDownHandler(evt) {

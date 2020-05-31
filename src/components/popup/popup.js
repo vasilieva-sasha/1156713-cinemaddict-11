@@ -40,9 +40,9 @@ export default class Popup extends AbstractSmartComponent {
   setControlsChangeHandler(handler) {
     this.getElement().querySelector(`.film-details__controls`)
       .addEventListener(`click`, (evt) => {
-        evt.preventDefault();
+        // evt.preventDefault();
         const controlType = evt.target.dataset.controlType;
-        this.rerender();
+        // this.rerender();
         handler(controlType);
       });
 
