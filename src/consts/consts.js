@@ -1,5 +1,8 @@
 export const AUTHORIZATION = `Basic aaafh6h9gm56vjckxg`;
 export const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
+const STORE_PREFIX = `cinemaddict-localstorage`;
+const STORE_VER = `v1`;
+export const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
 export const SHOW_CARD_AMOUNT = 5;
 export const SHOW_EXTRA_CARD_AMOUNT = 2;

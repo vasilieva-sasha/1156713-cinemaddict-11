@@ -65,6 +65,9 @@ export default class Popup extends AbstractSmartComponent {
       })
       .then(() => {
         this._commentsListComponent.setSendCommentHandler();
+      })
+      .catch(() => {
+        this.getElement().querySelector(`.form-details__bottom-container`).style = `display: none`;
       });
   }
 }

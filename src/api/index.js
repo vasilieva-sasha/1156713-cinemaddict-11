@@ -72,6 +72,16 @@ const API = class {
         throw err;
       });
   }
+
+  sync(data) {
+    return this._load({
+      url: `movies/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then((response) => response.json());
+  }
 };
 
 export default API;
