@@ -84,8 +84,12 @@ export default class Comments extends AbstractSmartComponent {
           const newCommentData = comments[comments.length - 1];
           newFilm.comments.push(newCommentData.id);
           newFilm.commentsList.push(newCommentData);
-          this.addCommentMarkup(newCommentModel);
-          this._dataChangeHandler(this._movieController, this._card, newFilm, this._mode);
+          this.addCommentMarkup(newCommentData);
+        })
+        .then(() => {
+          this._updateCommentsCount();
+          const input = this.getElement().querySelector(`.film-details__comment-input`);
+          input.removeAttribute(`disabled`);
         })
         .catch(() => {
           this.errorSendHandler();
@@ -170,7 +174,15 @@ export default class Comments extends AbstractSmartComponent {
       .then(() => {
         deleteButton.innerHTML = `Deleting...`;
         deleteButton.setAttribute(`disabled`, `disabled`);
+
+
+      })
+      .then(() => {
+        this._card.comments.splice(this._card.comments.indexOf(commentId), 1);
         comment.remove();
+      })
+      .then(() => {
+        this._updateCommentsCount();
       })
       .catch(() => {
         deleteButton.removeAttribute(`disabled`, `disabled`);
@@ -199,6 +211,11 @@ export default class Comments extends AbstractSmartComponent {
       this._emojiContainer.removeChild(this._emojiContainer.querySelector(`img`));
       this._emojiContainer.appendChild(emojiImage);
     }
+  }
+
+  _updateCommentsCount() {
+    this.getElement().querySelector(`.film-details__comments-count`)
+      .textContent = this._card.comments.length;
   }
 
   _changeHandler() {

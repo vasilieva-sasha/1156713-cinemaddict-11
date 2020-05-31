@@ -48,14 +48,10 @@ export default class MovieController {
 
     this._popupComponent.setControlsChangeHandler((controlType) => {
       this._mode = Mode.OPEN;
-      // const newFilm = Movie.clone(this._card);
-      // newFilm[controlType] = !newFilm[controlType];
-      // newFilm.watchDate = newFilm.inHistory ? new Date() : null;
-      // this._dataChangeHandler(this, this._card, newFilm, this._mode);
-      // this._popupComponent.getComments();
+
       this._card[controlType] = !this._card[controlType];
       this._card.watchDate = this._card.inHistory ? new Date() : null;
-      console.log(this._card);
+
       return this._card;
     });
 
@@ -93,7 +89,6 @@ export default class MovieController {
     if (!this._popupComponent.getElement().querySelector(`.film-details__comments-wrap`)) {
       this._popupComponent.getComments();
     }
-    this._popupComponent.recoveryListeners();
 
     document.addEventListener(`keydown`, this._escKeyDownHandler);
   }

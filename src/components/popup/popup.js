@@ -40,9 +40,11 @@ export default class Popup extends AbstractSmartComponent {
   setControlsChangeHandler(handler) {
     this.getElement().querySelector(`.film-details__controls`)
       .addEventListener(`click`, (evt) => {
-        // evt.preventDefault();
+        if (evt.target.tagName !== `LABEL`) {
+          return;
+        }
         const controlType = evt.target.dataset.controlType;
-        // this.rerender();
+
         handler(controlType);
       });
 
@@ -59,7 +61,6 @@ export default class Popup extends AbstractSmartComponent {
 
         this._commentsListComponent.setDeleteHandler((evt) => {
           this._commentsListComponent.deleteHandler(evt);
-          this._dataChangeHandler(this._movieController, this._card, this._card, this._mode);
         });
       })
       .then(() => {
