@@ -1,4 +1,4 @@
-import {FormatDate, TextLength, MINUTES_IN_HOUR, ProfileRank} from "../../consts/consts";
+import {TextLength, MINUTES_IN_HOUR, ProfileRank} from "../../consts/consts";
 import moment from "moment";
 
 export const hideText = (text) => {
@@ -18,13 +18,7 @@ export const getFilmDuration = (duration) => {
 };
 
 export const getCommentDate = (commentDate) => {
-  const today = new Date();
-
-  if (commentDate === today) {
-    return moment(commentDate).fromNow();
-  } else {
-    return formatDate(commentDate, FormatDate.COMMENT_DATE);
-  }
+  return moment(commentDate).fromNow();
 };
 
 export const createElement = (template) => {

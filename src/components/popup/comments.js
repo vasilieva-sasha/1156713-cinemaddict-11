@@ -104,7 +104,7 @@ export default class Comments extends AbstractSmartComponent {
   createNewData() {
     return {
       comment: this._changeHandler(),
-      date: new Date().toISOString(),
+      date: new Date(),
       emotion: this._emoji,
     };
   }
@@ -121,6 +121,8 @@ export default class Comments extends AbstractSmartComponent {
     commentList.append(this._newComment);
 
     this._clearInput();
+    console.log(this._newComment);
+    console.log(this._card);
   }
 
   validateInput() {
@@ -174,8 +176,6 @@ export default class Comments extends AbstractSmartComponent {
       .then(() => {
         deleteButton.innerHTML = `Deleting...`;
         deleteButton.setAttribute(`disabled`, `disabled`);
-
-
       })
       .then(() => {
         this._card.comments.splice(this._card.comments.indexOf(commentId), 1);
