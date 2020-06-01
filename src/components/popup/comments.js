@@ -90,6 +90,7 @@ export default class Comments extends AbstractSmartComponent {
           this._updateCommentsCount();
           const input = this.getElement().querySelector(`.film-details__comment-input`);
           input.removeAttribute(`disabled`);
+          this._dataChangeHandler(this._movieController, this._card, newFilm, this._mode);
         })
         .catch(() => {
           this.errorSendHandler();
@@ -121,8 +122,6 @@ export default class Comments extends AbstractSmartComponent {
     commentList.append(this._newComment);
 
     this._clearInput();
-    console.log(this._newComment);
-    console.log(this._card);
   }
 
   validateInput() {

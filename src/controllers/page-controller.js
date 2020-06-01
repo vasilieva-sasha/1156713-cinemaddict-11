@@ -49,7 +49,7 @@ export default class PageController {
 
     remove(this._buttonShowComponent);
 
-    if (this._filmsModel.getFilms().length > this._showingFilmsCount) {
+    if (this._filmsModel.getFilms().length > SHOW_CARD_AMOUNT) {
       render(this._filmListComponent.getElement(), this._buttonShowComponent, Position.BEFOREEND);
       this._buttonShowComponent.setButtonClick(() => {
         this._buttonShowClickHandler();
@@ -247,6 +247,7 @@ export default class PageController {
             this._rerenderProfileHeader();
 
             if (mode === Mode.DEFAULT) {
+              this._showingFilmsCount = this._showedFilmControllers.length === SHOW_CARD_AMOUNT ? this._showedFilmControllers.length : this._filmsModel.getFilms().length;
               this._updateSortedCards(this._showingFilmsCount);
             }
           }

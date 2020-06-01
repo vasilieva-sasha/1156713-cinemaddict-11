@@ -1,7 +1,7 @@
 import {createPopupTemplate} from "./components/popup";
 import AbstractSmartComponent from "../abstract-smart-component";
 import Comments from "./comments";
-import {Mode} from "../../consts/consts";
+import {Mode, DISPLAY_NONE} from "../../consts/consts";
 
 export default class Popup extends AbstractSmartComponent {
   constructor(card, api, dataChangeHandler, movieController) {
@@ -67,7 +67,7 @@ export default class Popup extends AbstractSmartComponent {
         this._commentsListComponent.setSendCommentHandler();
       })
       .catch(() => {
-        this.getElement().querySelector(`.form-details__bottom-container`).style = `display: none`;
+        this.getElement().querySelector(`.form-details__bottom-container`).style = DISPLAY_NONE;
       });
   }
 }

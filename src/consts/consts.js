@@ -1,4 +1,4 @@
-export const AUTHORIZATION = `Basic aaafh6h9gm56vjckxg`;
+export const AUTHORIZATION = `Basic hkcdc7jkgkn`;
 export const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 const STORE_PREFIX = `cinemaddict-localstorage`;
 const STORE_VER = `v1`;
@@ -114,3 +114,5 @@ export const Mode = {
 export const BORDER = `2px solid red`;
 
 export const BAR_HEIGHT = 50;
+
+export const DISPLAY_NONE = `display: none`;
