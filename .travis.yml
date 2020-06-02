@@ -33,7 +33,7 @@
           "master"
         ]
       },
-      "token": "$GITHUB_TOKEN"
+      "token": "travis"
     }
   ]
 }
