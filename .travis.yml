@@ -1,39 +1,21 @@
-{
-  "language": "node_js",
-  "os": [
-    "linux"
-  ],
-  "dist": "xenial",
-  "node_js": [
-    "stable"
-  ],
-  "notifications": {
-    "email": [
-      {
-        "enabled": false
-      }
-    ]
-  },
-  "cache": {
-    "directories": [
-      "node_modules"
-    ]
-  },
-  "script": [
-    "npm run build"
-  ],
-  "deploy": [
-    {
-      "provider": "pages",
-      "strategy": "git",
-      "skip_cleanup": true,
-      "local_dir": "build",
-      "on": {
-        "branch": [
-          "master"
-        ]
-      },
-      "token": "travis"
-    }
-  ]
-}
+language: node_js
+node_js:
+  - "stable"
+notifications:
+  email: false
+
+cache:
+  directories:
+  - node_modules
+
+script:
+  npm run build
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github-token: $travis
+  local_dir: build
+  on:
+    branch: master
+
