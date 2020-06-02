@@ -15,7 +15,7 @@ deploy:
   provider: pages
   skip_cleanup: true
   github-token: $travis
-  local_dir: build
+  local_dir: public
   on:
     branch: master
 
